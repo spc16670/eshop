@@ -1,0 +1,1 @@
+erl -pa ./ebin/ -eval "application:start(eshop)" -config eshop -s observer start
