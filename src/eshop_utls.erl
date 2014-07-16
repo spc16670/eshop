@@ -9,6 +9,7 @@
   ,read_config/1
   ,get_value/3
   ,pool_name/0
+  ,database/0
   ,get_env/1
 ]).
 
@@ -83,6 +84,12 @@ pool_name() ->
   {ok, Pools} = application:get_env(?APP, pools),
   [{N,[_S,_O],[_H,_D,_U,_P]}] = Pools,
   N.
+
+database() ->
+  {ok, Pools} = application:get_env(?APP, pools),
+  [{_N,[_S,_O],[_H,{_DK,DN},_U,_P]}] = Pools,
+  DN.
+
 
 get_env(Key) ->
   {ok,Val} = application:get_env(?APP, Key),

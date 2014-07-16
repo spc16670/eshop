@@ -11,7 +11,16 @@
   ,select_shopper_address/1
 ]).
 
+-export([
+  create_schema/1
+  ,create_index/3
+]).
+
 -include("eshop_sql.hrl").
+
+-define(POOL,eshop_utls:pool_name()).
+-define(SCHEMA,eshop_utls:get_env(project)).
+-define(DB,eshop_utls:database()).
 
 %% -----------------------------------------------------------------------------
 %% -----------------------------------------------------------------------------
@@ -28,12 +37,38 @@ equery(PoolName, Stmt, Params) ->
   end).
 
 init() ->
-  run_sql_macro(?CREATE_SCHEMA),
-  run_sql_macro(?CREATE_SHOPPER_ADDRESS),
-  create_index("shopper_address_ix"),
-  run_sql_macro(?CREATE_SHOPPER),
-  create_index("shopper_ix").
-    
+  create_schema(?SCHEMA).
+  
+%  run_sql_macro(?CREATE_SHOPPER_ADDRESS),
+%  create_index("shopper_address_ix"),
+%  run_sql_macro(?CREATE_SHOPPER),
+%  create_index("shopper_ix").
+
+create_schema(S) ->
+  case squery(?POOL,psql:create_schema(S,['ifnotexists'])) of
+    {ok,[],[]} -> ok;
+    {error,{error,error,_EC,EM}} -> {error,Em}
+  end.
+
+create_table() ->
+
+
+index_exists(N) ->
+  case squery(?POOL,psql:select_index(?SCHEMA,N)) of
+    {ok,_D,[]} -> false;
+    {ok,_D,R} when is_list(R) -> true;
+  end.
+     
+create_index(N,T,Cs) ->
+  case index_exists(N) of
+    true -> already_exists;
+    false -> squery(?POOL,psql:create_index(N,{?SCHEMA,T},Cs,[nolock]) of
+        Result -> Result
+      end
+  end.
+  
+
+
 create_index(Name) when Name =:= "shopper_ix" ->
   create_index(Name,?CREATE_SHOPPER_IX);
 create_index(Name) when Name =:= "shopper_address_ix" ->

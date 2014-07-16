@@ -1,8 +1,4 @@
 
--define(POOL,eshop_utls:pool_name()).
-
--define(SCHEMA,eshop_utls:get_env(project)).
-
 -define(CREATE_SCHEMA,
     "CREATE SCHEMA IF NOT EXISTS " ++ ?SCHEMA ++ ";"
   ).
@@ -91,4 +87,32 @@
     ++ ".shopper_address A ON S.id = A.id WHERE S.email = '" ++ E ++ "';"
   ).
 
+%% -------------------------------------------------------------------------------
 
+-define(CREATE_DEPARTMENT,
+    "CREATE TABLE " ++ ?SCHEMA ++ ".department ("
+      "id		INTEGER 	NOT NULL PRIMARY KEY"
+      ",name		VARCHAR(64)	NOT NULL"
+    ");"
+  ).
+
+-define(INSERT_STRING_VALUES(T,Cs,Vs),
+    "INSERT INTO " ++ ?SCHEMA ++ "." ++ T ++ " (" ++ 
+      string:strip(lists:flatten(lists:map(fun(E) -> E ++ "," end,Cs)),right,$,) 
+      ++ ") VALUES ('" ++ 
+      string:strip(lists:flatten(lists:map(fun(E) -> E ++ "," end,Vs)),right,$,) 
+      ++ "');" 
+ ).
+
+-define(SELECT(T,Cs),
+    "SELECT " ++ 
+      string:strip(lists:flatten(lists:map(fun(E) -> E ++ "," end,Cs)),right,$,) ++ 
+    " FROM " ++ ?SCHEMA ++ "." ++ T ++ ";"
+  ).
+
+
+-define(SELECT_WHERE_STRING(T,Cs,C,S),
+    "SELECT " ++ 
+      string:strip(lists:flatten(lists:map(fun(E) -> E ++ "," end,Cs)),right,$,) ++ 
+    " FROM " ++ ?SCHEMA ++ "." ++ T ++ " WHERE " ++ C ++ "='" ++ S ++"';"
+  ).
