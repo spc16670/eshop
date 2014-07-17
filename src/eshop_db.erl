@@ -45,7 +45,7 @@ init() ->
 %  create_index("shopper_ix").
 
 create_schema(S) ->
-  case squery(?POOL,psql:create_schema(S,['ifnotexists'])) of
+  case squery(?POOL,pgsql:create_schema(S,['ifnotexists'])) of
     {ok,[],[]} -> ok;
     {error,{error,error,_EC,EM}} -> {error,Em}
   end.
@@ -54,7 +54,7 @@ create_table() ->
 
 
 index_exists(N) ->
-  case squery(?POOL,psql:select_index(?SCHEMA,N)) of
+  case squery(?POOL,pgsql:select_index(?SCHEMA,N)) of
     {ok,_D,[]} -> false;
     {ok,_D,R} when is_list(R) -> true;
   end.
@@ -62,7 +62,7 @@ index_exists(N) ->
 create_index(N,T,Cs) ->
   case index_exists(N) of
     true -> already_exists;
-    false -> squery(?POOL,psql:create_index(N,{?SCHEMA,T},Cs,[nolock]) of
+    false -> squery(?POOL,pgsql:create_index(N,{?SCHEMA,T},Cs,[nolock]) of
         Result -> Result
       end
   end.
