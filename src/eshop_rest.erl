@@ -1,6 +1,7 @@
 -module(eshop_rest).
 
 -export([init/3,rest_init/2,rest_terminate/2]).
+%-export([init/2,rest_terminate/2]).
 -export([content_types_provided/2]).
 -export([hello_to_html/2]).
 -export([hello_to_json/2]).
@@ -11,10 +12,16 @@
 init(_Transport, _Req, _Opts) ->
   {upgrade, protocol, cowboy_rest}.
 
+%rest_init(Req,[]) ->
+%  {Sid,_Path,Req2} = eshop_session:on_request(Req),
+%  TemplatePath = eshop_utls:priv_dir() ++ "/templates",
+%  {ok,Req2,#'state'{templates_path=TemplatePath,sid=Sid}}.
+
 rest_init(Req,[]) ->
   {Sid,_Path,Req2} = eshop_session:on_request(Req),
   TemplatePath = eshop_utls:priv_dir() ++ "/templates",
-  {ok,Req2,#'state'{templates_path=TemplatePath,sid=Sid}}.
+  {cowboy_rest,Req2,#'state'{templates_path=TemplatePath,sid=Sid}}.
+
 
 content_types_provided(Req, State) ->
   {[

@@ -10,24 +10,22 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
-  application:start(syntax_tools),
-  application:start(compiler),
-  application:start(merl),
-  application:start(erlydtl),
-  application:start(goldrush),
-  application:start(lager),
-  application:start(crypto),
-  application:start(cowlib),
-  application:start(ranch),
-  application:start(cowboy),
-  application:start(erlsha2),
-  application:start(jsx),
-  application:start(ejwt),
-  application:start(gproc),
+  ensure_started(syntax_tools),
+  ensure_started(compiler),
+  ensure_started(merl),
+  ensure_started(erlydtl),
+  ensure_started(goldrush),
+  ensure_started(lager),
+  ensure_started(crypto),
+  ensure_started(cowlib),
+  ensure_started(ranch),
+  ensure_started(cowboy),
+  ensure_started(erlsha2),
+  ensure_started(jsx),
+  ensure_started(ejwt),
+  ensure_started(gproc),
+  ensure_started(estore),
   
-  eshop_db_mnesia:create_tables([node()]),
-  mnesia:wait_for_tables([basic_config,session_cache], 5000),
-  eshop_db_mnesia:init_load_config(),
   
   PrivDir = eshop_utls:priv_dir(),
 
@@ -62,3 +60,14 @@ start(_StartType, _StartArgs) ->
 
 stop(_State) ->
   ok.
+
+%% @doc
+%% Ensures all dependencies are started.
+%% @end
+
+ensure_started(App) ->
+  case application:start(App) of
+    ok -> ok;
+    {error,{already_started,App}} -> ok;
+    Error -> io:fwrite("Could not start ~p ~p ~n",[App,Error])
+  end.
