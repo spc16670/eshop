@@ -57,6 +57,7 @@ handle_info([{Mid,Msg},Cid], #state{sid=Sid} = State) when Mid =:= <<"login">> -
 
 %% -- registration
 handle_info([{Mid,Msg},Cid], #state{sid=Sid} = State) when Mid =:= <<"register">> ->
+  io:fwrite("Register: ~p~n",[Msg]),
   Result = eshop_db:insert_shopper(
     eshop_utls:get_value(<<"email">>,Msg,<<"">>)
     ,eshop_utls:get_value(<<"password">>,Msg,<<"">>)

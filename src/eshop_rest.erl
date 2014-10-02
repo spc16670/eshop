@@ -25,7 +25,6 @@ content_types_provided(Req, State) ->
   ], Req, State}.
 
 hello_to_html(Req, State) ->
-  io:fwrite("HELLO~n",[]),
   Template = State#'state'.'templates_path' ++ "/index.tpl",
   {ok,_Module} = erlydtl:compile_file(Template,index_dtl),
   Sid = State#'state'.'sid',

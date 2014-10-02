@@ -25,8 +25,7 @@ start(_StartType, _StartArgs) ->
   ensure_started(ejwt),
   ensure_started(gproc),
   ensure_started(estore),
-  
-  
+   
   PrivDir = eshop_utls:priv_dir(),
 
   Dispatch = cowboy_router:compile([

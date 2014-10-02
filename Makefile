@@ -1,4 +1,5 @@
 REBAR = ./rebar
+RECORDS_PATH = /home/sczaja/git/eshop/include
 
 .PHONY: all compile test clean get-deps build-plt dialyze
 
