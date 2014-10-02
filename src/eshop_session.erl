@@ -87,7 +87,6 @@ session_yes(Req, Path) ->
     Req2.
  
 get_cookie(Req) ->
-  io:fwrite("Req is ~p~n",[Req]),
   {Path, Req1} = cowboy_req:path(Req),
   {Cookie, Req2} = cowboy_req:cookie(<<"COOKIE">>, Req1),
   {Cookie, Path, Req2}.

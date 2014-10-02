@@ -12,16 +12,10 @@
 init(_Transport, _Req, _Opts) ->
   {upgrade, protocol, cowboy_rest}.
 
-%rest_init(Req,[]) ->
-%  {Sid,_Path,Req2} = eshop_session:on_request(Req),
-%  TemplatePath = eshop_utls:priv_dir() ++ "/templates",
-%  {ok,Req2,#'state'{templates_path=TemplatePath,sid=Sid}}.
-
 rest_init(Req,[]) ->
   {Sid,_Path,Req2} = eshop_session:on_request(Req),
   TemplatePath = eshop_utls:priv_dir() ++ "/templates",
-  {cowboy_rest,Req2,#'state'{templates_path=TemplatePath,sid=Sid}}.
-
+  {ok,Req2,#'state'{templates_path=TemplatePath,sid=Sid}}.
 
 content_types_provided(Req, State) ->
   {[
@@ -31,6 +25,7 @@ content_types_provided(Req, State) ->
   ], Req, State}.
 
 hello_to_html(Req, State) ->
+  io:fwrite("HELLO~n",[]),
   Template = State#'state'.'templates_path' ++ "/index.tpl",
   {ok,_Module} = erlydtl:compile_file(Template,index_dtl),
   Sid = State#'state'.'sid',
