@@ -5,7 +5,7 @@ var eshopFactories = angular.module('eshopFactories',[]);
 eshopFactories.factory('bulletFactory', ['$q','$rootScope', function($q,$rootScope) {  
   var Service = {};
   var sid = document.getElementById('session_id');
-  var url = 'wss://localhost:8443/bullet/' + sid.textContent;
+  var url = 'wss://dev-esb-2:8443/bullet/' + sid.textContent;
   var options = {'disableWebSocket': true, 'disableEventSource': true};
   //var options = {};
   var bullet = $.bullet(url, options);
