@@ -12,7 +12,7 @@
 	        <label class="control-label">First Name</label>
 	          <div class="controls">
 	            <div class="input-prepend">
-		      <input type="text" class="form-control" id="fname" name="fname" ng-model="newUser.fname" required placeholder="First Name" show-errors="pushAlerts()">
+		      <input type="text" class="form-control" id="fname" name="fname" ng-model="newShopper.fname" required placeholder="First Name" show-errors="pushAlerts()">
 	            </div>
 	          </div>
 	      </div>
@@ -21,7 +21,7 @@
 	        <label class="control-label">Last Name</label>
 	          <div class="controls">
 	            <div class="input-prepend">
-		      <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" ng-model="newUser.lname" required show-errors="pushAlerts()">
+		      <input type="text" class="form-control" id="lname" name="lname" placeholder="Last Name" ng-model="newShopper.lname" required show-errors="pushAlerts()">
 	            </div>
 	          </div>
 	      </div>
@@ -30,7 +30,7 @@
 	        <label class="control-label">Address Line 1</label>
 	          <div class="controls">
 	            <div class="input-prepend">
-		      <input type="text" class="form-control" id="addressline1" name="addressline1" placeholder="Address Line 1" ng-model="newUser.addressline1" required show-errors="pushAlerts()">
+		      <input type="text" class="form-control" id="addressline1" name="addressline1" placeholder="Address Line 1" ng-model="newAddress.addressline1" required show-errors="pushAlerts()">
 	            </div>
 	          </div>	
 	      </div>
@@ -39,7 +39,7 @@
                 <label class="control-label">Address Line 2</label>
                   <div class="controls">
                     <div class="input-prepend">
-                      <input type="text" class="form-control" id="addressline2" name="addressline2" placeholder="Address Line 2" ng-model="newUser.addressline2">
+                      <input type="text" class="form-control" id="addressline2" name="addressline2" placeholder="Address Line 2" ng-model="newAddress.addressline2">
                     </div>
                   </div>
               </div>
@@ -48,7 +48,7 @@
                 <label class="control-label">Postcode</label>
                   <div class="controls">
                     <div class="input-prepend">
-                      <input type="text" class="form-control" id="postcode" name="postcode" placeholder="Postcode" ng-model="newUser.postcode" required show-errors="pushAlerts()">
+                      <input type="text" class="form-control" id="postcode" name="postcode" placeholder="Postcode" ng-model="newAddress.postcode" required show-errors="pushAlerts()">
                     </div>
                   </div>
               </div>
@@ -57,7 +57,7 @@
                 <label class="control-label">City / Town</label>
                   <div class="controls">
                     <div class="input-prepend">
-                      <input type="text" class="form-control" id="city" name="city" placeholder="City / Town" ng-model="newUser.city" required show-errors="pushAlerts()">
+                      <input type="text" class="form-control" id="city" name="city" placeholder="City / Town" ng-model="newAddress.city" required show-errors="pushAlerts()">
                     </div>
                   </div>
               </div>
@@ -70,7 +70,7 @@
 		        <div class="col-md-3">
 			  <div class="radio">
 			    <label>
-			      <input type="radio" name="female" value="f" ng-model="newUser.gender" ng-init="newUser.gender='f'" required>
+			      <input type="radio" name="female" value="f" ng-model="newShopper.gender" ng-init="newShopper.gender='f'" required>
 			        Female
 			    </label>
 			  </div>
@@ -78,7 +78,7 @@
 		        <div class="col-md-3">
 			  <div class="radio">
 			    <label>
-			     <input type="radio" name="male" value="m" ng-model="newUser.gender" required>
+			     <input type="radio" name="male" value="m" ng-model="newShopper.gender" required>
 			       Male
 			    </label>
 			  </div>

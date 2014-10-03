@@ -71,7 +71,11 @@ handle_info([{Mid,Msg},Cid], #state{sid=Sid} = State) when Mid =:= <<"register">
     ,eshop_utls:get_value(<<"country">>,Msg,<<"UK">>)
   ), Resp = atom_to_binary(Result,latin1),
   gproc:send(?HANDLER_KEY(Sid),[{<<"data">>,[{Mid,Resp}]},Cid]),
-  {noreply, State,?SESSION_TIMEOUT}.
+  {noreply, State,?SESSION_TIMEOUT};
+
+handle_info(Data, #state{sid=Sid} = State)  ->
+  io:fwrite("DATA RECEIVED::: ~p~n",[Data]),
+  {noreply, State, ?SESSION_TIMEOUT}.
 
 terminate(_Reason, #state{sid=Sid} = _State) ->
   gproc:unreg(?WORKER_KEY(Sid)),

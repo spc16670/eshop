@@ -21,12 +21,11 @@ init(_Transport, Req, _Opts, _Active) ->
   {ok, Req1, #state{sid=Sid}}.
 
 stream(Data, Req, #state{sid=Sid}=State) ->  
-  send(Sid,jsx:decode(Data)),
+  send(Sid,Data),
   {ok, Req, State}.
 
-info(Resp, Req, State) ->
-  Json = jsx:encode(Resp),
-  io:fwrite("Resp ~p Json ~p ~n",[Resp,Json]),
+info(Json, Req, State) ->
+  io:fwrite("RESPONSE JSON IN BULLET HANDLER: ~p ~n",[Json]),
   {reply, Json, Req, State}.
 
 terminate(_Req,#state{sid=Sid}=_State) ->
@@ -46,12 +45,13 @@ send(Sid,Msg) ->
   end.
 
 %% ------------------------------------------------------------------
-%% @doc Ensures the session process is available to this handler
+%% @doc Ensures the session process is available for this handler
 %%
 
 ensure_worker_running(Sid) ->
   case gproc:where(?WORKER_KEY(Sid)) of
-    undefined -> eshop_session_sup:start_session(Sid),
+    undefined -> 
+      eshop_session_sup:start_session(Sid),
       case gproc:await(?WORKER_KEY(Sid), 1000) of
 	{Pid,_Val} when is_pid(Pid) -> ok;
 	Else -> eshop_log:log_term(debug,{?MODULE,?LINE,Else}), error 

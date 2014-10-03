@@ -177,13 +177,20 @@ eshopControllers.controller('formSignUpController', ['$scope','$timeout'
   $scope.submit = function () {
     if ($scope.signUpForm.$valid) {
       console.log($scope.newUser);
-      var promise = bulletFactory.send({ 'register' : $scope.newUser });
+      console.log($scope.newAddress);
+      console.log($scope.newShopper);
+      var requestNewUser = { 'type' : 'user' , 'data' : $scope.newUser }; 
+      var requestNewAddress = { 'type' : 'shopper_address' , 'data' : $scope.newAddress }; 
+      var requestNewShopper = { 'type' : 'shopper' , 'data' : $scope.newShopper }; 
+      var request = { 'type' : 'multiple' , 'data' : [requestNewUser,requestNewAddress,requestNewShopper] };
+      console.log("REQUEST IS:",request);
+      var promise = bulletFactory.send(request);
       $scope.pushAlert(alertFactory.makeAlert("success","Thank you."),false); 
       $scope.newUser = {'gender': "f"};
       $scope.signUpForm.$setPristine(); 
       promise.then(function(response) {
         console.log("resp ",response);
-        if (response.register !== "ok") { 
+        if (response.type !== "register") { 
           $scope.pushAlert(alertFactory.makeAlert("danger","There was an error. Try again later"),false);
         } else {
           $scope.visible('showLoginView');

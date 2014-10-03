@@ -12,7 +12,8 @@
 %% -----------------------------------------------------------------------------
 
 init() ->
-  init_mnesia().
+  init_mnesia()
+  ,init_pgsql().
 
 
 %% -----------------------------------------------------------------------------
@@ -30,6 +31,11 @@ init_mnesia_config() ->
   BasicConfig = proplists:get_value(basic_config,Config),
   lists:foldl(fun({Key,Val},Acc) -> 
     Acc ++ [estore:save(mnesia,
-      #'basic_config'{'config_key'=Key,'config_value'=Val})]
+      #'basic_config'{'key'=Key,'value'=Val})]
   end,[],BasicConfig).  
+
+
+init_pgsql() ->
+  estore:init(pgsql).
+
 

@@ -6,7 +6,7 @@ RECORDS_PATH = /home/sczaja/git/eshop/include
 all: compile
 
 compile:
-	@$(REBAR) compile
+	export RECORDS_PATH=$(CURDIR)/include; $(REBAR) compile
 
 test: compile
 	@$(REBAR) eunit skip_deps=true

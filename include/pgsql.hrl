@@ -37,6 +37,9 @@
   ,dob = [
     {type,{'date',[]}}
   ]
+  ,gender = [
+    {type,{'varchar',[length,1]}}
+  ]
   ,user_id = [
     {type,{'bigint',[]}}
     ,{constraints,[
