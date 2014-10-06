@@ -15,6 +15,7 @@
 ]).
 
 -include("eshop.hrl").
+-include("pgsql.hrl").
 
 -define(SESSION_TIMEOUT,10000). 
 -define(EXIT_TIMEOUT,1000).
@@ -55,26 +56,12 @@ handle_info([{Mid,Msg},Cid], #state{sid=Sid} = State) when Mid =:= <<"login">> -
   gproc:send(?HANDLER_KEY(Sid),[{<<"data">>,[{Mid,Resp}]},Cid]),  
   {noreply, State,?SESSION_TIMEOUT};
 
-%% -- registration
-handle_info([{Mid,Msg},Cid], #state{sid=Sid} = State) when Mid =:= <<"register">> ->
-  io:fwrite("Register: ~p~n",[Msg]),
-  Result = eshop_db:insert_shopper(
-    eshop_utls:get_value(<<"email">>,Msg,<<"">>)
-    ,eshop_utls:get_value(<<"password">>,Msg,<<"">>)
-    ,eshop_utls:get_value(<<"fname">>,Msg,<<"">>)
-    ,eshop_utls:get_value(<<"lname">>,Msg,<<"">>)
-    ,eshop_utls:get_value(<<"gender">>,Msg,<<"">>)
-    ,eshop_utls:get_value(<<"addressline1">>,Msg,<<"">>)
-    ,eshop_utls:get_value(<<"addressline2">>,Msg,<<"">>)
-    ,eshop_utls:get_value(<<"postcode">>,Msg,<<"">>)
-    ,eshop_utls:get_value(<<"city">>,Msg,<<"">>) 
-    ,eshop_utls:get_value(<<"country">>,Msg,<<"UK">>)
-  ), Resp = atom_to_binary(Result,latin1),
-  gproc:send(?HANDLER_KEY(Sid),[{<<"data">>,[{Mid,Resp}]},Cid]),
-  {noreply, State,?SESSION_TIMEOUT};
-
-handle_info(Data, #state{sid=Sid} = State)  ->
-  io:fwrite("DATA RECEIVED::: ~p~n",[Data]),
+handle_info(Req, #state{sid=Sid} = State)  ->
+  Parsed = jsx:decode(Req),
+  Type = eshop_utls:get_value(<<"type">>,Parsed,undefined),
+  Data = eshop_utls:get_value(<<"data">>,Parsed,undefined),
+  Result = dispatch_request({Type,Data},Sid),
+  gproc:send(?HANDLER_KEY(Sid),[{<<"result">>,[{Mid,Resp}]},Cid]),
   {noreply, State, ?SESSION_TIMEOUT}.
 
 terminate(_Reason, #state{sid=Sid} = _State) ->
@@ -83,4 +70,43 @@ terminate(_Reason, #state{sid=Sid} = _State) ->
  
 code_change(_OldVsn, State, _Extra) ->
   {ok, State}.
+
+%% ----------------------------------------------------------------------------
+
+dispatch_request({<<"register">>,Data},Sid) ->
+  DataTuples = lists:foldl(fun(JsonKV,Acc) -> 
+    Type = eshop_utls:get_value(<<"type">>,JsonKV,undefined),
+    Acc ++ [{binary_to_atom(Type,'utf8'),JsonKV}]
+  end,[],Data),
+  UserKV = eshop_utls:get_value(user,DataTuples,undefined),
+  ShopperAddressKV = eshop_utls:get_value(shopper_address,DataTuples,undefined),
+  ShopperKV = eshop_utls:get_value(shopper,DataTuples,undefined),
+  if UserKV /= undefined andalso 
+      ShopperAddressKV /= undefined andalso 
+      ShopperKV /= undefined ->
+    try 
+      estore_pgsql:transaction(),
+      UserRecord = estore:json_to_record(UserKV),
+      {ok,UserId} = estore:save(pgsql,UserRecord),
+      ShopperRecord = estore:json_to_record(ShopperKV),
+      ShopperIdRecord = ShopperRecord#'shopper'{ 'user_id' = UserId},
+      {ok,ShopperId} = estore:save(pgsql,ShopperIdRecord),
+      ShopperAddressRecord = estore:json_to_record(ShopperAddressKV),
+      ShopperAddressTypedRecord = 
+        ShopperAddressRecord#'shopper_address'{'shopper_id'=ShopperId,'type'=1},
+      {ok,ShopperAddressId} = estore:save(pgsql,ShopperAddressTypedRecord),
+      estore_pgsql:commit()
+    catch Error:Reason -> 
+      Rollback = estore_pgsql:rollback(),
+      eshop_logging:log_term(debug,Rollback)
+    end;
+  true ->
+    eshop_logging:log_term(debug,Rollback),
+    io:fwrite("Stop registration ~p ~p ~p ~n",[UserKV,ShopperAddressKV,ShopperKV]),
+    ok
+  end;
+
+dispatch_request({Type,Data},Sid) -> 
+  io:fwrite("UNHANDLED::: ~p~n",[Data]).
+
 

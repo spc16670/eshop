@@ -182,7 +182,7 @@ eshopControllers.controller('formSignUpController', ['$scope','$timeout'
       var requestNewUser = { 'type' : 'user' , 'data' : $scope.newUser }; 
       var requestNewAddress = { 'type' : 'shopper_address' , 'data' : $scope.newAddress }; 
       var requestNewShopper = { 'type' : 'shopper' , 'data' : $scope.newShopper }; 
-      var request = { 'type' : 'multiple' , 'data' : [requestNewUser,requestNewAddress,requestNewShopper] };
+      var request = { 'type' : 'register' , 'data' : [requestNewUser,requestNewAddress,requestNewShopper] };
       console.log("REQUEST IS:",request);
       var promise = bulletFactory.send(request);
       $scope.pushAlert(alertFactory.makeAlert("success","Thank you."),false); 
