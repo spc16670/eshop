@@ -16,8 +16,8 @@
 
         <div>
           <h1>Your details:</h1>
-          <p class="lead">First name: {[ currentUser.fname ]}</p>
-          <p class="lead">Last name: {[ currentUser.lname ]}</p>
+          <p class="lead">First name: {[ currentUser.shopper.fname ]}</p>
+          <p class="lead">Last name: {[ currentUser.shopper.lname ]}</p>
 	  <ul>
 	    <li ng-repeat"msg in messages">{[ msg ]} </li>
           </ul>

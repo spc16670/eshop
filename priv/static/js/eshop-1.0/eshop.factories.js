@@ -44,7 +44,6 @@ eshopFactories.factory('bulletFactory', ['$q','$rootScope', function($q,$rootSco
     var messageObj = data;
     // If an object exists with cbid in our callbacks object, resolve it
     if(callbacks.hasOwnProperty(messageObj.cbid)) {
-      console.log("GOT CBID: ",messageObj),
       $rootScope.$apply(callbacks[messageObj.cbid].cb.resolve(messageObj));
       delete callbacks[messageObj.callbackID];
     }
@@ -78,21 +77,32 @@ eshopFactories.factory('userFactory', ['bulletFactory','storageFactory'
   UserService.user = {};
     
   UserService.authenticate = function(loginReq) {
-    if (loginReq.login.hasOwnProperty("email")) {
+    if (loginReq.type === "login") {
       var promise = bulletFactory.send(loginReq);
       promise.then(function(response){
-        var login = response.login;
-        console.log(login);
-        if (login.hasOwnProperty("token")) { 
-	  UserService.user = login; // this is watched in controller
+        var data = response.data;
+        if (data.result === "ok") { 
+
+	  // iterate object in data key and retrieve user and shopper
+	  for (var obj in data.data) {
+            var interatedObj = data.data[obj]
+	    if (interatedObj.type === "user") {
+	      UserService.user['email'] = interatedObj.data.email;
+	    } else if (interatedObj.type === "shopper") {
+	        UserService.user['shopper'] = interatedObj.data;
+	    }
+ 	  }
+	  console.log("USER IS:",UserService.user),
 	  UserService.user.isLogged = true; 
+	  $rootScope.$broadcast("login:success","");
+	  // persist user
           storageFactory.persist("user",UserService.user);
-        } else if (login.hasOwnProperty("error")) {
+        } else if (data.result === "error") {
  	  UserService.user.isLogged = false;
-	  $rootScope.$broadcast("login:error",login.error);
+	  $rootScope.$broadcast("login:error",data.msg);
         }
       });    
-    } else if (loginReq.login === "initialize") {
+    } else if (loginReq.type === "initialize") {
       var returningUser = storageFactory.retrieve("user");
       if (returningUser) {
         UserService.user = returningUser;

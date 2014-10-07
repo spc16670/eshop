@@ -10,7 +10,7 @@ eshopControllers.config(function($interpolateProvider){
 eshopControllers.controller('mainController', ['$scope','userFactory',
   function($scope, userFactory) { 
  
-  $scope.currentUser = userFactory.authenticate({login: "initialize"});
+  $scope.currentUser = userFactory.authenticate({type: "initialize"});
 
   $scope.$watch(function() {return userFactory.user},function() {
     $scope.currentUser = userFactory.user;
@@ -74,12 +74,15 @@ eshopControllers.controller('formLoginController', ['$scope','userFactory',
     }
     $scope.alerts.push(alertFactory.makeAlert("danger",msg));
   });
+  $scope.$on("login:success",function(event,msg) {
+    $scope.visible('showShoppingView');
+  });
 
   try {
     $scope.submit = function () {
       if ($scope.loginForm.$valid) {
-        console.log($scope.login);
-        userFactory.authenticate({'login' : $scope.login});
+        var user = { type : "user" , data : $scope.login };
+        userFactory.authenticate({ type : "login", data : user});
         $scope.login = {};
         $scope.loginForm.$setPristine();
       }

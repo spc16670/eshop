@@ -33,8 +33,14 @@ init_mnesia_config() ->
       #'basic_config'{'key'=Key,'value'=Val})]
   end,[],BasicConfig).  
 
-
 init_pgsql() ->
-  estore:init(pgsql).
+  estore:init(pgsql),
+  case estore:find(pgsql,address_type,[{'id','=',1}]) of
+    [] ->
+      AddTypeModel = estore:new(pgsql,address_type),
+      AddTypeRec = AddTypeModel#'address_type'{'type' = "Home"},
+      estore:save(pgsql,AddTypeRec);
+    _ -> ok
+  end.
 
 

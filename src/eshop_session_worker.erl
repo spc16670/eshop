@@ -51,14 +51,6 @@ handle_info(timeout, State) ->
   gen_server:cast(self(),stop),
   {noreply, State};
 
-%% -- login
-handle_info([{Mid,Msg},Cid], #state{sid=Sid} = State) when Mid =:= <<"login">> ->
-  io:fwrite("Info: ~p~n",[Msg]),
-  Resp = eshop_session:authenticate(Msg),
-  io:fwrite("Resp: ~p~n",[Resp]),
-  gproc:send(?HANDLER_KEY(Sid),[{<<"data">>,[{Mid,Resp}]},Cid]),  
-  {noreply, State,?SESSION_TIMEOUT};
-
 handle_info(Req, #state{sid=Sid} = State)  ->
   Parsed = jsx:decode(Req),
   Type = eshop_utls:get_value(<<"type">>,Parsed,undefined),
@@ -78,6 +70,9 @@ code_change(_OldVsn, State, _Extra) ->
 
 dispatch_request({<<"register">>,Data,CbId},Sid) ->
   eshop:new_registration({Sid,CbId},Data);
+
+dispatch_request({<<"login">>,Data,CbId},Sid) ->
+  eshop:authenticate({Sid,CbId},Data);
 
 dispatch_request({Type,Data,_CbId},_Sid) -> 
   io:fwrite("UNHANDLED::: ~p ~p ~n",[Type,Data]).

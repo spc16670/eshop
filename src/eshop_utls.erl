@@ -11,6 +11,7 @@
   ,pool_name/0
   ,database/0
   ,get_env/1
+  ,get_env/2
 ]).
 
 -include("eshop.hrl").
@@ -92,6 +93,13 @@ database() ->
 
 
 get_env(Key) ->
-  {ok,Val} = application:get_env(?APP, Key),
-  Val.
+  case application:get_env(?APP, Key) of
+    {ok,Val} -> Val;
+    _ -> undefined
+  end.
   
+get_env(Section,Key) ->
+  SectionConf = get_env(Section),
+  get_value(Key,SectionConf,undefined). 
+
+

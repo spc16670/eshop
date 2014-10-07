@@ -28,7 +28,7 @@
              <a ng-if="!currentUser.isLogged" href="#" class="dropdown-toggle" id="btn-account" 
                data-toggle="dropdown">My Account<b class="caret"></b></a>
              <a ng-if="currentUser.isLogged" href="#" class="dropdown-toggle" id="btn-account"
-               data-toggle="dropdown">{[ currentUser.fname ]}<b class="caret"></b></a>
+               data-toggle="dropdown">{[ currentUser.shopper.fname ]}<b class="caret"></b></a>
                <ul class="dropdown-menu">
 		 <li ng-if="currentUser.isLogged" class="dropdown-header">Administration</li>	
                  <li ng-if="!currentUser.isLogged">
