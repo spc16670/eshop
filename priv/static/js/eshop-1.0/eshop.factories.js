@@ -35,16 +35,17 @@ eshopFactories.factory('bulletFactory', ['$q','$rootScope', function($q,$rootSco
       time: new Date(),
       cb: defer
     };
-    request.callback_id = callbackId;
+    request.cbid = callbackId;
     bullet.send(JSON.stringify(request));
     return defer.promise;
   }
 
   function listener(data) {
     var messageObj = data;
-    // If an object exists with callback_id in our callbacks object, resolve it
-    if(callbacks.hasOwnProperty(messageObj.callback_id)) {
-      $rootScope.$apply(callbacks[messageObj.callback_id].cb.resolve(messageObj.data));
+    // If an object exists with cbid in our callbacks object, resolve it
+    if(callbacks.hasOwnProperty(messageObj.cbid)) {
+      console.log("GOT CBID: ",messageObj),
+      $rootScope.$apply(callbacks[messageObj.cbid].cb.resolve(messageObj));
       delete callbacks[messageObj.callbackID];
     }
   }
@@ -60,7 +61,7 @@ eshopFactories.factory('bulletFactory', ['$q','$rootScope', function($q,$rootSco
 
   // Define a "getter" for getting customer data
   Service.send = function(msg) {
-    msg.callback_id = null;
+    msg.cbid = null;
     // Storing in a variable for clarity on what sendRequest returns
     var promise = sendRequest(msg); 
     return promise;

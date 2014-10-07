@@ -1,7 +1,6 @@
 -module(eshop_rest).
 
 -export([init/3,rest_init/2,rest_terminate/2]).
-%-export([init/2,rest_terminate/2]).
 -export([content_types_provided/2]).
 -export([hello_to_html/2]).
 -export([hello_to_json/2]).
