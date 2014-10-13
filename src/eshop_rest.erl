@@ -27,9 +27,11 @@ hello_to_html(Req, State) ->
   Template = State#'state'.'templates_path' ++ "/index.tpl",
   {ok,_Module} = erlydtl:compile_file(Template,index_dtl),
   Sid = State#'state'.'sid',
+  Host = eshop_utls:get_env(hostname),
   eshop_session_sup:start_session(Sid),
   {ok,Body} = index_dtl:render([
     {sid,Sid}
+    ,{hostname,Host}
     ,{authenticated,false}
   ]),
   {Body, Req, State}.

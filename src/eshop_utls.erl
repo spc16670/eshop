@@ -52,10 +52,10 @@ get_config() ->
   Path = filename:join(?MODULE:root_dir(), "eshop.config"),
   get_config(Path,filelib:is_file(Path)).
 
-get_config(_,Exists) when Exists =:= false ->
+get_config(_Path,false) ->
   Path = filename:join(?MODULE:etc_dir(), "app.config"),
   get_config(Path,filelib:is_file(Path));
-get_config(Path,Exists) when Exists =:= true ->
+get_config(Path,true) ->
   read_config(Path).
 
 read_config(ConfigPath) ->

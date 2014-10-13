@@ -1,7 +1,8 @@
 -module(eshop_session).
 
 -export([
-  on_request/1
+  all/0
+  , on_request/1
   , get_cookie/1
   , set_cookie/1
   , drop_session/1
@@ -9,6 +10,12 @@
 ]).
 
 %% --------------------------------------------------------------------
+
+all() ->
+  MatchHead = '_',
+  Guard = [],
+  Result = ['$$'],
+  gproc:select([{MatchHead, Guard, Result}]).
 
 authenticate(Cred) ->
   Email = eshop_utls:get_value(<<"email">>,Cred,<<"">>), 

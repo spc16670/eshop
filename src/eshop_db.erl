@@ -26,8 +26,7 @@ init_mnesia() ->
   init_mnesia_config().
 
 init_mnesia_config() ->
-  Config = eshop_utls:get_config(),
-  BasicConfig = proplists:get_value(basic_config,Config),
+  BasicConfig = eshop_utls:get_env(basic_config),
   lists:foldl(fun({Key,Val},Acc) -> 
     Acc ++ [estore:save(mnesia,
       #'basic_config'{'key'=Key,'value'=Val})]

@@ -38,14 +38,14 @@ start(_StartType, _StartArgs) ->
   ]),
 
   cowboy:start_http(http_listener, 100,
-    [{port, 8080}],
+    [{port, eshop_utls:get_env(http_port)}],
     [{env, [{dispatch, Dispatch}]}]
   ),
 
   io:fwrite("Priv dir: ~p~n",[PrivDir]),
   %% Name, NbAcceptors, TransOpts, ProtoOpts
   cowboy:start_https(https_listener, 100,
-    [{port, 8443}
+    [{port, eshop_utls:get_env(https_port)}
      ,{cacertfile, PrivDir ++ "/ssl/ca.eshop.in.crt"}
      ,{certfile, PrivDir ++ "/ssl/eshop.in.crt"}
      ,{keyfile, PrivDir ++ "/ssl/eshop.in.key"}
