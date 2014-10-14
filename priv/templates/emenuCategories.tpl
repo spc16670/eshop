@@ -17,7 +17,8 @@
               <th>Images</th>
               <th></th>
             </tr>
-            <tr>
+            <!-- Dynamic -->
+            <tr eshop-categories>
               <td>Starters</td>
               <td>Try the delicious starters</td>
               <td>Image here</td>
@@ -28,7 +29,9 @@
                 </div>
               </td>
             </tr>
+
           </table>
+
           <div class="panel-footer">
 	    <div class="container">
             <div class="pull-right">

@@ -35,7 +35,13 @@ init_mnesia_config() ->
 init_pgsql() ->
   estore_pgsql:drop_schema(lamazone),
   estore:init(pgsql),
-  %% Insert some test datai
+  insert_test_user(),
+%  insert_test_category(),
+  ok.
+
+%% @private
+
+insert_test_user() ->
   try
     estore_pgsql:transaction(),
     case estore:find(pgsql,address_type,[{'id','=',1}]) of
@@ -63,4 +69,25 @@ init_pgsql() ->
     eshop_logging:log_term(debug,[Error]),
     estore_pgsql:rollback()
   end.
+
+%% @private
+
+insert_test_category() ->
+  try
+    estore_pgsql:transaction(),
+    case estore:find(pgsql,department,[{'id','=',1}]) of
+      [] ->
+        Model = estore:new(pgsql,department),
+        Record = Model#'department'{'name' = "Starters",'description'="Try our delicious starters"},
+        estore:save(pgsql,Record);
+      _ -> ok
+    end,
+    estore_pgsql:commit()
+  catch Error:Reason ->
+    io:fwrite("Rolling back ~p ~p ~n",[Error,Reason]),
+    eshop_logging:log_term(debug,[Error]),
+    estore_pgsql:rollback()
+  end.
+
+
 

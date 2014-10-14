@@ -44,3 +44,14 @@ eshopDirectives.directive('passwordVerify', function($timeout) {
   }
 });
 
+
+// --------------- Categories ------------------
+
+eshopDirectives.directive('eshopCategories', function() {
+  return {
+    link: function (scope, element, atts, controller) {
+    }
+  }
+});
+
+

@@ -92,11 +92,13 @@ categories({Sid,CbId},Token) ->
   SecretKey = eshop_utls:get_env(basic_config,jwt_secret),
   Json = case ejwt:decode(Token,SecretKey) of
     [{<<"user_id">>,_UserId}] ->
-      CatsKV = [{<<"name">>,<<"Starters">>}],
-      ListCatsKV = [CatsKV],
+      CatsKV = case estore:find(pgsql,department,[],[],all,0) of
+        Dept when is_tuple(Dept) -> [estore_json:record_to_kv(Dept)];
+        Depts when is_list(Depts) -> estore_json:record_to_kv(Depts)
+      end,
       json_reply({CbId,<<"categories">>},<<"ok">>,[
         {<<"type">>,<<"categories">>}
-        ,{<<"data">>,ListCatsKV}
+        ,{<<"data">>,CatsKV}
       ]);  
     Decoded ->
       io:fwrite("DECODED: ~p ~n",[Decoded]),

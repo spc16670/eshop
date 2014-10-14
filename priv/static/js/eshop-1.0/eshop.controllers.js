@@ -66,23 +66,25 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
 
  $scope.$watch('shopToggler',function() {
     var categoriesShown = $scope.shopToggler.showEmenuCategories;
-    console.log('toggler is: ',$scope.shopToggler);
     if (categoriesShown == true) {
-      alert('Categories shown');
       // Fire bullet request for JSON and display an image until the
       // future object is resolved.
       //
       // Once the future object resolves fire a directive to display a
       // dynamically constructed table.
       var token = $scope.currentUser.token;
-      console.log('Token is: ',token);
       var promise = bulletFactory.send({ type : "categories", data : token});
 
       // display loading
 
       promise.then(function(response) {
         if (response.type === "categories") {
-          // Modify HTML using a directive
+          var catLength = response.data.data.length;
+          if (catLength > 0) {
+            console.log('Categories: ',response.data);
+          } else {
+            console.log('Category: ',response.data);
+          }
         } else {
           console.log('Invalid response: ',response);
         }
