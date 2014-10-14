@@ -3,6 +3,7 @@
 -export([
   new_registration/2
   ,authenticate/2
+  ,categories/2
 ]).
 
 -export([
@@ -70,16 +71,42 @@ authenticate({Sid,CbId},Data) ->
     ShopperKV = estore_json:record_to_kv(ShopperRecord),
     UserKV = estore_json:record_to_kv(UserRecordNoPass),   
     %% Store user id in JWT token 
-    Payload = [UserId],
-    Secret = eshop_utls:get_env(basic_config,jwt_secret),
-    Token = ejwt:encode(Payload,Secret),
-    Json = json_reply({CbId,<<"login">>},<<"ok">>,[{<<"token">>,Token},
-      {<<"type">>,<<"authenticated">>},{<<"data">>,[ShopperKV,UserKV]}]);
+    Payload = [{user_id,UserId}],
+    SecretKey = eshop_utls:get_env(basic_config,jwt_secret),
+    Token = ejwt:encode(Payload,SecretKey),
+    Json = json_reply({CbId,<<"login">>},<<"ok">>,[
+      {<<"token">>,Token}
+      ,{<<"type">>,<<"authenticated">>}
+      ,{<<"data">>,[ShopperKV,UserKV]}
+    ]);
   true -> 
     io:fwrite("UNAUTHORISED: ~p ~p ~p ~p ~n",[ReqEmail,Email,ReqPassword,Password]),
     Json = json_reply({CbId,<<"login">>},<<"error">>,[{<<"msg">>,<<"Ivalid Credentials">>}])
   end,
   reply(Sid,Json).
+
+%% ----------------------------------------------------------------------------
+
+%% @doc This function requires a valid token to return Categories.
+categories({Sid,CbId},Token) ->
+  SecretKey = eshop_utls:get_env(basic_config,jwt_secret),
+  Json = case ejwt:decode(Token,SecretKey) of
+    [{<<"user_id">>,_UserId}] ->
+      CatsKV = [{<<"name">>,<<"Starters">>}],
+      ListCatsKV = [CatsKV],
+      json_reply({CbId,<<"categories">>},<<"ok">>,[
+        {<<"type">>,<<"categories">>}
+        ,{<<"data">>,ListCatsKV}
+      ]);  
+    Decoded ->
+      io:fwrite("DECODED: ~p ~n",[Decoded]),
+      json_reply({CbId,<<"categories">>},<<"error">>,[
+        {<<"type">>,<<"unauthorised">>}
+        ,{<<"data">>,<<"Invalid Token">>}
+      ])
+  end,
+  reply(Sid,Json).
+
   
 %% ----------------------------------------------------------------------------
 

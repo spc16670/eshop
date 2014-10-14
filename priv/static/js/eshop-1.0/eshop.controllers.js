@@ -55,6 +55,55 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
   $scope.send = function(data) {
     var promise = bulletFactory.send(data);
   };
+
+  // view display 
+  $scope.shopToggler = {
+    'showEmenuStart':true
+    ,'showEmenuCategories':false
+    ,'showEmenuItems':false
+    ,'showEmenuResult':false
+  };
+
+ $scope.$watch('shopToggler',function() {
+    var categoriesShown = $scope.shopToggler.showEmenuCategories;
+    console.log('toggler is: ',$scope.shopToggler);
+    if (categoriesShown == true) {
+      alert('Categories shown');
+      // Fire bullet request for JSON and display an image until the
+      // future object is resolved.
+      //
+      // Once the future object resolves fire a directive to display a
+      // dynamically constructed table.
+      var token = $scope.currentUser.token;
+      console.log('Token is: ',token);
+      var promise = bulletFactory.send({ type : "categories", data : token});
+
+      // display loading
+
+      promise.then(function(response) {
+        if (response.type === "categories") {
+          // Modify HTML using a directive
+        } else {
+          console.log('Invalid response: ',response);
+        }
+      });
+    };
+  },true),
+
+ $scope.shopVisible = function(view) {
+   for (var key in $scope.shopToggler) {
+     if ($scope.shopToggler.hasOwnProperty(key)) {
+       if (key !== view) {
+         if ($scope.shopToggler[key] == true) {
+           $scope.shopToggler[key] = false;
+         }
+       } else {
+         $scope.shopToggler[key] = true;
+       }
+     }
+   }
+ };
+
 }]);
 
 //------------------------ formLoginController ------------------------

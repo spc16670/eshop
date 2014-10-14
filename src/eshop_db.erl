@@ -33,13 +33,34 @@ init_mnesia_config() ->
   end,[],BasicConfig).  
 
 init_pgsql() ->
+  estore_pgsql:drop_schema(lamazone),
   estore:init(pgsql),
-  case estore:find(pgsql,address_type,[{'id','=',1}]) of
-    [] ->
-      AddTypeModel = estore:new(pgsql,address_type),
-      AddTypeRec = AddTypeModel#'address_type'{'type' = "Home"},
-      estore:save(pgsql,AddTypeRec);
-    _ -> ok
+  %% Insert some test datai
+  try
+    estore_pgsql:transaction(),
+    case estore:find(pgsql,address_type,[{'id','=',1}]) of
+      [] ->
+        AddTypeModel = estore:new(pgsql,address_type),
+        AddTypeRec = AddTypeModel#'address_type'{'type' = "Home"},
+        estore:save(pgsql,AddTypeRec);
+      _ -> ok
+    end,
+    User = estore:new(pgsql,user),
+    UserRecord = User#'user'{'email'="asdf@asdf.asdf", 'password'="asdfqwer"},
+    {ok,UserId} = estore:save(pgsql,UserRecord),
+    Shopper = estore:new(pgsql,shopper),
+    ShopperRecord = Shopper#'shopper'{'fname'="szymon",'mname'="piotr"},
+    ShopperIdRecord = ShopperRecord#'shopper'{ 'user_id' = UserId},
+    {ok,ShopperId} = estore:save(pgsql,ShopperIdRecord),
+    ShopperAddress = estore:new(pgsql,shopper_address),
+    ShopperAddressRecord = ShopperAddress#'shopper_address'{'line1'="56 Cecil St",'city'="Glasgow"},
+    ShopperAddressTypedRecord =
+    ShopperAddressRecord#'shopper_address'{'shopper_id'=ShopperId,'type'=1},
+    {ok,ShopperAddressId} = estore:save(pgsql,ShopperAddressTypedRecord),
+    estore_pgsql:commit()
+  catch Error:Reason ->
+    io:fwrite("Rolling back ~p ~p ~n",[Error,Reason]),
+    eshop_logging:log_term(debug,[Error]),
+    estore_pgsql:rollback()
   end.
-
 

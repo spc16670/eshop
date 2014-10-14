@@ -74,6 +74,9 @@ dispatch_request({<<"register">>,Data,CbId},Sid) ->
 dispatch_request({<<"login">>,Data,CbId},Sid) ->
   eshop:authenticate({Sid,CbId},Data);
 
+dispatch_request({<<"categories">>,Data,CbId},Sid) ->
+  eshop:categories({Sid,CbId},Data);
+
 dispatch_request({Type,Data,_CbId},_Sid) -> 
   io:fwrite("UNHANDLED::: ~p ~p ~n",[Type,Data]).
 

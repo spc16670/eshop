@@ -83,7 +83,6 @@ eshopFactories.factory('userFactory', ['bulletFactory','storageFactory'
       promise.then(function(response){
         var data = response.data;
         if (data.result === "ok") { 
-
 	  // iterate object in data key and retrieve user and shopper
 	  for (var obj in data.data) {
             var interatedObj = data.data[obj]
@@ -93,6 +92,7 @@ eshopFactories.factory('userFactory', ['bulletFactory','storageFactory'
 	        UserService.user['shopper'] = interatedObj.data;
 	    }
  	  }
+	  UserService.user['token'] = data.token; 
 	  console.log("USER IS:",UserService.user),
 	  UserService.user.isLogged = true; 
 	  $rootScope.$broadcast("login:success","");

@@ -1,50 +1,68 @@
 
   <div class="navbar navbar-default" role="navigation">
-    <!-- Search -->
+    <!-- Search 
     <div class="row">
       <div class="col-md-2 navbar-header">
         <a class="navbar-brand"></a>
       </div>
       <div class="col-md-6">
         <form class="navbar-form" role="search">
-          <!--<div> -->
             <div class="input-group">
               <input type="text" id="search-input" class="form-control" placeholder="Search">
                 <span class="input-group-addon">
                   <a href="">Go</a>
                 </span>
-            </div><!-- input-group -->
-         <!-- </div> form-group -->
+            </div>
         </form>
-      </div><!-- col-md-6 -->
+      </div>
       <div class="col-md-4">
         <button type="button" class="btn btn-default navbar-btn">
           Button
         </button>
-      </div><!-- col-md-4 -->
-    </div><!-- row -->
+      </div>
+    </div> -->
 
-    <!-- Menu and Main Display -->
     <div class="row">
-      {% include "departments.tpl" %}
+      <!-- Menu -->
+      <div class="col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+          <li><br></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li class="active"><a href="#" ng-click="shopVisible('showEmenuStart')">Get Started</a></li>
+          <li><hr></hr></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><a href="#" ng-click="shopVisible('showEmenuCategories')">Categories</a></li>
+          <li><a href="#" ng-click="shopVisible('showEmenuItems')">Items</a></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><hr></hr></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+        <li><a href="" ng-click="shopVisible('showEmenuResult')">Result</a></li>
+        </ul>
+      </div>
+
+      <!-- Main Area -->
       <div class="col-md-10" id="main-area">
-        <div>
-          <h1>Bootstrap starter template</h1>
-          <p><input type="checkbox" checked="yes" id="enable_best"></input>
-            Current time (best source): 
-	    <span id="time_best">unknown</span>
-            <span></span>
-	    <span id="status_best">unknown</span>
-            <button id="send_best">Send Time</button>
-	  </p>
-          <p class="lead">Nothing here {[ 'yet' + '!' ]}</p>
-          <p class="lead">{[ currentUser ]}</p>
-	  <ul>
-	    <li ng-repeat"msg in messages">{[ msg ]} </li>
-          </ul>
-          <input type="test" ng-model="message">
-	  <button ng-click="send('test')">Send</button>
-        </div>
+        <!-- Get Started -->
+        <div id="emenuStartView" ng-show="shopToggler.showEmenuStart">
+          {% include "emenuStart.tpl" %}
+        </div> <!--/.shopView -->
+
+        <div id="emenuCategoriesView" ng-show="shopToggler.showEmenuCategories">
+          {% include "emenuCategories.tpl" %}
+        </div> <!--/.shopView -->
+
+        <div id="emenuItemsView" ng-show="shopToggler.showEmenuItems">
+          {% include "emenuItems.tpl" %}
+        </div> <!--/.shopView -->
+
+        <div id="emenuResultView" ng-show="shopToggler.showEmenuResult">
+          {% include "emenuResult.tpl" %}
+        </div> <!--/.shopView -->
+
       </div> <!-- col-md-10 -->
     </div><!-- row -->
   </div><!-- navabar -->

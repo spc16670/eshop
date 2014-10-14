@@ -1,16 +1,17 @@
   <div class="col-md-2 sidebar">
     <ul class="nav nav-sidebar">
-      <li class="active"><a href="#">Overview</a></li>
-      <li><a href="#">Reports</a></li>
-      <li><a href="#">Analytics</a></li>
+      <li class="active"><a href="#">Get Started</a></li>
+      <li><hr></hr></li>
     </ul>
     <ul class="nav nav-sidebar">
-      <li><a href="">Nav item</a></li>
-      <li><a href="">Nav item again</a></li>
+      <li><a href="#">Categories</a></li>
+      <li><a href="#">Items</a></li>
     </ul>
     <ul class="nav nav-sidebar">
-      <li><a href="">Nav item again</a></li>
-      <li><a href="">One more nav</a></li>
+      <li><hr></hr></li>
+    </ul>
+    <ul class="nav nav-sidebar">
+      <li><a href="">Result</a></li>
     </ul>
   </div>
 

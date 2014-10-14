@@ -21,7 +21,7 @@
          <ul class="nav navbar-nav navbar-right">
 
            <li ng-class="{ active: toggler.showShoppingView }">
-               <a href="#" ng-click="visible('showShoppingView')">Shop</a>
+               <a href="#" ng-click="visible('showShoppingView')">eMenu</a>
            </li> 
 
            <li class="dropdown">
@@ -48,7 +48,7 @@
            </li>
 
            <li ng-class="{ active: toggler.showBasketView }">
-             <a href="#" ng-click="visible('showBasketView')">Basket</a>
+             <a href="#" ng-click="visible('showBasketView')">Orders</a>
            </li>
          </ul>
 

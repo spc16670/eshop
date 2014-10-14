@@ -140,8 +140,27 @@
   ,name =[
     {type,{'varchar',[{length,124}]}}
   ]
+  ,description =[
+    {type,{'varchar',[{length,1024}]}}
+  ]
 }).
 
+-record(department_images, {
+  id = [ 
+    {type,{'serial',[]}}
+    ,{constraints,[{'pk',[]},{null,false}]}
+  ]
+  ,name =[
+    {type,{'varchar',[{length,256}]}}
+  ]
+  ,department_id = [
+    {type,{'integer',[]}}
+    ,{constraints,[
+      {references,[{table,department}]}
+      ,{null,false}
+    ]}
+  ]
+}).
 
 -record(sub_department, {
   id = [ 
