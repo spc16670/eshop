@@ -92,19 +92,24 @@ categories({Sid,CbId},Token) ->
   SecretKey = eshop_utls:get_env(basic_config,jwt_secret),
   Json = case ejwt:decode(Token,SecretKey) of
     [{<<"user_id">>,_UserId}] ->
-      CatsKV = case estore:find(pgsql,department,[],[],all,0) of
-        Dept when is_tuple(Dept) -> [estore_json:record_to_kv(Dept)];
-        Depts when is_list(Depts) -> estore_json:record_to_kv(Depts)
+      {Result,Msg,CatsKV} = case estore:find(pgsql,department,[],[],all,0) of
+	[] -> 
+	  {<<"error">>,<<"No categories found">>,[]};
+        Dept when is_tuple(Dept) -> 
+	  {<<"ok">>,<<"1">>,[estore_json:record_to_kv(Dept)]};
+        Depts when is_list(Depts) -> 
+	  {<<"ok">>,<<"multiple">>,estore_json:record_to_kv(Depts)}
       end,
-      json_reply({CbId,<<"categories">>},<<"ok">>,[
-        {<<"type">>,<<"categories">>}
+      json_reply({CbId,<<"categories">>},Result,[
+        {<<"type">>,<<"category">>}
+	,{<<"msg">>,Msg}
         ,{<<"data">>,CatsKV}
       ]);  
     Decoded ->
       io:fwrite("DECODED: ~p ~n",[Decoded]),
       json_reply({CbId,<<"categories">>},<<"error">>,[
-        {<<"type">>,<<"unauthorised">>}
-        ,{<<"data">>,<<"Invalid Token">>}
+        {<<"type">>,<<"category">>}
+        ,{<<"msg">>,<<"Unauthorised">>}
       ])
   end,
   reply(Sid,Json).

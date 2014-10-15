@@ -49,8 +49,9 @@ eshopControllers.controller('mainController', ['$scope','userFactory',
 
 eshopControllers.controller('shopController', ['$scope','bulletFactory',
   function($scope,bulletFactory) {
-  $scope.message = '';
-  $scope.messages = []; 
+  $scope.categoriesMessage = "Fetching categories...";
+  $scope.categories = []; 
+  $scope.newCategory = { name: "", description: ""}; 
   
   $scope.send = function(data) {
     var promise = bulletFactory.send(data);
@@ -64,7 +65,7 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
     ,'showEmenuResult':false
   };
 
- $scope.$watch('shopToggler',function() {
+  $scope.$watch('shopToggler',function() {
     var categoriesShown = $scope.shopToggler.showEmenuCategories;
     if (categoriesShown == true) {
       // Fire bullet request for JSON and display an image until the
@@ -79,12 +80,12 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
 
       promise.then(function(response) {
         if (response.type === "categories") {
-          var catLength = response.data.data.length;
-          if (catLength > 0) {
-            console.log('Categories: ',response.data);
-          } else {
-            console.log('Category: ',response.data);
-          }
+	  if (response.data.result == "ok") {
+	    $scope.categories = response.data.data;
+	  } else {
+	    $scope.categoriesMessage = response.data.msg;
+	  }
+          console.log('Category: ',response.data);
         } else {
           console.log('Invalid response: ',response);
         }
@@ -92,19 +93,34 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
     };
   },true),
 
- $scope.shopVisible = function(view) {
-   for (var key in $scope.shopToggler) {
-     if ($scope.shopToggler.hasOwnProperty(key)) {
-       if (key !== view) {
-         if ($scope.shopToggler[key] == true) {
-           $scope.shopToggler[key] = false;
-         }
-       } else {
-         $scope.shopToggler[key] = true;
-       }
-     }
-   }
- };
+  $scope.shopVisible = function(view) {
+    for (var key in $scope.shopToggler) {
+      if ($scope.shopToggler.hasOwnProperty(key)) {
+        if (key !== view) {
+          if ($scope.shopToggler[key] == true) {
+            $scope.shopToggler[key] = false;
+          }
+        } else {
+          $scope.shopToggler[key] = true;
+        }
+      }
+    }
+  };
+
+  $scope.handleCategory = function (task) {
+    var formName = "formHandleCategory-" + task;
+      console.log("Handle Category Name: ",formName);
+    if ($scope[formName].$valid) {
+      console.log("Handle Category: ",task);
+    }
+  };
+
+  $scope.addCategory = function() {
+      console.log("Submitting new Category: ",$scope.newCategory);
+    if ($scope.formAddCategory.$valid) {
+      console.log("New Category: ",$scope.newCategory);
+    }
+  };
 
 }]);
 

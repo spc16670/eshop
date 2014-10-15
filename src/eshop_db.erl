@@ -36,7 +36,7 @@ init_pgsql() ->
   estore_pgsql:drop_schema(lamazone),
   estore:init(pgsql),
   insert_test_user(),
-%  insert_test_category(),
+  insert_test_category(),
   ok.
 
 %% @private
