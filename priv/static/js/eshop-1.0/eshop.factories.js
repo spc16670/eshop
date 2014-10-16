@@ -78,14 +78,14 @@ eshopFactories.factory('userFactory', ['bulletFactory','storageFactory'
   UserService.user = {};
     
   UserService.authenticate = function(loginReq) {
-    if (loginReq.type === "login") {
+    if (loginReq.operation === "login") {
       var promise = bulletFactory.send(loginReq);
       promise.then(function(response){
         var data = response.data;
         if (data.result === "ok") { 
 	  // iterate object in data key and retrieve user and shopper
 	  for (var obj in data.data) {
-            var interatedObj = data.data[obj]
+            var interatedObj = data.data[obj];
 	    if (interatedObj.type === "user") {
 	      UserService.user['email'] = interatedObj.data.email;
 	    } else if (interatedObj.type === "shopper") {
@@ -103,7 +103,7 @@ eshopFactories.factory('userFactory', ['bulletFactory','storageFactory'
 	  $rootScope.$broadcast("login:error",data.msg);
         }
       });    
-    } else if (loginReq.type === "initialize") {
+    } else if (loginReq.operation === "initialize") {
       var returningUser = storageFactory.retrieve("user");
       if (returningUser) {
         UserService.user = returningUser;

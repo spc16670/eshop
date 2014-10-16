@@ -132,53 +132,6 @@
   ]
 }).
 
--record(department, {
-  id = [ 
-    {type,{'serial',[]}}
-    ,{constraints,[{'pk',[]},{null,false}]}
-  ]
-  ,name =[
-    {type,{'varchar',[{length,124}]}}
-  ]
-  ,description =[
-    {type,{'varchar',[{length,1024}]}}
-  ]
-}).
-
--record(department_images, {
-  id = [ 
-    {type,{'serial',[]}}
-    ,{constraints,[{'pk',[]},{null,false}]}
-  ]
-  ,name =[
-    {type,{'varchar',[{length,256}]}}
-  ]
-  ,department_id = [
-    {type,{'integer',[]}}
-    ,{constraints,[
-      {references,[{table,department}]}
-      ,{null,false}
-    ]}
-  ]
-}).
-
--record(sub_department, {
-  id = [ 
-    {type,{'serial',[]}}
-    ,{constraints,[{'pk',[]},{null,false}]}
-  ]
-  ,name = [
-    {type,{'varchar',[{length,124}]}}
-  ]
-  ,department_id = [
-    {type,{'integer',[]}}
-    ,{constraints,[
-      {references,[{table,department}]}
-      ,{null,false}
-    ]}
-  ]
-}).
-
 -record(category, {
   id = [ 
     {type,{'serial',[]}}
@@ -187,24 +140,20 @@
   ,name = [
     {type,{'varchar',[{length,124}]}}
   ]
-  ,sub_department_id = [
-    {type,{'integer',[]}}
-    ,{constraints,[
-      {references,[{table,sub_department}]}
-      ,{null,false}
-    ]}
+  ,description = [
+    {type,{'varchar',[{length,512}]}}
   ]
 }).
 
--record(sub_category, {
+-record(category_images, {
   id = [ 
     {type,{'serial',[]}}
     ,{constraints,[{'pk',[]},{null,false}]}
   ]
-  ,name = [
-    {type,{'varchar',[{length,128}]}}
+  ,name =[
+    {type,{'varchar',[{length,256}]}}
   ]
-  ,sub_department_id = [
+  ,category_id = [
     {type,{'integer',[]}}
     ,{constraints,[
       {references,[{table,category}]}
@@ -295,10 +244,10 @@
   ,name = [
     {type,{'varchar',[{length,512}]}}
   ]
-  ,sub_category_id = [
+  ,category_id = [
     {type,{'integer',[]}}
     ,{constraints,[
-      {references,[{table,sub_category}]}
+      {references,[{table,category}]}
       ,{null,false}
     ]}
   ]

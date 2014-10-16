@@ -10,7 +10,7 @@ eshopControllers.config(function($interpolateProvider){
 eshopControllers.controller('mainController', ['$scope','userFactory',
   function($scope, userFactory) { 
  
-  $scope.currentUser = userFactory.authenticate({type: "initialize"});
+  $scope.currentUser = userFactory.authenticate({ 'operation': "initialize"});
 
   $scope.$watch(function() {return userFactory.user},function() {
     $scope.currentUser = userFactory.user;
@@ -60,26 +60,42 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
   // view display 
   $scope.shopToggler = {
     'showEmenuStart':true
+    ,'showEmenuLook':false
     ,'showEmenuCategories':false
     ,'showEmenuItems':false
+    ,'showEmenuOffers':false
     ,'showEmenuResult':false
   };
 
-  $scope.$watch('shopToggler',function() {
+  $scope.fetchCategories = function() {
     var categoriesShown = $scope.shopToggler.showEmenuCategories;
     if (categoriesShown == true) {
+      // Refresh categories list
+      $scope.categories = [];
       // Fire bullet request for JSON and display an image until the
       // future object is resolved.
       //
       // Once the future object resolves fire a directive to display a
       // dynamically constructed table.
+      //
+      // {
+      //   operation: "",
+      //   data: {
+      //     type: "",
+      //     action: "",
+      //     token: "",
+      //     data: { },
+      //   }
+      // }
+      //
       var token = $scope.currentUser.token;
-      var promise = bulletFactory.send({ type : "categories", data : token});
+      var fetchReq = { 'type': "category", 'action' : "fetch", 'token' : token };
+      var promise = bulletFactory.send({ 'operation' : "categories", data : fetchReq });
 
       // display loading
 
       promise.then(function(response) {
-        if (response.type === "categories") {
+        if (response.operation === "categories") {
 	  if (response.data.result == "ok") {
 	    $scope.categories = response.data.data;
 	  } else {
@@ -91,6 +107,10 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
         }
       });
     };
+  };
+
+  $scope.$watch('shopToggler',function() {
+    $scope.fetchCategories();
   },true),
 
   $scope.shopVisible = function(view) {
@@ -107,18 +127,40 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
     }
   };
 
-  $scope.handleCategory = function (task) {
-    var formName = "formHandleCategory-" + task;
-      console.log("Handle Category Name: ",formName);
-    if ($scope[formName].$valid) {
-      console.log("Handle Category: ",task);
-    }
+  $scope.handleCategory = function (category) {
+    var formName = "formHandleCategory-" + category.data.id;
+    console.log("Handle Category Name: ",formName);
   };
 
   $scope.addCategory = function() {
-      console.log("Submitting new Category: ",$scope.newCategory);
     if ($scope.formAddCategory.$valid) {
-      console.log("New Category: ",$scope.newCategory);
+      
+      // Call Out
+      var token = $scope.currentUser.token;
+      var addReq = { 'type' : "category", 'action' : "add", 'token' : token, 'data' : $scope.newCategory };
+
+      console.log("Submitting new Category: ",addReq);
+      var promise = bulletFactory.send({ 'operation' : "categories", 'data' : addReq });
+
+      promise.then(function(response) {
+        if (response.operation === "categories") {
+          if (response.data.result == "ok") {
+            $scope.fetchCategories();
+	    $scope.formAddCategory.$setPristine();
+	    $scope.newCategory = { name: "", description: ""};
+            $scope.showAddCategoryItemPanel = false; 
+            console.log('New Category added ',response.data);
+          } else {
+            console.log('Could not add new category ',response.data);
+            $scope.categoriesMessage = response.data.msg;
+          }
+        } else {
+          console.log('Invalid response: ',response);
+        }
+      });
+  
+    } else { 
+      alert("Please fill all fields in.");
     }
   };
 
@@ -148,8 +190,8 @@ eshopControllers.controller('formLoginController', ['$scope','userFactory',
   try {
     $scope.submit = function () {
       if ($scope.loginForm.$valid) {
-        var user = { type : "user" , data : $scope.login };
-        userFactory.authenticate({ type : "login", data : user});
+        var request = { 'type' : "user", 'action' : "authenticate", 'data' : $scope.login };
+        userFactory.authenticate({ 'operation' : "login", 'data' : request});
         $scope.login = {};
         $scope.loginForm.$setPristine();
       }
@@ -249,10 +291,10 @@ eshopControllers.controller('formSignUpController', ['$scope','$timeout'
       console.log($scope.newUser);
       console.log($scope.newAddress);
       console.log($scope.newShopper);
-      var requestNewUser = { 'type' : 'user' , 'data' : $scope.newUser }; 
-      var requestNewAddress = { 'type' : 'shopper_address' , 'data' : $scope.newAddress }; 
-      var requestNewShopper = { 'type' : 'shopper' , 'data' : $scope.newShopper }; 
-      var request = { 'type' : 'register' , 'data' : [requestNewUser,requestNewAddress,requestNewShopper] };
+      var requestNewUser = { 'type' : "user" , 'data' : $scope.newUser }; 
+      var requestNewAddress = { 'type' : "shopper_address" , 'data' : $scope.newAddress }; 
+      var requestNewShopper = { 'type' : "shopper" , 'data' : $scope.newShopper }; 
+      var request = { 'operation' : "register" , 'data' : [requestNewUser,requestNewAddress,requestNewShopper] };
       console.log("REQUEST IS:",request);
       var promise = bulletFactory.send(request);
       $scope.pushAlert(alertFactory.makeAlert("success","Thank you."),false); 
@@ -260,7 +302,7 @@ eshopControllers.controller('formSignUpController', ['$scope','$timeout'
       $scope.signUpForm.$setPristine(); 
       promise.then(function(response) {
         console.log("resp ",response);
-        if (response.type !== "register") { 
+        if (response.operation !== "register") { 
           $scope.pushAlert(alertFactory.makeAlert("danger","There was an error. Try again later"),false);
         } else {
           $scope.visible('showLoginView');

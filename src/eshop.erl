@@ -3,11 +3,13 @@
 -export([
   new_registration/2
   ,authenticate/2
-  ,categories/2
+  ,categories/4
 ]).
 
 -export([
-  reply/2
+  json_reply/3
+  ,error_reply/5
+  ,reply/2
 ]).
 
 -include("eshop.hrl").
@@ -57,85 +59,95 @@ new_registration({Sid,CbId},Data) ->
 %% ----------------------------------------------------------------------------
 
 authenticate({Sid,CbId},Data) ->
+  Action = eshop_utls:get_value(<<"action">>,Data,undefined),
   ReqUserRecord = estore:json_to_record(Data),
   ReqEmail = ReqUserRecord#'user'.'email',
   ReqPassword = ReqUserRecord#'user'.'password',
-  UserRecord = estore:find(pgsql,user,[{'email','=',ReqEmail},'and',{'password','=',ReqPassword}]), 
-  Email = UserRecord#'user'.'email',
-  Password = UserRecord#'user'.'password',
-  if ReqEmail =:= Email andalso ReqPassword =:= Password ->
-    UserId = UserRecord#'user'.'id',
-    %% Retrieve shopper and user
-    ShopperRecord = estore:find(pgsql,shopper,[{'user_id','=',UserId}]),
-    UserRecordNoPass = UserRecord#'user'{'password' = ""}, 
-    ShopperKV = estore_json:record_to_kv(ShopperRecord),
-    UserKV = estore_json:record_to_kv(UserRecordNoPass),   
-    %% Store user id in JWT token 
-    Payload = [{user_id,UserId}],
-    SecretKey = eshop_utls:get_env(basic_config,jwt_secret),
-    Token = ejwt:encode(Payload,SecretKey),
-    Json = json_reply({CbId,<<"login">>},<<"ok">>,[
-      {<<"token">>,Token}
-      ,{<<"type">>,<<"authenticated">>}
-      ,{<<"data">>,[ShopperKV,UserKV]}
-    ]);
-  true -> 
-    io:fwrite("UNAUTHORISED: ~p ~p ~p ~p ~n",[ReqEmail,Email,ReqPassword,Password]),
-    Json = json_reply({CbId,<<"login">>},<<"error">>,[{<<"msg">>,<<"Ivalid Credentials">>}])
-  end,
+  Where = [{'email','=',ReqEmail},'and',{'password','=',ReqPassword}],
+  case estore:find(pgsql,user,Where) of
+    [] -> 
+      Json = json_reply({CbId,<<"login">>},{Action,<<"error">>},[{<<"msg">>,<<"Not Recognised">>}]);
+    [UserRecord] ->
+      Email = UserRecord#'user'.'email',
+      Password = UserRecord#'user'.'password',
+      if ReqEmail =:= Email andalso ReqPassword =:= Password ->
+        UserId = UserRecord#'user'.'id',
+        %% Retrieve shopper and user
+        [ShopperRecord] = estore:find(pgsql,shopper,[{'user_id','=',UserId}]),
+        UserRecordNoPass = UserRecord#'user'{'password' = ""}, 
+        ShopperKV = estore_json:record_to_kv(ShopperRecord),
+        UserKV = estore_json:record_to_kv(UserRecordNoPass),   
+        %% Store user id in JWT token 
+        Payload = [{user_id,UserId}],
+        SecretKey = eshop_utls:get_env(basic_config,jwt_secret),
+        Token = ejwt:encode(Payload,SecretKey),
+        Json = json_reply(
+	  {CbId,<<"login">>}
+	  ,{Action,<<"ok">>}
+	  ,[{<<"token">>,Token}
+            ,{<<"type">>,<<"multiple">>}
+            ,{<<"data">>,[ShopperKV,UserKV]}
+          ]
+        );
+      true -> 
+        io:fwrite("UNAUTHORISED: ~p ~p ~p ~p ~n",[ReqEmail,Email,ReqPassword,Password]),
+        Json = json_reply({CbId,<<"login">>},{Action,<<"error">>},[{<<"msg">>,<<"Ivalid Credentials">>}])
+      end;
+    Multiple when is_list(Multiple) ->
+      io:fwrite("Multiple: ~p ~p ~n",[ReqEmail,ReqPassword]),
+      Json = json_reply({CbId,<<"login">>},{Action,<<"error">>},[{<<"msg">>,<<"Multiple">>}])
+  end,   
   reply(Sid,Json).
 
 %% ----------------------------------------------------------------------------
 
 %% @doc This function requires a valid token to return Categories.
-categories({Sid,CbId},Token) ->
-  SecretKey = eshop_utls:get_env(basic_config,jwt_secret),
-  Json = case ejwt:decode(Token,SecretKey) of
-    [{<<"user_id">>,_UserId}] ->
-      {Result,Msg,CatsKV} = case estore:find(pgsql,department,[],[],all,0) of
-	[] -> 
-	  {<<"error">>,<<"No categories found">>,[]};
-        Dept when is_tuple(Dept) -> 
-	  {<<"ok">>,<<"1">>,[estore_json:record_to_kv(Dept)]};
-        Depts when is_list(Depts) -> 
-	  {<<"ok">>,<<"multiple">>,estore_json:record_to_kv(Depts)}
-      end,
-      json_reply({CbId,<<"categories">>},Result,[
-        {<<"type">>,<<"category">>}
-	,{<<"msg">>,Msg}
-        ,{<<"data">>,CatsKV}
-      ]);  
-    Decoded ->
-      io:fwrite("DECODED: ~p ~n",[Decoded]),
-      json_reply({CbId,<<"categories">>},<<"error">>,[
-        {<<"type">>,<<"category">>}
-        ,{<<"msg">>,<<"Unauthorised">>}
-      ])
-  end,
-  reply(Sid,Json).
 
+categories({Sid,CbId},<<"add">>,Record,_TokenData) ->
+  {Result,Msg} = case estore:save(pgsql,Record) of
+    {ok,_Id} -> {<<"ok">>,<<"Saved">>};
+    {error,_Error} -> {<<"error">>,<<"Could not save">>}
+  end,
+  Json = json_reply(
+    {CbId,<<"categories">>}
+    ,{<<"add">>,Result}
+    ,[{<<"msg">>,Msg}]), 
+  reply(Sid,Json);
+ 
+categories({Sid,CbId},<<"fetch">>,_Data,_TokenData) ->
+  {Result,Count,CatsKV} = case estore:find(pgsql,category,[],[],all,0) of
+    [] -> 
+      {<<"error">>,<<"0">>,[]};
+    Dept when is_tuple(Dept) -> 
+      {<<"ok">>,<<"1">>,[estore_json:record_to_kv(Dept)]};
+    Depts when is_list(Depts) -> 
+      {<<"ok">>,<<"multiple">>,estore_json:record_to_kv(Depts)}
+  end,
+  Json = json_reply(
+    {CbId,<<"categories">>}
+    ,{<<"fetch">>,Result}
+    ,[{<<"count">>,Count},{<<"data">>,CatsKV}]
+  ), 
+  reply(Sid,Json).
   
 %% ----------------------------------------------------------------------------
 
 reply(Sid,Resp) ->
   gproc:send(?HANDLER_KEY(Sid),Resp).
 
-json_reply({CbId,ReqType},RespResult,DataKV) ->
+json_reply({CbId,Operation},{Action,OkError},DataKV) ->
   Json = [
-    {<<"type">>,ReqType}
+    {<<"operation">>,Operation}
     ,{<<"cbid">>,CbId}
     ,{<<"data">>,[
-      {<<"result">>,RespResult}
+      {<<"action">>,Action}
+      ,{<<"result">>,OkError}
     ] ++ DataKV }
   ],
   jsx:encode(Json).
 
-
-
-
-
-
-
-
+error_reply({Sid,CbId},Operation,Action,OkError,DataKV) ->
+  Json = json_reply({CbId,Operation},{Action,OkError},DataKV),
+  reply(Sid,Json).
 
 

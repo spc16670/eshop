@@ -75,10 +75,10 @@ insert_test_user() ->
 insert_test_category() ->
   try
     estore_pgsql:transaction(),
-    case estore:find(pgsql,department,[{'id','=',1}]) of
+    case estore:find(pgsql,category,[{'id','=',1}]) of
       [] ->
-        Model = estore:new(pgsql,department),
-        Record = Model#'department'{'name' = "Starters",'description'="Try our delicious starters"},
+        Model = estore:new(pgsql,category),
+        Record = Model#'category'{'name' = "Starters",'description'="Try our delicious starters"},
         estore:save(pgsql,Record);
       _ -> ok
     end,

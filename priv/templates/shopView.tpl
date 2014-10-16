@@ -33,8 +33,10 @@
           <li><hr></hr></li>
         </ul>
         <ul class="nav nav-sidebar">
+          <li><a href="#" ng-click="shopVisible('showEmenuLook')">Look & Feel</a></li>
           <li><a href="#" ng-click="shopVisible('showEmenuCategories')">Categories</a></li>
           <li><a href="#" ng-click="shopVisible('showEmenuItems')">Items</a></li>
+          <li><a href="#" ng-click="shopVisible('showEmenuOffers')">Offers</a></li>
         </ul>
         <ul class="nav nav-sidebar">
           <li><hr></hr></li>
@@ -51,6 +53,11 @@
           {% include "emenuStart.tpl" %}
         </div> <!--/.shopView -->
 
+        <div id="emenuLookView" ng-show="shopToggler.showEmenuLook">
+          {% include "emenuLook.tpl" %}
+        </div> <!--/.shopView -->
+
+
         <div id="emenuCategoriesView" ng-show="shopToggler.showEmenuCategories">
           {% include "emenuCategories.tpl" %}
         </div> <!--/.shopView -->
@@ -58,6 +65,11 @@
         <div id="emenuItemsView" ng-show="shopToggler.showEmenuItems">
           {% include "emenuItems.tpl" %}
         </div> <!--/.shopView -->
+
+        <div id="emenuOffersView" ng-show="shopToggler.showEmenuOffers">
+          {% include "emenuOffers.tpl" %}
+        </div> <!--/.shopView -->
+
 
         <div id="emenuResultView" ng-show="shopToggler.showEmenuResult">
           {% include "emenuResult.tpl" %}
