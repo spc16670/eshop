@@ -11,12 +11,16 @@
   <link rel="stylesheet" href="/static/css/bootstrap-3.1.1/bootstrap.min.css">
   <link rel="stylesheet" href="/static/css/animate-3.1.1/animate.css">
   <link rel="stylesheet" href="/static/css/eshop-1.0/eshop.css">
+  <link rel="stylesheet" href="/static/css/angular-busy-4.0.0/angular-busy.min.css">
+  <link rel="stylesheet" href="/static/css/angular-xeditable-0.1.8/xeditable.css">
   <script src="/static/js/jquery-1.11.1/jquery.min.js"></script>
   <script src="/static/js/bootstrap-3.1.1/bootstrap.min.js"></script>
   <script src="/static/js/bullet-0.4.1/bullet.js"></script>
   <script src="/static/js/angular-1.2.9/angular.min.js"></script>
   <script src="/static/js/angular-1.2.9/angular-route.js"></script>
   <script src="/static/js/angular-1.2.9/angular-animate.min.js"></script>
+  <script src="/static/js/angular-busy-4.0.0/angular-busy.min.js"></script>
+  <script src="/static/js/angular-xeditable-0.1.8/xeditable.min.js"></script>
   <script src="/static/js/eshop-1.0/eshop.js"></script>
   <script src="/static/js/eshop-1.0/eshop.controllers.js"></script>
   <script src="/static/js/eshop-1.0/eshop.directives.js"></script>

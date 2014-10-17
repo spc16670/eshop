@@ -51,6 +51,7 @@ handle_info(timeout, State) ->
   {noreply, State};
 
 handle_info(Req, #state{sid=Sid} = State)  ->
+  timer:sleep(random:uniform(3000)),
   Parsed = jsx:decode(Req),
   Operation = eshop_utls:get_value(<<"operation">>,Parsed,undefined),
   Data = eshop_utls:get_value(<<"data">>,Parsed,undefined),

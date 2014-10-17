@@ -73,14 +73,15 @@ eshopFactories.factory('bulletFactory', ['$q','$rootScope', function($q,$rootSco
 
 eshopFactories.factory('userFactory', ['bulletFactory','storageFactory'
   ,'$rootScope',function(bulletFactory,storageFactory,$rootScope) {
-  var UserService = {};
+  var UserService = { };
 
-  UserService.user = {};
+  UserService.user = { isLogged : false };
     
   UserService.authenticate = function(loginReq) {
     if (loginReq.operation === "login") {
-      var promise = bulletFactory.send(loginReq);
-      promise.then(function(response){
+      var promiseLogin = bulletFactory.send(loginReq);
+      UserService.loginPromise = promiseLogin;
+      promiseLogin.then(function(response){
         var data = response.data;
         if (data.result === "ok") { 
 	  // iterate object in data key and retrieve user and shopper
@@ -113,7 +114,7 @@ eshopFactories.factory('userFactory', ['bulletFactory','storageFactory'
   };
 
   UserService.logout = function() {
-    UserService.user = {};
+    UserService.user = { isLogged : false };
     storageFactory.remove("user");
   };
   

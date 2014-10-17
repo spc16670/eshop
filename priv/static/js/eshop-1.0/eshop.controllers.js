@@ -12,13 +12,22 @@ eshopControllers.controller('mainController', ['$scope','userFactory',
  
   $scope.currentUser = userFactory.authenticate({ 'operation': "initialize"});
 
+  $scope.$watch(function() {return userFactory.loginPromise},function() {
+    $scope.promiseLogin = userFactory.loginPromise;
+  }),
+
   $scope.$watch(function() {return userFactory.user},function() {
     $scope.currentUser = userFactory.user;
-    $scope.visible('showShoppingView');
+    if ($scope.currentUser.isLogged) {
+      $scope.visible('showShoppingView');
+    } else {
+      $scope.visible('showLoginView');
+    }
   }),
 
   $scope.logout = function() {
     userFactory.logout();
+    $scope.visible('showLoginView');
   };
 
   // view display 
@@ -48,7 +57,7 @@ eshopControllers.controller('mainController', ['$scope','userFactory',
 //------------------------- formShopController ------------------------
 
 eshopControllers.controller('shopController', ['$scope','bulletFactory',
-  function($scope,bulletFactory) {
+  '$rootScope',function($scope,bulletFactory,$rootScope) {
   $scope.categoriesMessage = "Fetching categories...";
   $scope.categories = []; 
   $scope.newCategory = { name: "", description: ""}; 
@@ -72,6 +81,7 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
     if (categoriesShown == true) {
       // Refresh categories list
       $scope.categories = [];
+      $scope.authenticated = false;
       // Fire bullet request for JSON and display an image until the
       // future object is resolved.
       //
@@ -91,8 +101,7 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
       var token = $scope.currentUser.token;
       var fetchReq = { 'type': "category", 'action' : "fetch", 'token' : token };
       var promise = bulletFactory.send({ 'operation' : "categories", data : fetchReq });
-
-      // display loading
+      $scope.promiseCategories = promise;
 
       promise.then(function(response) {
         if (response.operation === "categories") {
@@ -127,10 +136,17 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
     }
   };
 
-  $scope.handleCategory = function (category) {
-    var formName = "formHandleCategory-" + category.data.id;
+  $scope.handleCategory = function(obj) {
+    console.log('handle: ',obj);
+    var formName = "formHandleCategory-" + obj.obj.data.id;
     console.log("Handle Category Name: ",formName);
   };
+
+
+  $scope.removeCategory = function(index) {
+    $scope.categories.splice(index, 1);
+  };
+
 
   $scope.addCategory = function() {
     if ($scope.formAddCategory.$valid) {
@@ -141,7 +157,7 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
 
       console.log("Submitting new Category: ",addReq);
       var promise = bulletFactory.send({ 'operation' : "categories", 'data' : addReq });
-
+      $scope.promiseCategories = promise;
       promise.then(function(response) {
         if (response.operation === "categories") {
           if (response.data.result == "ok") {

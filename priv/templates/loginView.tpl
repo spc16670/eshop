@@ -1,5 +1,5 @@
 
-  <div class="navbar navbar-default" role="navigation">
+  <div class="navbar navbar-default" cg-busy="promiseLogin" role="navigation">
     <!-- LOGIN -->
     <div class="row eshop-top-margin">
       <div class="col-md-2">
@@ -39,7 +39,6 @@
                       </div>
                     </div>
                   </div>
-
                 </form>
              <!-- </div> -->
 
