@@ -109,9 +109,11 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
         if (response.operation === "categories") {
 	  if (response.data.result == "ok") {
 	    $scope.categories = response.data.data;
+	  } else if (response.data.result == "timeout") {
+	    $scope.categoriesMessage = response.data.msg;
 	  } else {
 	    $scope.categoriesMessage = response.data.msg;
-	  }
+          }
           console.log('Category: ',response.data);
         } else {
           console.log('Invalid response: ',response);

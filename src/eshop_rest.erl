@@ -28,10 +28,12 @@ hello_to_html(Req, State) ->
   {ok,_Module} = erlydtl:compile_file(Template,index_dtl),
   Sid = State#'state'.'sid',
   Host = eshop_utls:get_env(hostname),
+  ClientTimeout = eshop_utls:get_env(client_timeout),
   eshop_session_sup:start_session(Sid),
   {ok,Body} = index_dtl:render([
     {sid,Sid}
     ,{hostname,Host}
+    ,{client_timeout,ClientTimeout}
     ,{authenticated,false}
   ]),
   {Body, Req, State}.

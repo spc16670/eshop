@@ -65,5 +65,6 @@
   <div style="color:sienna">{{ sid }}</div>
   <div ng-model="sid" id="session_id" style="display:none">{{ sid }}</div>
   <div id="hostname" style="display:none">{{ hostname }}</div>
+  <div id="client_timeout" style="display:none">{{ client_timeout }}</div>
 </body>
 </html>

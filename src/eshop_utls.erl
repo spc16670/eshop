@@ -12,6 +12,7 @@
   ,database/0
   ,get_env/1
   ,get_env/2
+  ,gen_rand_int/2
 ]).
 
 -include("eshop.hrl").
@@ -102,4 +103,8 @@ get_env(Section,Key) ->
   SectionConf = get_env(Section),
   get_value(Key,SectionConf,undefined). 
 
+gen_rand_int(LB,UB) ->
+  {A1, A2, A3} = now(),
+  random:seed(A1, A2, A3),
+  LB + random:uniform(UB - LB).
 

@@ -2,10 +2,12 @@
 
 var eshopFactories = angular.module('eshopFactories',[]);
 
-eshopFactories.factory('bulletFactory', ['$q','$rootScope', function($q,$rootScope) {  
+eshopFactories.factory('bulletFactory', ['$q','$timeout','$rootScope', function($q,$timeout,$rootScope) {  
   var Service = {};
   var sid = document.getElementById('session_id');
   var hostname = document.getElementById('hostname');
+  var clientTimeout = document.getElementById('client_timeout').textContent;
+  var clientTimeout = parseInt(clientTimeout);
   var url = 'wss://' + hostname.textContent  + ':8443/bullet/' + sid.textContent;
   var options = {'disableWebSocket': true, 'disableEventSource': true};
   //var options = {};
@@ -32,11 +34,20 @@ eshopFactories.factory('bulletFactory', ['$q','$rootScope', function($q,$rootSco
   function sendRequest(request) {
     var defer = $q.defer();
     var callbackId = getCallbackId();
+    request.cbid = callbackId;
+    var timeoutPromise = $timeout(function(data){
+      var timeoutRequest = request;
+      timeoutRequest.data.result = "timeout";
+      timeoutRequest.data.msg = "A timeout occurred";
+      listener(timeoutRequest);
+    },clientTimeout);
+
     callbacks[callbackId] = {
       time: new Date(),
-      cb: defer
+      cb: defer,
+      timeoutPromise: timeoutPromise
     };
-    request.cbid = callbackId;
+    
     bullet.send(JSON.stringify(request));
     return defer.promise;
   }
@@ -45,8 +56,10 @@ eshopFactories.factory('bulletFactory', ['$q','$rootScope', function($q,$rootSco
     var messageObj = data;
     // If an object exists with cbid in our callbacks object, resolve it
     if(callbacks.hasOwnProperty(messageObj.cbid)) {
-      $rootScope.$apply(callbacks[messageObj.cbid].cb.resolve(messageObj));
-      delete callbacks[messageObj.callbackID];
+      var callback = callbacks[messageObj.cbid];
+      $timeout.cancel(callback.timeoutPromise);
+      $rootScope.$apply(callback.cb.resolve(messageObj));
+      delete callbacks[messageObj.cbid];
     }
   }
 

@@ -51,7 +51,9 @@ handle_info(timeout, State) ->
   {noreply, State};
 
 handle_info(Req, #state{sid=Sid} = State)  ->
-  timer:sleep(random:uniform(3000)),
+  Sleep = eshop_utls:gen_rand_int(1, 3000),
+  io:fwrite("~n~p",[Sleep]),
+  timer:sleep(Sleep),
   Parsed = jsx:decode(Req),
   Operation = eshop_utls:get_value(<<"operation">>,Parsed,undefined),
   Data = eshop_utls:get_value(<<"data">>,Parsed,undefined),
