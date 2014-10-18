@@ -86,8 +86,14 @@ dispatch_request({Type,Data,_CbId},_Sid) ->
 
 %% ----------------------------------------------------------------------------
 
+dispatch_request_action({<<"categories">>,<<"delete">>,Token,Data,CbId},Sid) -> 
+  Record = estore:json_to_record(Data),
+  dispatch_authorised_request({<<"categories">>,<<"delete">>,Record,CbId},Sid,eshop_session:is_authorised(Token));
+dispatch_request_action({<<"categories">>,<<"upsert">>,Token,Data,CbId},Sid) -> 
+  Record = estore:json_to_record(Data),
+  dispatch_authorised_request({<<"categories">>,<<"upsert">>,Record,CbId},Sid,eshop_session:is_authorised(Token));
 dispatch_request_action({<<"categories">>,<<"add">>,Token,Data,CbId},Sid) -> 
-  Record = estore:json_to_record(Data),%eshop_utls:get_value(<<"data">>,Data,undefined),
+  Record = estore:json_to_record(Data),
   dispatch_authorised_request({<<"categories">>,<<"add">>,Record,CbId},Sid,eshop_session:is_authorised(Token));
 dispatch_request_action({<<"categories">>,<<"fetch">>,Token,Data,CbId},Sid) ->
   dispatch_authorised_request({<<"categories">>,<<"fetch">>,Data,CbId},Sid,eshop_session:is_authorised(Token)).

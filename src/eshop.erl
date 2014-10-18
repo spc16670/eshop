@@ -103,6 +103,19 @@ authenticate({Sid,CbId},Data) ->
 
 %% @doc This function requires a valid token to return Categories.
 
+categories({Sid,CbId},<<"delete">>,Record,_TokenData) ->
+  {Result,Msg} = case estore:delete(pgsql,Record) of
+    {ok,_Count} -> {<<"ok">>,<<"Deleted">>};
+    {error,_Error} -> {<<"error">>,<<"Could not delete">>}
+  end,
+  Json = json_reply(
+    {CbId,<<"categories">>}
+    ,{<<"delete">>,Result}
+    ,[{<<"msg">>,Msg}]),
+  reply(Sid,Json);
+
+categories({Sid,CbId},<<"upsert">>,Record,_TokenData) ->
+  categories({Sid,CbId},<<"add">>,Record,_TokenData);
 categories({Sid,CbId},<<"add">>,Record,_TokenData) ->
   {Result,Msg} = case estore:save(pgsql,Record) of
     {ok,_Id} -> {<<"ok">>,<<"Saved">>};

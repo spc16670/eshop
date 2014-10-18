@@ -57,11 +57,12 @@ eshopControllers.controller('mainController', ['$scope','userFactory',
 //------------------------- formShopController ------------------------
 
 eshopControllers.controller('shopController', ['$scope','bulletFactory',
-  '$rootScope',function($scope,bulletFactory,$rootScope) {
+  function($scope,bulletFactory) {
   $scope.categoriesMessage = "Fetching categories...";
   $scope.categories = []; 
   $scope.newCategory = { name: "", description: ""}; 
   
+ 
   $scope.send = function(data) {
     var promise = bulletFactory.send(data);
   };
@@ -82,6 +83,7 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
       // Refresh categories list
       $scope.categories = [];
       $scope.authenticated = false;
+
       // Fire bullet request for JSON and display an image until the
       // future object is resolved.
       //
@@ -136,15 +138,60 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
     }
   };
 
-  $scope.handleCategory = function(obj) {
-    console.log('handle: ',obj);
-    var formName = "formHandleCategory-" + obj.obj.data.id;
-    console.log("Handle Category Name: ",formName);
+  $scope.inputValid = function(data, id) {
+    if (data === "" || data == undefined) {
+      return "Input cannot be empty";
+    }
   };
 
-
   $scope.removeCategory = function(index) {
-    $scope.categories.splice(index, 1);
+    var removeCat = $scope.categories[index]; 
+    
+    // Call Out
+    var token = $scope.currentUser.token;
+    var addReq = { 'type' : "category", 'action' : "delete", 'token' : token, 'data' : removeCat.data };
+    console.log("Deleting Category: ",addReq);
+    var promise = bulletFactory.send({ 'operation' : "categories", 'data' : addReq });
+    // This is needed to display the loading dialog
+    $scope.promiseCategories = promise;
+    promise.then(function(response) {
+      if (response.operation === "categories") {
+        if (response.data.result == "ok") {
+          $scope.fetchCategories();
+          console.log('Category Modified ',response.data);
+        } else {
+          console.log('Could not modify ',response.data);
+          $scope.categoriesMessage = response.data.msg;
+        }
+      } else {
+        console.log('Invalid response: ',response);
+      }
+    });
+  };
+
+  $scope.updateCategory = function(data, id) {
+    angular.extend(data, {id: id});
+
+    // Call Out
+    var token = $scope.currentUser.token;
+    var addReq = { 'type' : "category", 'action' : "upsert", 'token' : token, 'data' : data };
+    console.log("Updating Category: ",addReq);
+    var promise = bulletFactory.send({ 'operation' : "categories", 'data' : addReq });
+    // This is needed to display the loading dialog
+    $scope.promiseCategories = promise;
+    promise.then(function(response) {
+      if (response.operation === "categories") {
+        if (response.data.result == "ok") {
+          $scope.fetchCategories();
+          console.log('Category Modified ',response.data);
+        } else {
+          console.log('Could not modify ',response.data);
+          $scope.categoriesMessage = response.data.msg;
+        }
+      } else {
+        console.log('Invalid response: ',response);
+      }
+    });
   };
 
 
