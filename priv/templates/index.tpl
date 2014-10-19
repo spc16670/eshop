@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="eshopApp" ng-controller="mainController">
+<html lang="en" ng-app="eshopApp" ng-controller="MainController">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,22 +40,22 @@
       <div id="mainArea">
 
 	<!-- Shop View -->
-        <div id="shopView" ng-show="toggler.showShoppingView" ng-controller="shopController">
+        <div id="shopView" ng-show="toggler.showShoppingView" ng-controller="ShopController">
 	  {% include "shopView.tpl" %}
         </div> <!--/.shopView -->
 
         <!-- Login View -->
-        <div id="loginView" ng-show="toggler.showLoginView" ng-controller="formLoginController">
+        <div id="loginView" ng-show="toggler.showLoginView" ng-controller="FormLoginController">
           {% include "loginView.tpl" %}
         </div> 
 	
 	<!-- Registration View -->
-	<div id="registerView" ng-show="toggler.showSignUpView" ng-controller="formSignUpController">
+	<div id="registerView" ng-show="toggler.showSignUpView" ng-controller="FormSignUpController">
           {% include "registerView.tpl" %}
         </div>
 
 	<!-- Personal Information View -->
-        <div id="personalView" ng-show="toggler.showPersonalView" ng-controller="formLoginController">
+        <div id="personalView" ng-show="toggler.showPersonalView" ng-controller="FormLoginController">
           {% include "personalView.tpl" %}
         </div>
 

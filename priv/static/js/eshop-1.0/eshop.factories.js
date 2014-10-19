@@ -1,8 +1,9 @@
 'use strict';
 
-var eshopFactories = angular.module('eshopFactories',[]);
+var eshopFactories = angular.module('eshop.factories',[]);
 
-eshopFactories.factory('bulletFactory', ['$q','$timeout','$rootScope', function($q,$timeout,$rootScope) {  
+eshopFactories.factory('BulletFactory', ['$q','$timeout','$rootScope', 
+  function($q,$timeout,$rootScope) {  
   var Service = {};
   var sid = document.getElementById('session_id');
   var hostname = document.getElementById('hostname');
@@ -84,15 +85,15 @@ eshopFactories.factory('bulletFactory', ['$q','$timeout','$rootScope', function(
 
 // ------------------------- userService ------------------------------
 
-eshopFactories.factory('userFactory', ['bulletFactory','storageFactory'
-  ,'$rootScope',function(bulletFactory,storageFactory,$rootScope) {
+eshopFactories.factory('UserFactory', ['BulletFactory','StorageFactory'
+  ,'$rootScope',function(BulletFactory,StorageFactory,$rootScope) {
   var UserService = { };
 
-  UserService.user = { isLogged : false };
+  UserService.user = { 'isLogged' : false, 'token': null };
     
   UserService.authenticate = function(loginReq) {
     if (loginReq.operation === "login") {
-      var promiseLogin = bulletFactory.send(loginReq);
+      var promiseLogin = BulletFactory.send(loginReq);
       UserService.loginPromise = promiseLogin;
       promiseLogin.then(function(response){
         var data = response.data;
@@ -106,19 +107,22 @@ eshopFactories.factory('userFactory', ['bulletFactory','storageFactory'
 	        UserService.user['shopper'] = interatedObj.data;
 	    }
  	  }
-	  UserService.user['token'] = data.token; 
+	  UserService.user.token = data.token; 
 	  console.log("USER IS:",UserService.user),
 	  UserService.user.isLogged = true; 
 	  $rootScope.$broadcast("login:success","");
 	  // persist user
-          storageFactory.persist("user",UserService.user);
+          StorageFactory.persist("user",UserService.user);
+        } else if (data.result === "timeout") { 
+ 	  UserService.logout();
+	  $rootScope.$broadcast("login:timeout",data.msg);
         } else if (data.result === "error") {
- 	  UserService.user.isLogged = false;
+ 	  UserService.logout();
 	  $rootScope.$broadcast("login:error",data.msg);
         }
       });    
     } else if (loginReq.operation === "initialize") {
-      var returningUser = storageFactory.retrieve("user");
+      var returningUser = StorageFactory.retrieve("user");
       if (returningUser) {
         UserService.user = returningUser;
       } else {
@@ -127,17 +131,17 @@ eshopFactories.factory('userFactory', ['bulletFactory','storageFactory'
   };
 
   UserService.logout = function() {
-    UserService.user = { isLogged : false };
-    storageFactory.remove("user");
+    UserService.user = { isLogged : false, 'token' : null };
+    StorageFactory.remove("user");
   };
   
   return UserService;
 }]);
 
 
-// ------------------------- storageFactory ------------------------------
+// ------------------------- StorageFactory ------------------------------
 
-eshopFactories.factory('storageFactory',['$window',function($window) {
+eshopFactories.factory('StorageFactory',['$window',function($window) {
   var StorageService = {};
   if ($window.localStorage) {
 
@@ -180,9 +184,38 @@ eshopFactories.factory('storageFactory',['$window',function($window) {
   return StorageService;
 }]);
 
+// ------------------------- callService ------------------------------
+
+eshopFactories.factory('RequestFactory', ['UserFactory',
+  function(UserFactory) {
+  // {
+  //   cbid : 8 -- Callback id is temporarily added by the BulletFactory
+  //
+  //   operation: "",
+  //   data: {
+  //     type: "",
+  //     action: "",
+  //     token: "",
+  //     data: { },
+  //   }
+  // }
+
+  return {
+    makeRequest: function(operation,requestObj,authorised) {
+      if (authorised == true) {
+        requestObj.token = UserFactory.user.token;
+      };
+      return {
+        'operation' : operation, 
+        'data' : requestObj
+      };
+    }
+  }
+}]);
+
 // ------------------------- alertFactory ------------------------------
 
-eshopFactories.factory('alertFactory', [function() {
+eshopFactories.factory('AlertFactory', [function() {
   return {
     makeAlert: function(type,msg) {
       return {'type' : type, 'msg' : msg};

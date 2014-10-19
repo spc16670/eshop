@@ -1,5 +1,5 @@
 
-var eshopControllers = angular.module('eshopControllers', []);
+var eshopControllers = angular.module('eshop.controllers', []);
 
 eshopControllers.config(function($interpolateProvider){
   $interpolateProvider.startSymbol('{[').endSymbol(']}');
@@ -7,17 +7,17 @@ eshopControllers.config(function($interpolateProvider){
 
 //--------------------------- mainController ---------------------------
 
-eshopControllers.controller('mainController', ['$scope','userFactory',
-  function($scope, userFactory) { 
+eshopControllers.controller('MainController', ['$scope','UserFactory',
+  function($scope, UserFactory) { 
  
-  $scope.currentUser = userFactory.authenticate({ 'operation': "initialize"});
+  $scope.currentUser = UserFactory.authenticate({ 'operation': "initialize"});
 
-  $scope.$watch(function() {return userFactory.loginPromise},function() {
-    $scope.promiseLogin = userFactory.loginPromise;
+  $scope.$watch(function() {return UserFactory.loginPromise},function() {
+    $scope.promiseLogin = UserFactory.loginPromise;
   }),
 
-  $scope.$watch(function() {return userFactory.user},function() {
-    $scope.currentUser = userFactory.user;
+  $scope.$watch(function() {return UserFactory.user},function() {
+    $scope.currentUser = UserFactory.user;
     if ($scope.currentUser.isLogged) {
       $scope.visible('showShoppingView');
     } else {
@@ -26,7 +26,7 @@ eshopControllers.controller('mainController', ['$scope','userFactory',
   }),
 
   $scope.logout = function() {
-    userFactory.logout();
+    UserFactory.logout();
     $scope.visible('showLoginView');
   };
 
@@ -56,15 +56,14 @@ eshopControllers.controller('mainController', ['$scope','userFactory',
 
 //------------------------- formShopController ------------------------
 
-eshopControllers.controller('shopController', ['$scope','bulletFactory',
-  function($scope,bulletFactory) {
+eshopControllers.controller('ShopController', ['$scope','BulletFactory',
+  'RequestFactory',function($scope,BulletFactory,RequestFactory) {
   $scope.categoriesMessage = "Fetching categories...";
   $scope.categories = []; 
   $scope.newCategory = { name: "", description: ""}; 
   
- 
   $scope.send = function(data) {
-    var promise = bulletFactory.send(data);
+    var promise = BulletFactory.send(data);
   };
 
   // view display 
@@ -75,51 +74,6 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
     ,'showEmenuItems':false
     ,'showEmenuOffers':false
     ,'showEmenuResult':false
-  };
-
-  $scope.fetchCategories = function() {
-    var categoriesShown = $scope.shopToggler.showEmenuCategories;
-    if (categoriesShown == true) {
-      // Refresh categories list
-      $scope.categories = [];
-      $scope.authenticated = false;
-
-      // Fire bullet request for JSON and display an image until the
-      // future object is resolved.
-      //
-      // Once the future object resolves fire a directive to display a
-      // dynamically constructed table.
-      //
-      // {
-      //   operation: "",
-      //   data: {
-      //     type: "",
-      //     action: "",
-      //     token: "",
-      //     data: { },
-      //   }
-      // }
-      //
-      var token = $scope.currentUser.token;
-      var fetchReq = { 'type': "category", 'action' : "fetch", 'token' : token };
-      var promise = bulletFactory.send({ 'operation' : "categories", data : fetchReq });
-      $scope.promiseCategories = promise;
-
-      promise.then(function(response) {
-        if (response.operation === "categories") {
-	  if (response.data.result == "ok") {
-	    $scope.categories = response.data.data;
-	  } else if (response.data.result == "timeout") {
-	    $scope.categoriesMessage = response.data.msg;
-	  } else {
-	    $scope.categoriesMessage = response.data.msg;
-          }
-          console.log('Category: ',response.data);
-        } else {
-          console.log('Invalid response: ',response);
-        }
-      });
-    };
   };
 
   $scope.$watch('shopToggler',function() {
@@ -146,24 +100,47 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
     }
   };
 
+  $scope.fetchCategories = function() {
+    var categoriesShown = $scope.shopToggler.showEmenuCategories;
+    if (categoriesShown == true) {
+      // Refresh categories list
+      $scope.categories = [];
+      var fetchReq = { 'type': "category", 'action' : "fetch" };
+      var request = RequestFactory.makeRequest("categories",fetchReq,true); 
+      var promise = BulletFactory.send(request);
+      $scope.promiseCategories = promise;
+      promise.then(function(response) {
+        if (response.operation === "categories") {
+	  if (response.data.result == "ok") {
+	    $scope.categories = response.data.data;
+	  } else {
+	    $scope.categoriesMessage = response.data.msg;
+          }
+          console.log('Category: ',response.data);
+        } else {
+          console.log('Invalid response: ',response);
+        }
+      });
+    };
+  };
+
   $scope.removeCategory = function(index) {
-    var removeCat = $scope.categories[index]; 
-    
-    // Call Out
-    var token = $scope.currentUser.token;
-    var addReq = { 'type' : "category", 'action' : "delete", 'token' : token, 'data' : removeCat.data };
-    console.log("Deleting Category: ",addReq);
-    var promise = bulletFactory.send({ 'operation' : "categories", 'data' : addReq });
+    var removeCat = $scope.categories[index].data; 
+    var deleteReq = { 'type': "category", 'action' : "delete", 'data' : removeCat };
+    var request = RequestFactory.makeRequest("categories",deleteReq,true); 
+    var promise = BulletFactory.send(request);
+    console.log("Deleting Category: ",removeCat);
     // This is needed to display the loading dialog
     $scope.promiseCategories = promise;
     promise.then(function(response) {
       if (response.operation === "categories") {
         if (response.data.result == "ok") {
           $scope.fetchCategories();
-          console.log('Category Modified ',response.data);
+          console.log('Category Modified ',response.data.msg);
         } else {
-          console.log('Could not modify ',response.data);
+          console.log('Could not modify ',response.data.msg);
           $scope.categoriesMessage = response.data.msg;
+          $scope.categories = [];
         }
       } else {
         console.log('Invalid response: ',response);
@@ -173,12 +150,9 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
 
   $scope.updateCategory = function(data, id) {
     angular.extend(data, {id: id});
-
-    // Call Out
-    var token = $scope.currentUser.token;
-    var addReq = { 'type' : "category", 'action' : "upsert", 'token' : token, 'data' : data };
-    console.log("Updating Category: ",addReq);
-    var promise = bulletFactory.send({ 'operation' : "categories", 'data' : addReq });
+    var upsertReq = { 'type': "category", 'action' : "upsert", 'data' : data };
+    var request = RequestFactory.makeRequest("categories",upsertReq,true); 
+    var promise = BulletFactory.send(request);
     // This is needed to display the loading dialog
     $scope.promiseCategories = promise;
     promise.then(function(response) {
@@ -189,6 +163,7 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
         } else {
           console.log('Could not modify ',response.data);
           $scope.categoriesMessage = response.data.msg;
+	  $scope.categories = [];
         }
       } else {
         console.log('Invalid response: ',response);
@@ -199,31 +174,28 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
 
   $scope.addCategory = function() {
     if ($scope.formAddCategory.$valid) {
-      
-      // Call Out
-      var token = $scope.currentUser.token;
-      var addReq = { 'type' : "category", 'action' : "add", 'token' : token, 'data' : $scope.newCategory };
-
+      var addReq = { 'type': "category", 'action' : "add", 'data' : $scope.newCategory };
+      var request = RequestFactory.makeRequest("categories",addReq,true); 
+      var promise = BulletFactory.send(request);
       console.log("Submitting new Category: ",addReq);
-      var promise = bulletFactory.send({ 'operation' : "categories", 'data' : addReq });
       $scope.promiseCategories = promise;
       promise.then(function(response) {
         if (response.operation === "categories") {
           if (response.data.result == "ok") {
-            $scope.fetchCategories();
 	    $scope.formAddCategory.$setPristine();
 	    $scope.newCategory = { name: "", description: ""};
             $scope.showAddCategoryItemPanel = false; 
             console.log('New Category added ',response.data);
+            $scope.fetchCategories();
           } else {
             console.log('Could not add new category ',response.data);
             $scope.categoriesMessage = response.data.msg;
+	    $scope.categories = [];
           }
         } else {
           console.log('Invalid response: ',response);
         }
-      });
-  
+      }); 
     } else { 
       alert("Please fill all fields in.");
     }
@@ -233,8 +205,8 @@ eshopControllers.controller('shopController', ['$scope','bulletFactory',
 
 //------------------------ formLoginController ------------------------
 
-eshopControllers.controller('formLoginController', ['$scope','userFactory',
-  'alertFactory',function($scope,userFactory,alertFactory) {
+eshopControllers.controller('FormLoginController', ['$scope','UserFactory',
+  'AlertFactory','RequestFactory',function($scope,UserFactory,AlertFactory,RequestFactory) {
   $scope.login = {};
   $scope.alerts = [];
 
@@ -243,11 +215,19 @@ eshopControllers.controller('formLoginController', ['$scope','userFactory',
   }
  
   $scope.$on("login:error",function(event,msg) {
-    while($scope.alerts.length > 0) {
+    handleError(msg);
+  });
+  $scope.$on("login:timeout",function(event,msg) {
+    handleError(msg);
+  });
+ 
+  function handleError(msg) {
+     while($scope.alerts.length > 0) {
       $scope.alerts.pop();
     }
-    $scope.alerts.push(alertFactory.makeAlert("danger",msg));
-  });
+    $scope.alerts.push(AlertFactory.makeAlert("danger",msg));  
+  };
+
   $scope.$on("login:success",function(event,msg) {
     $scope.visible('showShoppingView');
   });
@@ -255,8 +235,9 @@ eshopControllers.controller('formLoginController', ['$scope','userFactory',
   try {
     $scope.submit = function () {
       if ($scope.loginForm.$valid) {
-        var request = { 'type' : "user", 'action' : "authenticate", 'data' : $scope.login };
-        userFactory.authenticate({ 'operation' : "login", 'data' : request});
+        var loginReq = { 'type': "user", 'action' : "authenticate", 'data' : $scope.login };
+        var request = RequestFactory.makeRequest("login",loginReq,false); 
+        UserFactory.authenticate(request);
         $scope.login = {};
         $scope.loginForm.$setPristine();
       }
@@ -270,9 +251,9 @@ eshopControllers.controller('formLoginController', ['$scope','userFactory',
 
 //------------------------ formSignUpController ------------------------
 
-eshopControllers.controller('formSignUpController', ['$scope','$timeout'
-  ,'alertFactory','bulletFactory', 
-    function($scope, $timeout, alertFactory, bulletFactory) {
+eshopControllers.controller('FormSignUpController', ['$scope','$timeout'
+  ,'AlertFactory','BulletFactory', 
+    function($scope, $timeout, AlertFactory, BulletFactory) {
 
   $scope.alerts = [
     { 'type': 'info', 'msg': 'Please fill in all form elements.' }
@@ -282,47 +263,47 @@ eshopControllers.controller('formSignUpController', ['$scope','$timeout'
     var msg = null;
     if ($scope.signUpForm.fname.$invalid && $scope.signUpForm.fname.$dirty 
 	&& !$scope.signUpForm.fname.$focused) {
-      msg = alertFactory.makeAlert("error","First name is required");
+      msg = AlertFactory.makeAlert("error","First name is required");
     } 
     if ($scope.signUpForm.lname.$invalid && $scope.signUpForm.lname.$dirty 
 	&& !$scope.signUpForm.lname.$focused) {
-      msg = alertFactory.makeAlert("error","Last name is required");
+      msg = AlertFactory.makeAlert("error","Last name is required");
     }
     if ($scope.signUpForm.addressline1.$invalid && $scope.signUpForm.addressline1.$dirty 
 	&& !$scope.signUpForm.addressline1.$focused) {
-      msg = alertFactory.makeAlert("error","Address Line 1 is required");
+      msg = AlertFactory.makeAlert("error","Address Line 1 is required");
     }
     if ($scope.signUpForm.addressline2.$invalid && $scope.signUpForm.addressline2.$dirty 
 	&& !$scope.signUpForm.addressline2.$focused) {
-      msg = alertFactory.makeAlert("error","Address Line 2 is required");
+      msg = AlertFactory.makeAlert("error","Address Line 2 is required");
     } 
     if ($scope.signUpForm.postcode.$invalid && $scope.signUpForm.postcode.$dirty 
 	&& !$scope.signUpForm.postcode.$focused) {
-      msg = alertFactory.makeAlert("error","Postcode is required");
+      msg = AlertFactory.makeAlert("error","Postcode is required");
     }
     if ($scope.signUpForm.city.$invalid && $scope.signUpForm.city.$dirty 
 	&& !$scope.signUpForm.city.$focused) {
-      msg = alertFactory.makeAlert("error","City / Town is required"); 
+      msg = AlertFactory.makeAlert("error","City / Town is required"); 
     }
     if ($scope.signUpForm.email.$invalid && $scope.signUpForm.email.$dirty 
 	&& !$scope.signUpForm.email.$focused) {
-      msg = alertFactory.makeAlert("error","Email is required");
+      msg = AlertFactory.makeAlert("error","Email is required");
     }
     if ($scope.signUpForm.password.$invalid && $scope.signUpForm.password.$dirty 
 	&& !$scope.signUpForm.password.$focused) {
-      msg = alertFactory.makeAlert("error","Password is required");
+      msg = AlertFactory.makeAlert("error","Password is required");
     }
     if ($scope.signUpForm.confirm_password.$invalid && $scope.signUpForm.confirm_password.$dirty 
 	&& !$scope.signUpForm.confirm_password.$focused) {
       if (!$scope.signUpForm.confirm_password.$error.passwordVerify) {
-        msg = alertFactory.makeAlert("error","Passwords do not match!");
+        msg = AlertFactory.makeAlert("error","Passwords do not match!");
       }
     }
     if ($scope.signUpForm.confirm_password.$valid && !$scope.signUpForm.confirm_password.$error.passwordVerify) {
-      msg = alertFactory.makeAlert("error","Please confirm password!");
+      msg = AlertFactory.makeAlert("error","Please confirm password!");
     } 
     if ($scope.signUpForm.$valid) {
-       msg = alertFactory.makeAlert("success","Please submit the form.");
+       msg = AlertFactory.makeAlert("success","Please submit the form.");
     }   
     $scope.pushAlert(msg,true);
   };
@@ -345,9 +326,9 @@ eshopControllers.controller('formSignUpController', ['$scope','$timeout'
   $scope.closeAlert = function(index) {
     $scope.alerts.splice(index, 1);
     if ($scope.signUpForm.$valid) {
-      $scope.alerts.push(alertFactory.makeAlert("success","Please submit the form."));
+      $scope.alerts.push(AlertFactory.makeAlert("success","Please submit the form."));
     } else {
-      $scope.alerts.push(alertFactory.makeAlert("info","Please fill in all form elements."));
+      $scope.alerts.push(AlertFactory.makeAlert("info","Please fill in all form elements."));
     }
   };
 
@@ -361,14 +342,14 @@ eshopControllers.controller('formSignUpController', ['$scope','$timeout'
       var requestNewShopper = { 'type' : "shopper" , 'data' : $scope.newShopper }; 
       var request = { 'operation' : "register" , 'data' : [requestNewUser,requestNewAddress,requestNewShopper] };
       console.log("REQUEST IS:",request);
-      var promise = bulletFactory.send(request);
-      $scope.pushAlert(alertFactory.makeAlert("success","Thank you."),false); 
+      var promise = BulletFactory.send(request);
+      $scope.pushAlert(AlertFactory.makeAlert("success","Thank you."),false); 
       $scope.newUser = {'gender': "f"};
       $scope.signUpForm.$setPristine(); 
       promise.then(function(response) {
         console.log("resp ",response);
         if (response.operation !== "register") { 
-          $scope.pushAlert(alertFactory.makeAlert("danger","There was an error. Try again later"),false);
+          $scope.pushAlert(AlertFactory.makeAlert("danger","There was an error. Try again later"),false);
         } else {
           $scope.visible('showLoginView');
         } 

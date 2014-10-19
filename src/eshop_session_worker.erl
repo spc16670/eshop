@@ -52,7 +52,7 @@ handle_info(timeout, State) ->
 
 handle_info(Req, #state{sid=Sid} = State)  ->
   Sleep = eshop_utls:gen_rand_int(1, 3000),
-  io:fwrite("~n~p",[Sleep]),
+  io:fwrite("~p~n",[Sleep]),
   timer:sleep(Sleep),
   Parsed = jsx:decode(Req),
   Operation = eshop_utls:get_value(<<"operation">>,Parsed,undefined),

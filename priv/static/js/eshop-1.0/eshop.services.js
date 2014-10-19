@@ -1,7 +1,7 @@
 'use strict';
 
-var eshopServices = angular.module('eshopServices',[]);
+var eshopServices = angular.module('eshop.services',[]);
 
-eshopServices.service('someService', function() {
+eshopServices.service('SomeService', function() {
 });
 

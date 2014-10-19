@@ -2,9 +2,9 @@
 var eshopApp = angular.module('eshopApp', [
   'ngRoute'
   ,'ngAnimate'
-  ,'eshopControllers'
-  ,'eshopDirectives'
-  ,'eshopFactories'
+  ,'eshop.controllers'
+  ,'eshop.directives'
+  ,'eshop.factories'
   ,'xeditable'
   ,'cgBusy'
 ]);
@@ -20,7 +20,7 @@ eshopApp.config(function($routeProvider) {
     // route for the home page
     .when('/', {
       template : " ",
-      controller  : 'mainController',
+      controller  : 'MainController',
       animation : 'slide'
     })
 });
