@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="eshopApp" ng-controller="MainController">
+<html lang="en" ng-app="AppAdmin" ng-controller="ControllerAdminMain">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,11 +21,14 @@
   <script src="/static/js/angular-1.2.9/angular-animate.min.js"></script>
   <script src="/static/js/angular-busy-4.0.0/angular-busy.min.js"></script>
   <script src="/static/js/angular-xeditable-0.1.8/xeditable.min.js"></script>
-  <script src="/static/js/eshop-1.0/eshop.js"></script>
-  <script src="/static/js/eshop-1.0/eshop.controllers.js"></script>
-  <script src="/static/js/eshop-1.0/eshop.directives.js"></script>
-  <script src="/static/js/eshop-1.0/eshop.factories.js"></script>
-  <script src="/static/js/eshop-1.0/eshop.services.js"></script>
+
+  <script src="/static/js/eshop-1.0/admin/customise/categories/eshop.admin.customise.categories.Controllers.js"></script>
+  <script src="/static/js/eshop-1.0/admin/customise/eshop.admin.customise.Controllers.js"></script>
+  <script src="/static/js/eshop-1.0/admin/eshop.admin.Controllers.js"></script>
+  <script src="/static/js/eshop-1.0/admin/eshop.admin.App.js"></script>
+  <script src="/static/js/eshop-1.0/eshop.Directives.js"></script>
+  <script src="/static/js/eshop-1.0/eshop.Controllers.js"></script>
+  <script src="/static/js/eshop-1.0/eshop.Factories.js"></script>
   <!-- <script src="/static/js/angular-ui-0.11.0/ui-bootstrap.min.js"></script> -->
 </head>
 <body>
@@ -40,22 +43,22 @@
       <div id="mainArea">
 
 	<!-- Shop View -->
-        <div id="shopView" ng-show="toggler.showShoppingView" ng-controller="ShopController">
+        <div id="shopView" ng-show="toggler.showShoppingView" ng-controller="ControllerCustomise">
 	  {% include "shopView.tpl" %}
         </div> <!--/.shopView -->
 
         <!-- Login View -->
-        <div id="loginView" ng-show="toggler.showLoginView" ng-controller="FormLoginController">
+        <div id="loginView" ng-show="toggler.showLoginView" ng-controller="ControllerLogin">
           {% include "loginView.tpl" %}
         </div> 
 	
 	<!-- Registration View -->
-	<div id="registerView" ng-show="toggler.showSignUpView" ng-controller="FormSignUpController">
+	<div id="registerView" ng-show="toggler.showSignUpView" ng-controller="ControllerRegister">
           {% include "registerView.tpl" %}
         </div>
 
 	<!-- Personal Information View -->
-        <div id="personalView" ng-show="toggler.showPersonalView" ng-controller="FormLoginController">
+        <div id="personalView" ng-show="toggler.showPersonalView" ng-controller="ControllerLogin">
           {% include "personalView.tpl" %}
         </div>
 

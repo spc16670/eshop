@@ -58,7 +58,7 @@
         </div> <!--/.shopView -->
 
 
-        <div id="emenuCategoriesView" ng-show="shopToggler.showEmenuCategories">
+        <div id="emenuCategoriesView" ng-controller="ControllerCategories" ng-show="shopToggler.showEmenuCategories">
           {% include "emenuCategories.tpl" %}
         </div> <!--/.shopView -->
 
