@@ -20,8 +20,8 @@
 
          <ul class="nav navbar-nav navbar-right">
 
-           <li ng-class="{ active: toggler.showShoppingView }">
-               <a href="#" ng-click="visible('showShoppingView')">eMenu</a>
+           <li ng-class="{ active: toggler.showCustomiseView }">
+               <a href="#" ng-click="visible('showCustomiseView')">eMenu</a>
            </li> 
 
            <li class="dropdown">
@@ -32,7 +32,7 @@
                <ul class="dropdown-menu">
 		 <li ng-if="currentUser.isLogged" class="dropdown-header">Administration</li>	
                  <li ng-if="!currentUser.isLogged">
-                   <a id="btn-signup" href="#" ng-click="visible('showSignUpView')">Sign Up</a>
+                   <a id="btn-signup" href="#" ng-click="visible('showRegisterView')">Sign Up</a>
                  </li>
 		 <li ng-if="currentUser.isLogged">
 		   <a id="btn-personal" href="#" ng-click="visible('showPersonalView')">Personal Information</a>

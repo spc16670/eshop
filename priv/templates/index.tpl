@@ -10,7 +10,7 @@
   <link rel="shortcut icon" href="/static/images/favicon.ico">
   <link rel="stylesheet" href="/static/css/bootstrap-3.1.1/bootstrap.min.css">
   <link rel="stylesheet" href="/static/css/animate-3.1.1/animate.css">
-  <link rel="stylesheet" href="/static/css/eshop-1.0/eshop.css">
+  <link rel="stylesheet" href="/static/css/eshop-1.0.0/eshop.css">
   <link rel="stylesheet" href="/static/css/angular-busy-4.0.0/angular-busy.min.css">
   <link rel="stylesheet" href="/static/css/angular-xeditable-0.1.8/xeditable.css">
   <script src="/static/js/jquery-1.11.1/jquery.min.js"></script>
@@ -22,13 +22,13 @@
   <script src="/static/js/angular-busy-4.0.0/angular-busy.min.js"></script>
   <script src="/static/js/angular-xeditable-0.1.8/xeditable.min.js"></script>
 
-  <script src="/static/js/eshop-1.0/admin/customise/categories/eshop.admin.customise.categories.Controllers.js"></script>
-  <script src="/static/js/eshop-1.0/admin/customise/eshop.admin.customise.Controllers.js"></script>
-  <script src="/static/js/eshop-1.0/admin/eshop.admin.Controllers.js"></script>
-  <script src="/static/js/eshop-1.0/admin/eshop.admin.App.js"></script>
-  <script src="/static/js/eshop-1.0/eshop.Directives.js"></script>
-  <script src="/static/js/eshop-1.0/eshop.Controllers.js"></script>
-  <script src="/static/js/eshop-1.0/eshop.Factories.js"></script>
+  <script src="/static/js/eshop-1.0.0/admin/customise/categories/eshop.admin.customise.categories.Controllers.js"></script>
+  <script src="/static/js/eshop-1.0.0/admin/customise/eshop.admin.customise.Controllers.js"></script>
+  <script src="/static/js/eshop-1.0.0/admin/eshop.admin.Controllers.js"></script>
+  <script src="/static/js/eshop-1.0.0/admin/eshop.admin.App.js"></script>
+  <script src="/static/js/eshop-1.0.0/eshop.Directives.js"></script>
+  <script src="/static/js/eshop-1.0.0/eshop.Controllers.js"></script>
+  <script src="/static/js/eshop-1.0.0/eshop.Factories.js"></script>
   <!-- <script src="/static/js/angular-ui-0.11.0/ui-bootstrap.min.js"></script> -->
 </head>
 <body>
@@ -42,10 +42,10 @@
     <div class="container-fluid">
       <div id="mainArea">
 
-	<!-- Shop View -->
-        <div id="shopView" ng-show="toggler.showShoppingView" ng-controller="ControllerCustomise">
-	  {% include "shopView.tpl" %}
-        </div> <!--/.shopView -->
+	<!-- Customise View -->
+        <div id="shopView" ng-show="toggler.showCustomiseView" ng-controller="ControllerCustomise">
+	  {% include "customiseView.tpl" %}
+        </div>
 
         <!-- Login View -->
         <div id="loginView" ng-show="toggler.showLoginView" ng-controller="ControllerLogin">
@@ -53,7 +53,7 @@
         </div> 
 	
 	<!-- Registration View -->
-	<div id="registerView" ng-show="toggler.showSignUpView" ng-controller="ControllerRegister">
+	<div id="registerView" ng-show="toggler.showRegisterView" ng-controller="ControllerRegister">
           {% include "registerView.tpl" %}
         </div>
 

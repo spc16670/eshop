@@ -16,7 +16,7 @@ eshopControllers.controller('ControllerAdminMain', ['$scope','FactoryUser',
   $scope.$watch(function() {return FactoryUser.user},function() {
     $scope.currentUser = FactoryUser.user;
     if ($scope.currentUser.isLogged) {
-      $scope.visible('showShoppingView');
+      $scope.visible('showCustomiseView');
     } else {
       $scope.visible('showLoginView');
     }
@@ -29,8 +29,8 @@ eshopControllers.controller('ControllerAdminMain', ['$scope','FactoryUser',
 
   // view display 
   $scope.toggler = {
-    'showSignUpView':false
-    ,'showShoppingView':true
+    'showRegisterView':false
+    ,'showCustomiseView':true
     ,'showLoginView':false
     ,'showBasketView':false
     ,'showPersonalView':false

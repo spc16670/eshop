@@ -28,7 +28,7 @@ eshopControllers.controller('ControllerLogin', ['$scope','FactoryUser',
   };
 
   $scope.$on("login:success",function(event,msg) {
-    $scope.visible('showShoppingView');
+    $scope.visible('showCustomiseView');
   });
 
   try {
