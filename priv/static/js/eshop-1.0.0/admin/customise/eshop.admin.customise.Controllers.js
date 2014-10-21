@@ -7,12 +7,12 @@ eshopControllers.controller('ControllerCustomise', ['$scope',function($scope) {
   
   // view display 
   $scope.shopToggler = {
-    'showEmenuStart':true
-    ,'showEmenuLook':false
-    ,'showEmenuCategories':false
-    ,'showEmenuItems':false
-    ,'showEmenuOffers':false
-    ,'showEmenuResult':false
+    'showCustomiseStart':true
+    ,'showCustomiseLook':false
+    ,'showCustomiseCategories':false
+    ,'showCustomiseItems':false
+    ,'showCustomiseOffers':false
+    ,'showCustomiseResult':false
   };
 
   $scope.shopVisible = function(view) {

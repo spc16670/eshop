@@ -2,6 +2,7 @@
 var eshopApp = angular.module('AppAdmin', [
   'ngRoute'
   ,'ngAnimate'
+  ,'ui.bootstrap'
   ,'eshop.Controllers'
   ,'eshop.admin.Controllers'
   ,'eshop.admin.customise.Controllers'

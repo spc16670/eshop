@@ -55,3 +55,42 @@ body {
   border-top-right-radius: 0;
 }
 
+/* downloaded from https://gist.github.com/n00b2pr0/6927440#file-bs3-panel-heading-pagination-html
+ * Used for Items admin menu */
+
+.panel-heading .pagination-panel, 
+.panel-footer .pagination-panel {
+    margin: -11px -16px; /* Based off default .panel-heading padding */
+    
+    > li {
+        > a,
+        > span {
+            padding: 10px 18px; /* Based off default .panel-heading padding */
+        }
+    }
+    
+}
+ 
+.panel-heading .pagination-panel {
+    > li {
+        &:last-child {
+            > a,
+            > span {
+                border-bottom-right-radius: 0;
+            }
+        }
+    }
+}
+ 
+.panel-footer .pagination-panel {
+    > li {
+        &:last-child {
+            > a,
+            > span {
+                border-top-right-radius: 0;
+            }
+        }
+    }
+}
+
+/* end of panel paste*/

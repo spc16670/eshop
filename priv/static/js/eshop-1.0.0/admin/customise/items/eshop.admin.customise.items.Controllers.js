@@ -1,17 +1,17 @@
 
-var eshopControllers = angular.module('eshop.admin.customise.categories.Controllers', []);
+var eshopControllers = angular.module('eshop.admin.customise.items.Controllers', []);
 
 //------------------------- formShopController ------------------------
 
-eshopControllers.controller('ControllerCategories', ['$scope','FactoryBullet',
+eshopControllers.controller('ControllerItems', ['$scope','FactoryBullet',
   'FactoryRequest',function($scope,FactoryBullet,FactoryRequest) {
-  $scope.categoriesMessage = "Fetching categories...";
-  $scope.categories = []; 
-  $scope.newCategory = { name: "", description: ""}; 
+  $scope.itemsMessage = "Fetching items...";
+  $scope.items = []; 
+  $scope.newItem = { name: "", description: ""}; 
   
 
   $scope.$watch('shopToggler',function() {
-    $scope.fetchCategories();
+    $scope.fetchItems();
   },true),
 
   $scope.inputValid = function(data, id) {
@@ -20,21 +20,21 @@ eshopControllers.controller('ControllerCategories', ['$scope','FactoryBullet',
     }
   };
 
-  $scope.fetchCategories = function() {
-    var categoriesShown = $scope.shopToggler.showCustomiseCategories;
-    if (categoriesShown == true) {
-      // Refresh categories list
-      $scope.categories = [];
+  $scope.fetchItems = function() {
+    var itemsShown = $scope.shopToggler.showCustomiseItems;
+    if (itemsShown == true) {
+      // Refresh items list
+      $scope.items = [];
       var fetchReq = { 'type': "category", 'action' : "fetch" };
-      var request = FactoryRequest.makeRequest("categories",fetchReq,true);
+      var request = FactoryRequest.makeRequest("items",fetchReq,true);
       var promise = FactoryBullet.send(request);
       $scope.promiseCategories = promise;
       promise.then(function(response) {
-        if (response.operation === "categories") {
+        if (response.operation === "items") {
 	  if (response.data.result == "ok") {
-	    $scope.categories = response.data.data;
+	    $scope.items = response.data.data;
 	  } else {
-	    $scope.categoriesMessage = response.data.msg;
+	    $scope.itemsMessage = response.data.msg;
           }
           console.log('Category: ',response.data);
         } else {
@@ -44,23 +44,23 @@ eshopControllers.controller('ControllerCategories', ['$scope','FactoryBullet',
     };
   };
 
-  $scope.removeCategory = function(index) {
-    var removeCat = $scope.categories[index].data; 
+  $scope.removeItem = function(index) {
+    var removeCat = $scope.items[index].data; 
     var deleteReq = { 'type': "category", 'action' : "delete", 'data' : removeCat };
-    var request = FactoryRequest.makeRequest("categories",deleteReq,true); 
+    var request = FactoryRequest.makeRequest("items",deleteReq,true); 
     var promise = FactoryBullet.send(request);
     console.log("Deleting Category: ",removeCat);
     // This is needed to display the loading dialog
-    $scope.promiseCategories = promise;
+    $scope.promiseItems = promise;
     promise.then(function(response) {
-      if (response.operation === "categories") {
+      if (response.operation === "items") {
         if (response.data.result == "ok") {
           $scope.fetchCategories();
           console.log('Category Modified ',response.data.msg);
         } else {
           console.log('Could not modify ',response.data.msg);
-          $scope.categoriesMessage = response.data.msg;
-          $scope.categories = [];
+          $scope.itemsMessage = response.data.msg;
+          $scope.items = [];
         }
       } else {
         console.log('Invalid response: ',response);
@@ -68,22 +68,22 @@ eshopControllers.controller('ControllerCategories', ['$scope','FactoryBullet',
     });
   };
 
-  $scope.updateCategory = function(data, id) {
+  $scope.updateItem = function(data, id) {
     angular.extend(data, {id: id});
     var upsertReq = { 'type': "category", 'action' : "upsert", 'data' : data };
-    var request = FactoryRequest.makeRequest("categories",upsertReq,true); 
+    var request = FactoryRequest.makeRequest("items",upsertReq,true); 
     var promise = FactoryBullet.send(request);
     // This is needed to display the loading dialog
     $scope.promiseCategories = promise;
     promise.then(function(response) {
-      if (response.operation === "categories") {
+      if (response.operation === "items") {
         if (response.data.result == "ok") {
           $scope.fetchCategories();
           console.log('Category Modified ',response.data);
         } else {
           console.log('Could not modify ',response.data);
-          $scope.categoriesMessage = response.data.msg;
-	  $scope.categories = [];
+          $scope.itemsMessage = response.data.msg;
+	  $scope.items = [];
         }
       } else {
         console.log('Invalid response: ',response);
@@ -92,25 +92,25 @@ eshopControllers.controller('ControllerCategories', ['$scope','FactoryBullet',
   };
 
 
-  $scope.addCategory = function() {
-    if ($scope.formAddCategory.$valid) {
-      var addReq = { 'type': "category", 'action' : "add", 'data' : $scope.newCategory };
-      var request = FactoryRequest.makeRequest("categories",addReq,true); 
+  $scope.addItem = function() {
+    if ($scope.formAddItem.$valid) {
+      var addReq = { 'type': "category", 'action' : "add", 'data' : $scope.newItem };
+      var request = FactoryRequest.makeRequest("items",addReq,true); 
       var promise = FactoryBullet.send(request);
       console.log("Submitting new Category: ",addReq);
       $scope.promiseCategories = promise;
       promise.then(function(response) {
-        if (response.operation === "categories") {
+        if (response.operation === "items") {
           if (response.data.result == "ok") {
-	    $scope.formAddCategory.$setPristine();
-	    $scope.newCategory = { name: "", description: ""};
-            $scope.showAddCategoryItemPanel = false; 
+	    $scope.formAddItem.$setPristine();
+	    $scope.newItem = { name: "", description: ""};
+            $scope.showAddItemPanel = false; 
             console.log('New Category added ',response.data);
-            $scope.fetchCategories();
+            $scope.fetchItems();
           } else {
             console.log('Could not add new category ',response.data);
-            $scope.categoriesMessage = response.data.msg;
-	    $scope.categories = [];
+            $scope.itemsMessage = response.data.msg;
+	    $scope.items = [];
           }
         } else {
           console.log('Invalid response: ',response);

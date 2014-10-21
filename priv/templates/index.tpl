@@ -14,15 +14,17 @@
   <link rel="stylesheet" href="/static/css/angular-busy-4.0.0/angular-busy.min.css">
   <link rel="stylesheet" href="/static/css/angular-xeditable-0.1.8/xeditable.css">
   <script src="/static/js/jquery-1.11.1/jquery.min.js"></script>
-  <script src="/static/js/bootstrap-3.1.1/bootstrap.min.js"></script>
+  <!-- <script src="/static/js/bootstrap-3.1.1/bootstrap.min.js"></script> -->
   <script src="/static/js/bullet-0.4.1/bullet.js"></script>
   <script src="/static/js/angular-1.2.9/angular.min.js"></script>
   <script src="/static/js/angular-1.2.9/angular-route.js"></script>
   <script src="/static/js/angular-1.2.9/angular-animate.min.js"></script>
+  <script src="/static/js/angular-ui-0.11.0/ui-bootstrap-tpls-0.11.0.min.js"></script>
   <script src="/static/js/angular-busy-4.0.0/angular-busy.min.js"></script>
   <script src="/static/js/angular-xeditable-0.1.8/xeditable.min.js"></script>
 
   <script src="/static/js/eshop-1.0.0/admin/customise/categories/eshop.admin.customise.categories.Controllers.js"></script>
+  <script src="/static/js/eshop-1.0.0/admin/customise/items/eshop.admin.customise.items.Controllers.js"></script>
   <script src="/static/js/eshop-1.0.0/admin/customise/eshop.admin.customise.Controllers.js"></script>
   <script src="/static/js/eshop-1.0.0/admin/eshop.admin.Controllers.js"></script>
   <script src="/static/js/eshop-1.0.0/admin/eshop.admin.App.js"></script>

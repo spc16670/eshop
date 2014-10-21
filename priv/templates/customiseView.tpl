@@ -29,50 +29,50 @@
           <li><br></li>
         </ul>
         <ul class="nav nav-sidebar">
-          <li class="active"><a href="#" ng-click="shopVisible('showEmenuStart')">Get Started</a></li>
+          <li class="active"><a href="#" ng-click="shopVisible('showCustomiseStart')">Get Started</a></li>
           <li><hr></hr></li>
         </ul>
         <ul class="nav nav-sidebar">
-          <li><a href="#" ng-click="shopVisible('showEmenuLook')">Look & Feel</a></li>
-          <li><a href="#" ng-click="shopVisible('showEmenuCategories')">Categories</a></li>
-          <li><a href="#" ng-click="shopVisible('showEmenuItems')">Items</a></li>
-          <li><a href="#" ng-click="shopVisible('showEmenuOffers')">Offers</a></li>
+          <li><a href="#" ng-click="shopVisible('showCustomiseLook')">Look & Feel</a></li>
+          <li><a href="#" ng-click="shopVisible('showCustomiseCategories')">Categories</a></li>
+          <li><a href="#" ng-click="shopVisible('showCustomiseItems')">Items</a></li>
+          <li><a href="#" ng-click="shopVisible('showCustomiseOffers')">Offers</a></li>
         </ul>
         <ul class="nav nav-sidebar">
           <li><hr></hr></li>
         </ul>
         <ul class="nav nav-sidebar">
-        <li><a href="" ng-click="shopVisible('showEmenuResult')">Result</a></li>
+        <li><a href="" ng-click="shopVisible('showCustomiseResult')">Result</a></li>
         </ul>
       </div>
 
       <!-- Main Area -->
       <div class="col-md-10" id="main-area">
         <!-- Get Started -->
-        <div id="emenuStartView" ng-show="shopToggler.showEmenuStart">
-          {% include "emenuStart.tpl" %}
+        <div id="customiseStartView" ng-show="shopToggler.showCustomiseStart">
+          {% include "customiseStart.tpl" %}
         </div> <!--/.shopView -->
 
-        <div id="emenuLookView" ng-show="shopToggler.showEmenuLook">
-          {% include "emenuLook.tpl" %}
-        </div> <!--/.shopView -->
-
-
-        <div id="emenuCategoriesView" ng-controller="ControllerCategories" ng-show="shopToggler.showEmenuCategories">
-          {% include "emenuCategories.tpl" %}
-        </div> <!--/.shopView -->
-
-        <div id="emenuItemsView" ng-show="shopToggler.showEmenuItems">
-          {% include "emenuItems.tpl" %}
-        </div> <!--/.shopView -->
-
-        <div id="emenuOffersView" ng-show="shopToggler.showEmenuOffers">
-          {% include "emenuOffers.tpl" %}
+        <div id="customiseLookView" ng-show="shopToggler.showCustomiseLook">
+          {% include "customiseLook.tpl" %}
         </div> <!--/.shopView -->
 
 
-        <div id="emenuResultView" ng-show="shopToggler.showEmenuResult">
-          {% include "emenuResult.tpl" %}
+        <div id="customiseCategoriesView" ng-controller="ControllerCategories" ng-show="shopToggler.showCustomiseCategories">
+          {% include "customiseCategories.tpl" %}
+        </div> <!--/.shopView -->
+
+        <div id="customiseItemsView" ng-show="shopToggler.showCustomiseItems">
+          {% include "customiseItems.tpl" %}
+        </div> <!--/.shopView -->
+
+        <div id="customiseOffersView" ng-show="shopToggler.showCustomiseOffers">
+          {% include "customiseOffers.tpl" %}
+        </div> <!--/.shopView -->
+
+
+        <div id="customiseResultView" ng-show="shopToggler.showCustomiseResult">
+          {% include "customiseResult.tpl" %}
         </div> <!--/.shopView -->
 
       </div> <!-- col-md-10 -->

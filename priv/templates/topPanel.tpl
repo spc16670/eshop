@@ -21,12 +21,12 @@
          <ul class="nav navbar-nav navbar-right">
 
            <li ng-class="{ active: toggler.showCustomiseView }">
-               <a href="#" ng-click="visible('showCustomiseView')">eMenu</a>
+               <a href="#" ng-click="visible('showCustomiseView')">Customise</a>
            </li> 
 
            <li class="dropdown">
              <a ng-if="!currentUser.isLogged" href="#" class="dropdown-toggle" id="btn-account" 
-               data-toggle="dropdown">My Account<b class="caret"></b></a>
+               data-toggle="dropdown">Session<b class="caret"></b></a>
              <a ng-if="currentUser.isLogged" href="#" class="dropdown-toggle" id="btn-account"
                data-toggle="dropdown">{[ currentUser.shopper.fname ]}<b class="caret"></b></a>
                <ul class="dropdown-menu">
@@ -48,7 +48,7 @@
            </li>
 
            <li ng-class="{ active: toggler.showBasketView }">
-             <a href="#" ng-click="visible('showBasketView')">Orders</a>
+             <a href="#" ng-click="visible('showBasketView')">Status</a>
            </li>
          </ul>
 

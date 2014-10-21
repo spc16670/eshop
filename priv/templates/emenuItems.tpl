@@ -1,4 +1,0 @@
-  <div>
-    Items
-  </div>
-
