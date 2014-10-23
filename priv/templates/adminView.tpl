@@ -29,50 +29,50 @@
           <li><br></li>
         </ul>
         <ul class="nav nav-sidebar">
-          <li class="active"><a href="#" ng-click="shopVisible('showCustomiseStart')">Get Started</a></li>
+          <li class="active"><a href="#" ng-click="visibleAdmin('showAdminStart')">Get Started</a></li>
           <li><hr></hr></li>
         </ul>
         <ul class="nav nav-sidebar">
-          <li><a href="#" ng-click="shopVisible('showCustomiseLook')">Look & Feel</a></li>
-          <li><a href="#" ng-click="shopVisible('showCustomiseCategories')">Categories</a></li>
-          <li><a href="#" ng-click="shopVisible('showCustomiseItems')">Items</a></li>
-          <li><a href="#" ng-click="shopVisible('showCustomiseOffers')">Offers</a></li>
+          <li><a href="#" ng-click="visibleAdmin('showAdminLook')">Look & Feel</a></li>
+          <li><a href="#" ng-click="visibleAdmin('showAdminCategories')">Categories</a></li>
+          <li><a href="#" ng-click="visibleAdmin('showAdminItems')">Items</a></li>
+          <li><a href="#" ng-click="visibleAdmin('showAdminOffers')">Offers</a></li>
         </ul>
         <ul class="nav nav-sidebar">
           <li><hr></hr></li>
         </ul>
         <ul class="nav nav-sidebar">
-        <li><a href="" ng-click="shopVisible('showCustomiseResult')">Result</a></li>
+        <li><a href="" ng-click="visibleAdmin('showAdminResult')">Result</a></li>
         </ul>
       </div>
 
       <!-- Main Area -->
       <div class="col-md-10" id="main-area">
         <!-- Get Started -->
-        <div id="customiseStartView" ng-show="shopToggler.showCustomiseStart">
-          {% include "customiseStart.tpl" %}
+        <div id="adminStartView" ng-show="togglerAdmin.showAdminStart">
+          {% include "adminStart.tpl" %}
         </div> <!--/.shopView -->
 
-        <div id="customiseLookView" ng-show="shopToggler.showCustomiseLook">
-          {% include "customiseLook.tpl" %}
-        </div> <!--/.shopView -->
-
-
-        <div id="customiseCategoriesView" ng-controller="ControllerCategories" ng-show="shopToggler.showCustomiseCategories">
-          {% include "customiseCategories.tpl" %}
-        </div> <!--/.shopView -->
-
-        <div id="customiseItemsView" ng-show="shopToggler.showCustomiseItems">
-          {% include "customiseItems.tpl" %}
-        </div> <!--/.shopView -->
-
-        <div id="customiseOffersView" ng-show="shopToggler.showCustomiseOffers">
-          {% include "customiseOffers.tpl" %}
+        <div id="adminLookView" ng-show="togglerAdmin.showAdminLook">
+          {% include "adminLook.tpl" %}
         </div> <!--/.shopView -->
 
 
-        <div id="customiseResultView" ng-show="shopToggler.showCustomiseResult">
-          {% include "customiseResult.tpl" %}
+        <div id="adminCategoriesView" ng-controller="ControllerCategories" ng-show="togglerAdmin.showAdminCategories">
+          {% include "adminCategories.tpl" %}
+        </div> <!--/.shopView -->
+
+        <div id="adminItemsView" ng-show="togglerAdmin.showAdminItems">
+          {% include "adminItems.tpl" %}
+        </div> <!--/.shopView -->
+
+        <div id="adminOffersView" ng-show="togglerAdmin.showAdminOffers">
+          {% include "adminOffers.tpl" %}
+        </div> <!--/.shopView -->
+
+
+        <div id="adminResultView" ng-show="togglerAdmin.showAdminResult">
+          {% include "adminResult.tpl" %}
         </div> <!--/.shopView -->
 
       </div> <!-- col-md-10 -->

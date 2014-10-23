@@ -1,12 +1,11 @@
 
-var eshopApp = angular.module('AppAdmin', [
+var eshopApp = angular.module('EShop', [
   'ngRoute'
   ,'ngAnimate'
   ,'ui.bootstrap'
   ,'eshop.Controllers'
   ,'eshop.admin.Controllers'
-  ,'eshop.admin.customise.Controllers'
-  ,'eshop.admin.customise.categories.Controllers'
+  ,'eshop.admin.categories.Controllers'
   ,'eshop.Directives'
   ,'eshop.Factories'
   ,'xeditable'
@@ -28,7 +27,7 @@ eshopApp.config(function($routeProvider) {
     // route for the home page
     .when('/', {
       template : " ",
-      controller  : 'ControllerAdminMain',
+      controller  : 'ControllerLanding',
       animation : 'slide'
     })
 });

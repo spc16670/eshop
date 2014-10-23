@@ -4,50 +4,31 @@ var eshopControllers = angular.module('eshop.admin.Controllers', []);
 
 //--------------------------- mainController ---------------------------
 
-eshopControllers.controller('ControllerAdminMain', ['$scope','FactoryUser',
+eshopControllers.controller('ControllerAdmin', ['$scope','FactoryUser',
   function($scope, FactoryUser) { 
- 
-  $scope.currentUser = FactoryUser.authenticate({ 'operation': "initialize"});
 
-  $scope.$watch(function() {return FactoryUser.loginPromise},function() {
-    $scope.promiseLogin = FactoryUser.loginPromise;
-  }),
-
-  $scope.$watch(function() {return FactoryUser.user},function() {
-    $scope.currentUser = FactoryUser.user;
-    if ($scope.currentUser.isLogged) {
-      $scope.visible('showCustomiseView');
-    } else {
-      $scope.visible('showLoginView');
-    }
-  }),
-
-  $scope.logout = function() {
-    FactoryUser.logout();
-    $scope.visible('showLoginView');
-  };
-
-  // view display 
-  $scope.toggler = {
-    'showRegisterView':false
-    ,'showCustomiseView':true
-    ,'showLoginView':false
-    ,'showBasketView':false
-    ,'showPersonalView':false
+  $scope.togglerAdmin = {
+    'showAdminStart':true
+    ,'showAdminLook':false
+    ,'showAdminCategories':false
+    ,'showAdminItems':false
+    ,'showAdminOffers':false
+    ,'showAdminResult':false
   };
  
-  $scope.visible = function(view) {
-    for (var key in $scope.toggler) {
-      if ($scope.toggler.hasOwnProperty(key)) {
+  $scope.visibleAdmin = function(view) {
+    for (var key in $scope.togglerAdmin) {
+      if ($scope.togglerAdmin.hasOwnProperty(key)) {
         if (key !== view) {
-	  if ($scope.toggler[key] == true) {
-	    $scope.toggler[key] = false;
+	  if ($scope.togglerAdmin[key] == true) {
+	    $scope.togglerAdmin[key] = false;
           }
         } else {
-	  $scope.toggler[key] = true;
+	  $scope.togglerAdmin[key] = true;
 	}
       }
     }
   };
+ 
 }]);
 

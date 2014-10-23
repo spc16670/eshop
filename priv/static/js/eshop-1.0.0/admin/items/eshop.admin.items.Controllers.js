@@ -1,5 +1,5 @@
 
-var eshopControllers = angular.module('eshop.admin.customise.items.Controllers', []);
+var eshopControllers = angular.module('eshop.admin.items.Controllers', []);
 
 //------------------------- formShopController ------------------------
 

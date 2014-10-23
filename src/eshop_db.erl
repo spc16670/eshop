@@ -52,7 +52,7 @@ insert_test_user() ->
       _ -> ok
     end,
     User = estore:new(pgsql,user),
-    UserRecord = User#'user'{'email'="asdf@asdf.asdf", 'password'="asdfqwer"},
+    UserRecord = User#'user'{'email'="asdf@asdf.asdf", 'password'="asdfqwer", 'role'="admin"},
     {ok,UserId} = estore:save(pgsql,UserRecord),
     Shopper = estore:new(pgsql,shopper),
     ShopperRecord = Shopper#'shopper'{'fname'="szymon",'mname'="piotr"},

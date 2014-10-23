@@ -33,7 +33,7 @@
 
 	      <td>
 	        <!-- editable status (select-local) -->
-	        <span editable-textarea="category.data.description" e-name="description" e-rows="7" e-style="width:100%;overflow:auto;resize:none" e-form="rowform" onbeforesave="inputValid($data, category.data.id)" e-required>
+	        <span editable-textarea="category.data.description" e-name="description" e-rows="7" e-form="rowform" onbeforesave="inputValid($data, category.data.id)" e-required>
 	        {[ category.data.description ]}
 	        </span>
 	      </td>

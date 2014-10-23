@@ -103,6 +103,7 @@ eshopFactories.factory('FactoryUser', ['FactoryBullet','FactoryStorage'
             var interatedObj = data.data[obj];
 	    if (interatedObj.type === "user") {
 	      UserService.user['email'] = interatedObj.data.email;
+	      UserService.user['role'] = interatedObj.data.role;
 	    } else if (interatedObj.type === "shopper") {
 	        UserService.user['shopper'] = interatedObj.data;
 	    }

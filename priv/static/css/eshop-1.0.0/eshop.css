@@ -94,3 +94,8 @@ body {
 }
 
 /* end of panel paste*/
+
+/* This is needed for thetext area in editable Angular forms to take 100% of width*/
+.editable-wrap {
+    width: 100%;
+}

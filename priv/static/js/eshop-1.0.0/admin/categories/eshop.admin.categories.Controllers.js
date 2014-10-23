@@ -1,5 +1,5 @@
 
-var eshopControllers = angular.module('eshop.admin.customise.categories.Controllers', []);
+var eshopControllers = angular.module('eshop.admin.categories.Controllers', []);
 
 //------------------------- formShopController ------------------------
 
@@ -10,7 +10,7 @@ eshopControllers.controller('ControllerCategories', ['$scope','FactoryBullet',
   $scope.newCategory = { name: "", description: ""}; 
   
 
-  $scope.$watch('shopToggler',function() {
+  $scope.$watch('togglerAdmin',function() {
     $scope.fetchCategories();
   },true),
 
@@ -21,7 +21,7 @@ eshopControllers.controller('ControllerCategories', ['$scope','FactoryBullet',
   };
 
   $scope.fetchCategories = function() {
-    var categoriesShown = $scope.shopToggler.showCustomiseCategories;
+    var categoriesShown = $scope.togglerAdmin.showAdminCategories;
     if (categoriesShown == true) {
       // Refresh categories list
       $scope.categories = [];
