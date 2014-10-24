@@ -6,6 +6,7 @@ var eshopApp = angular.module('EShop', [
   ,'eshop.Controllers'
   ,'eshop.admin.Controllers'
   ,'eshop.admin.categories.Controllers'
+  ,'eshop.admin.categories.Factories'
   ,'eshop.Directives'
   ,'eshop.Factories'
   ,'xeditable'
@@ -20,6 +21,7 @@ eshopApp.config(function($interpolateProvider){
 eshopApp.run(function(editableOptions) {
   editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 });
+
 
 // configure our routes
 eshopApp.config(function($routeProvider) {

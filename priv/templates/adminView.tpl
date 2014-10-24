@@ -42,7 +42,7 @@
           <li><hr></hr></li>
         </ul>
         <ul class="nav nav-sidebar">
-        <li><a href="" ng-click="visibleAdmin('showAdminResult')">Result</a></li>
+        <li><a href="" ng-click="visibleAdmin('showAdminUsers')">Users</a></li>
         </ul>
       </div>
 
@@ -71,8 +71,8 @@
         </div> <!--/.shopView -->
 
 
-        <div id="adminResultView" ng-show="togglerAdmin.showAdminResult">
-          {% include "adminResult.tpl" %}
+        <div id="adminUsersView" ng-show="togglerAdmin.showAdminUsers">
+          {% include "adminUsers.tpl" %}
         </div> <!--/.shopView -->
 
       </div> <!-- col-md-10 -->

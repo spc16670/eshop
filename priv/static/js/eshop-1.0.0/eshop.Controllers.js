@@ -20,7 +20,6 @@ eshopControllers.controller('ControllerLanding', ['$scope','FactoryUser',
     ,'showPersonal':false
   };
 
-
   // Mutate the toggler object in accordance to user role 
   $scope.$watch(function() {return FactoryUser.user},function() {
     $scope.currentUser = FactoryUser.user;
@@ -44,39 +43,6 @@ eshopControllers.controller('ControllerLanding', ['$scope','FactoryUser',
     $scope.visible('showShop');
   };
 
-
-//  $scope.switchVisible = function(viewKey,togglerVar) {
-//    for (var key in togglerVar) {
-//      console.log('View, var, key',[viewKey,togglerVar,key]);
-//      // if the toggler has the key
-//      if (togglerVar.hasOwnProperty(key)) {
-//        // and the key is not an object
-//        if (typeof(togglerVar[key]) !== 'object') {
-//	  // if the key is not like the viewKey
-//	  if (key !== viewKey) {
-//            // make sure its value is false 
-//            if(togglerVar[key] == true) {
-//	      togglerVar[key] = false;
-//	    }
-//	  // otherwise set it to true
-//	  } else {
-//	    togglerVar[key] = true;
-//	  }
-//        // if it is 
-//        } else {
-//	  switchVisiable(viewKey,togglerVar[key]);
-//        }
-//      // if not do nothing
-//      } else {
-//      }
-//    }  
-//  };
-//
-//
-//  $scope.visible = function(key) {
-//    switchVisible(key,$scope.toggler);
-//  };
-//
   $scope.visible = function(view) {
     for (var key in $scope.toggler) {
       if ($scope.toggler.hasOwnProperty(key)) {
@@ -95,15 +61,51 @@ eshopControllers.controller('ControllerLanding', ['$scope','FactoryUser',
 
 //------------------------ ControllerShop ------------------------
 
-eshopControllers.controller('ControllerShop', ['$scope','FactoryUser',
-  'FactoryAlert','FactoryRequest',function($scope,FactoryUser
-  ,FactoryAlert,FactoryRequest) {
-  
-//  $scope.toggler = $scope.$parent.toggler;
+eshopControllers.controller('ControllerShop', ['$scope',
+  'FactoryCategories',function($scope,FactoryCategories) {
 
-//  $scope.$watch('toggler',function() {
-//    console.log($scope.toggler);
-//  },true);
+  $scope.activeCategory = null;
+  $scope.categories = [];
+  $scope.items = [];
+
+  $scope.$watch(function(){return FactoryCategories.state},function() {
+    var categories = FactoryCategories.categories;
+    if (categories != null && categories.length > 0) {
+      for (var catIndex in categories) {
+        angular.extend(categories[catIndex], {shown: false}); 
+      }
+      categories[0].shown = true;
+      $scope.activeCategory = categories[0].data;
+      $scope.categories = categories; 
+    }
+  },true);
+
+  $scope.fetchCategories = function() {
+    FactoryCategories.fetchCategories();
+    $scope.promiseCategories = FactoryCategories.promise; 
+  };
+
+  $scope.categories = $scope.fetchCategories();
+
+  $scope.$watch('activeCategory',function(){
+    console.log($scope.activeCategory);    
+  },true);
+
+  $scope.fetchItems = function() {
+    
+  };
+
+  $scope.visible = function(category) {
+    for (var catIndex in $scope.categories) {
+      if ($scope.categories[catIndex].data.id === category.data.id) {
+        $scope.categories[catIndex].shown = true;
+        $scope.activeCategory = $scope.categories[catIndex].data;
+      } else {
+        $scope.categories[catIndex].shown = false;
+      }
+    }
+  };
+
 
 }]);
  
