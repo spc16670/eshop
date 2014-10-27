@@ -6,18 +6,14 @@
 	<div class="panel panel-default">
 
 	  <div class="panel-heading">
-	    <h4 class="pull-left">Items</h4>
+	    <h4 class="pull-left">Item</h4>
  	    <div class="dropdown pull-right">
 	      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-		Category
+		{[ $parent.categories[0].data.name ]}
 		<span class="caret"></span>
 	      </button>
-	      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-		<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-		<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-		<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-		<li role="presentation" class="divider"></li>
-		<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
+	      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-repeat="category in $parent.categories">
+		<li role="presentation"><a role="menuitem" tabindex="-1" href="#">{[ category.data.name ]}</a></li>
 	      </ul>
 	    </div> 
 	    <div class="clearfix"></div>

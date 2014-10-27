@@ -62,7 +62,7 @@
           {% include "adminCategories.tpl" %}
         </div> <!--/.shopView -->
 
-        <div id="adminItemsView" ng-show="togglerAdmin.showAdminItems">
+        <div id="adminItemsView" ng-controller="ControllerItems" ng-show="togglerAdmin.showAdminItems">
           {% include "adminItems.tpl" %}
         </div> <!--/.shopView -->
 

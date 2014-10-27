@@ -128,18 +128,19 @@ categories({Sid,CbId},<<"add">>,Record,_TokenData) ->
   reply(Sid,Json);
  
 categories({Sid,CbId},<<"fetch">>,_Data,_TokenData) ->
-  {Result,Count,CatsKV} = case estore:find(pgsql,category,[],[],all,0) of
+  {Result,Msg,Count,CatsKV} = case estore:find(pgsql,category,[],[],all,0) of
     [] -> 
-      {<<"error">>,<<"0">>,[]};
+      {<<"error">>,<<"No Categories">>,<<"0">>,[]};
     Dept when is_tuple(Dept) -> 
-      {<<"ok">>,<<"1">>,[estore_json:record_to_kv(Dept)]};
+      {<<"ok">>,<<"ok">>,<<"1">>,[estore_json:record_to_kv(Dept)]};
     Depts when is_list(Depts) -> 
-      {<<"ok">>,<<"multiple">>,estore_json:record_to_kv(Depts)}
+      {<<"ok">>,<<"multiple">>,eshop_utls:integer_to_binary(length(Depts))
+        ,estore_json:record_to_kv(Depts)}
   end,
   Json = json_reply(
     {CbId,<<"categories">>}
     ,{<<"fetch">>,Result}
-    ,[{<<"count">>,Count},{<<"data">>,CatsKV}]
+    ,[{<<"msg">>,Msg},{<<"count">>,Count},{<<"data">>,CatsKV}]
   ), 
   reply(Sid,Json).
   

@@ -7,6 +7,7 @@ var eshopApp = angular.module('EShop', [
   ,'eshop.admin.Controllers'
   ,'eshop.admin.categories.Controllers'
   ,'eshop.admin.categories.Factories'
+  ,'eshop.admin.items.Controllers'
   ,'eshop.Directives'
   ,'eshop.Factories'
   ,'xeditable'

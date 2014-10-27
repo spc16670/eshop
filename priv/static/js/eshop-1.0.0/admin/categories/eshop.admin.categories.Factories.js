@@ -19,27 +19,28 @@ eshopFactories.factory('FactoryCategories', ['FactoryRequest','FactoryBullet',
     var promise = FactoryBullet.send(request);
     Service.promise = promise;
     promise.then(function(response) {
+      console.log('Response',response);
       if (response.operation === "categories") {
 	if (response.data.result == "ok") {
 	  Service.message = response.data.msg;
 	  Service.categories = response.data.data;
           Service.state = 2;
-	} else if(response.data.data.length == 0) {
-	  Service.message = "No categories.";
+	} else if(response.data.result == "error") {
+	  Service.message = response.data.msg;
           console.log('service msg: ',Service.message);
-	  Service.categories = [];
-          Service.state = 3;
+          Service.categories = [];
+          Service.state = 4;
 	} else {
 	  Service.message = response.data.msg;
 	  Service.categories = [];
-          Service.state = 4;
+          Service.state = 5;
         };
         console.log('Category: ',response.data);
       } else {
         Service.message = "Invalid response";
 	Service.categories = [];
         console.log('Invalid response: ',response);
-        Service.state = 5;
+        Service.state = 6;
       }
     });
   };

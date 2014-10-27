@@ -10,8 +10,8 @@
 
           <ul class="list-group">
 	    <!-- No categories available -->
-            <li class="list-group-item" ng-if="categories.length == 0">
-	      {[ categoriesMessage ]}
+            <li class="list-group-item" ng-if="$parent.categories.length == 0">
+	      {[ $parent.categoriesMessage ]}
 	    </li>
           </ul>
 
@@ -22,25 +22,25 @@
 	      <td style="width:40%">Description</td>
 	      <td style="width:20%">Edit</td>
 	    </tr>
-	    <tr ng-repeat="category in categories">
+	    <tr ng-repeat="category in $parent.categories">
 
 	      <td>
 		<!-- editable username (text with validation) -->
-	       <span editable-text="category.data.name" e-name="name" e-form="rowform" onbeforesave="inputValid($data, category.data.id)" e-required>
+	       <span editable-text="category.data.name" e-name="name" e-form="rowform" onbeforesave="inputValid($data,category.data.id)" e-required>
                 {[ category.data.name ]}
 	        </span>
 	      </td>
 
 	      <td>
 	        <!-- editable status (select-local) -->
-	        <span editable-textarea="category.data.description" e-name="description" e-rows="7" e-form="rowform" onbeforesave="inputValid($data, category.data.id)" e-required>
+	        <span editable-textarea="category.data.description" e-name="description" e-rows="7" e-form="rowform" onbeforesave="inputValid($data,category.data.id)" e-required>
 	        {[ category.data.description ]}
 	        </span>
 	      </td>
 
 	      <td style="white-space: nowrap">
 	        <!-- form -->
-	        <form editable-form name="rowform" onbeforesave="updateCategory($data, category.data.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="false">
+	        <form editable-form name="rowform" onbeforesave="updateCategory($data,category.data.id)" ng-show="rowform.$visible" class="form-buttons form-inline" shown="false">
 	          <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
                     Save
 	          </button>

@@ -12,7 +12,11 @@
 
 %% --------------------------------------------------------------------
 
+is_authorised(null) ->
+  io:fwrite("Unauthorised access attempted~n",[]),
+  {error,<<"No Token">>};
 is_authorised(undefined) ->
+  io:fwrite("Unauthorised access attempted~n",[]),
   {error,<<"No Token">>};
 is_authorised(Data) when is_list(Data) ->
   Token = eshop_utls:get_value(<<"token">>,Data,undefined),
@@ -20,7 +24,9 @@ is_authorised(Data) when is_list(Data) ->
 is_authorised(Token) when is_binary(Token) ->
   SecretKey = eshop_utls:get_env(basic_config,jwt_secret),
   case ejwt:decode(Token,SecretKey) of
-    error -> {error,<<"jwt_error">>};
+    error -> 
+      io:fwrite("Unauthorised access attempted~n",[]),
+      {error,<<"jwt_error">>};
     Decoded when is_list(Decoded) -> {ok,Decoded}
   end.
 

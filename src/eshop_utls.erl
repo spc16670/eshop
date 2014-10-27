@@ -5,6 +5,7 @@
   ,root_dir/0
   ,priv_dir/0
   ,etc_dir/0
+  ,integer_to_binary/1
   ,get_config/0
   ,read_config/1
   ,get_value/3
@@ -36,6 +37,9 @@ to_hex([H|T]) ->
  
 to_digit(N) when N < 10 -> $0 + N;
 to_digit(N) -> $a + N-10.
+
+integer_to_binary(Int) ->
+  list_to_binary(integer_to_list(Int)).
 
 %% @private Returns the working directory, work for development and production.
 

@@ -34,7 +34,6 @@ eshopControllers.controller('ControllerLanding', ['$scope','FactoryUser',
       $scope.visible('showShop');
     } else {
       $scope.toggler.showRegister = false;
-      $scope.visible('showShop');
     }
   }),
 
@@ -66,6 +65,7 @@ eshopControllers.controller('ControllerShop', ['$scope',
 
   $scope.activeCategory = null;
   $scope.categories = [];
+  $scope.categoriesMsg = "";
   $scope.items = [];
 
   $scope.$watch(function(){return FactoryCategories.state},function() {
@@ -77,6 +77,8 @@ eshopControllers.controller('ControllerShop', ['$scope',
       categories[0].shown = true;
       $scope.activeCategory = categories[0].data;
       $scope.categories = categories; 
+    } else { 
+      $scope.categoriesMsg = "No categories";
     }
   },true);
 
@@ -105,6 +107,8 @@ eshopControllers.controller('ControllerShop', ['$scope',
       }
     }
   };
+
+
 
 
 }]);
