@@ -9,11 +9,13 @@
 	    <h4 class="pull-left">Item</h4>
  	    <div class="dropdown pull-right">
 	      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
-		{[ $parent.categories[0].data.name ]}
+		{[ $parent.selectedCategory.data.name ]}
 		<span class="caret"></span>
 	      </button>
-	      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" ng-repeat="category in $parent.categories">
-		<li role="presentation"><a role="menuitem" tabindex="-1" href="#">{[ category.data.name ]}</a></li>
+	      <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" >
+		<li role="presentation" ng-repeat="category in $parent.categories">
+		  <a role="menuitem" ng-click="selectedCategory(category)" tabindex="-1" href="#">{[ category.data.name ]}</a>
+		</li>
 	      </ul>
 	    </div> 
 	    <div class="clearfix"></div>

@@ -4,6 +4,7 @@
   new_registration/2
   ,authenticate/2
   ,categories/4
+  ,items/4
 ]).
 
 -export([
@@ -139,6 +140,55 @@ categories({Sid,CbId},<<"fetch">>,_Data,_TokenData) ->
   end,
   Json = json_reply(
     {CbId,<<"categories">>}
+    ,{<<"fetch">>,Result}
+    ,[{<<"msg">>,Msg},{<<"count">>,Count},{<<"data">>,CatsKV}]
+  ), 
+  reply(Sid,Json).
+
+%% ----------------------------------------------------------------------------
+
+%% @doc This function requires a valid token to return Items.
+
+items({Sid,CbId},<<"delete">>,Record,_TokenData) ->
+  {Result,Msg} = case estore:delete(pgsql,Record) of
+    {ok,_Count} -> {<<"ok">>,<<"Deleted">>};
+    {error,_Error} -> {<<"error">>,<<"Could not delete">>}
+  end,
+  Json = json_reply(
+    {CbId,<<"items">>}
+    ,{<<"delete">>,Result}
+    ,[{<<"msg">>,Msg}]),
+  reply(Sid,Json);
+
+items({Sid,CbId},<<"upsert">>,Record,_TokenData) ->
+  items({Sid,CbId},<<"add">>,Record,_TokenData);
+items({Sid,CbId},<<"add">>,Record,_TokenData) ->
+  {Result,Msg} = case estore:save(pgsql,Record) of
+    {ok,_Id} -> {<<"ok">>,<<"Saved">>};
+    {error,_Error} -> {<<"error">>,<<"Could not save">>}
+  end,
+  Json = json_reply(
+    {CbId,<<"items">>}
+    ,{<<"add">>,Result}
+    ,[{<<"msg">>,Msg}]), 
+  reply(Sid,Json);
+ 
+items({Sid,CbId},<<"fetch">>,Data,_TokenData) ->
+  Offset = eshop_utls:get_value(<<"offset">>,Data,undefined), 
+  Limit = eshop_utls:get_value(<<"limit">>,Data,undefined), 
+  CategoryId = eshop_utls:get_value(<<"category_id">>,Data,undefined), 
+  {Result,Msg,Count,CatsKV} = case estore:find(pgsql,item,
+    [{'category_id','=',CategoryId}],[],Limit,Offset) of
+    [] -> 
+      {<<"error">>,<<"No Items">>,<<"0">>,[]};
+    Dept when is_tuple(Dept) -> 
+      {<<"ok">>,<<"ok">>,<<"1">>,[estore_json:record_to_kv(Dept)]};
+    Depts when is_list(Depts) -> 
+      {<<"ok">>,<<"multiple">>,eshop_utls:integer_to_binary(length(Depts))
+        ,estore_json:record_to_kv(Depts)}
+  end,
+  Json = json_reply(
+    {CbId,<<"items">>}
     ,{<<"fetch">>,Result}
     ,[{<<"msg">>,Msg},{<<"count">>,Count},{<<"data">>,CatsKV}]
   ), 

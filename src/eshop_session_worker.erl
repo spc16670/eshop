@@ -79,33 +79,34 @@ dispatch_request({<<"register">>,Data,CbId},Sid) ->
 dispatch_request({<<"login">>,Data,CbId},Sid) ->
   eshop:authenticate({Sid,CbId},Data);
 
-dispatch_request({<<"categories">>,Data,CbId},Sid) ->
+dispatch_request({Op,Data,CbId},Sid) when Op =:= <<"categories">> orelse Op =:= <<"items">> ->
   Action = eshop_utls:get_value(<<"action">>,Data,undefined),
   Token = eshop_utls:get_value(<<"token">>,Data,undefined),
-  dispatch_request_action({<<"categories">>,Action,Token,Data,CbId},Sid);
+  dispatch_request_action({Op,Action,Token,Data,CbId},Sid);
 
 dispatch_request({Type,Data,_CbId},_Sid) -> 
   io:fwrite("UNHANDLED::: ~p ~p ~n",[Type,Data]).
 
 %% ----------------------------------------------------------------------------
 
-dispatch_request_action({<<"categories">>,<<"delete">>,Token,Data,CbId},Sid) -> 
-  Record = estore:json_to_record(Data),
-  dispatch_authorised_request({<<"categories">>,<<"delete">>,Record,CbId},Sid,eshop_session:is_authorised(Token));
-dispatch_request_action({<<"categories">>,<<"upsert">>,Token,Data,CbId},Sid) -> 
-  Record = estore:json_to_record(Data),
-  dispatch_authorised_request({<<"categories">>,<<"upsert">>,Record,CbId},Sid,eshop_session:is_authorised(Token));
-dispatch_request_action({<<"categories">>,<<"add">>,Token,Data,CbId},Sid) -> 
-  Record = estore:json_to_record(Data),
-  dispatch_authorised_request({<<"categories">>,<<"add">>,Record,CbId},Sid,eshop_session:is_authorised(Token));
 dispatch_request_action({<<"categories">>,<<"fetch">>,Token,Data,CbId},Sid) ->
-  dispatch_authorised_request({<<"categories">>,<<"fetch">>,Data,CbId},Sid,eshop_session:is_authorised(Token)).
+  Auth = eshop_session:is_authorised(Token),
+  dispatch_authorised_request({<<"categories">>,<<"fetch">>,Data,CbId},Sid,Auth);
+
+dispatch_request_action({<<"items">>,<<"fetch">>,Token,Data,CbId},Sid) ->
+  Auth = eshop_session:is_authorised(Token),
+  dispatch_authorised_request({<<"items">>,<<"fetch">>,Data,CbId},Sid,Auth);
+
+dispatch_request_action({Op,Action,Token,Data,CbId},Sid) -> 
+  Auth = eshop_session:is_authorised(Token),
+  Record = estore:json_to_record(Data),
+  dispatch_authorised_request({Op,Action,Record,CbId},Sid,Auth).
 
 %% ----------------------------------------------------------------------------
 
-dispatch_authorised_request({Type,Action,Data,CbId},Sid,{ok,TokenData}) ->
-  io:fwrite("AUTH RECEIVED::: ~p ~p ~p ~n",[Type,Data,CbId]),
-  Method = binary_to_atom(Type,'utf8'),
+dispatch_authorised_request({Op,Action,Data,CbId},Sid,{ok,TokenData}) ->
+  io:fwrite("AUTH RECEIVED::: ~p ~p ~p ~n",[Op,Data,CbId]),
+  Method = binary_to_atom(Op,'utf8'),
   eshop:Method({Sid,CbId},Action,Data,TokenData);
 dispatch_authorised_request({Type,Action,Data,CbId},Sid,{error,_TokenData}) ->
   io:fwrite("UNAUTH RECEIVED::: ~p ~p ~p ~n",[Type,Data,CbId]),

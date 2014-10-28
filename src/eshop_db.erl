@@ -2,6 +2,9 @@
 
 -export([
   init/0
+  ,insert_test_user/0
+  ,insert_test_categories/0
+  ,insert_test_items/0
 ]).
 
 -include("$RECORDS_PATH/estore.hrl").
@@ -36,7 +39,8 @@ init_pgsql() ->
   estore_pgsql:drop_schema(lamazone),
   estore:init(pgsql),
   insert_test_user(),
-  insert_test_category(),
+  insert_test_categories(),
+  insert_test_items(),
   ok.
 
 %% @private
@@ -72,22 +76,65 @@ insert_test_user() ->
 
 %% @private
 
-insert_test_category() ->
+insert_test_categories() ->
+  insert_test_categories(test_categories()).
+
+%% @private
+
+insert_test_categories(Categories) ->
+  lists:foldl(fun(E,Acc) -> 
+    Acc ++ [insert_test_record(category,E)]
+  end,[],Categories).
+
+%% @private
+
+test_categories() ->
+  CatTuples = [
+    {"Starters","Try our delicious starters"}
+    ,{"Mains","Try our delicious mains"}
+  ],
+  lists:foldl(fun({Name,Desc},Acc) -> 
+    Model = estore:new(pgsql,category),
+    Acc ++ [Model#'category'{'name'=Name,'description'=Desc}]
+  end,[],CatTuples).
+
+%% @private
+
+insert_test_items() ->
+  insert_test_items(test_items()).
+
+%% @private
+
+insert_test_items(Items) ->
+  lists:foldl(fun(E,Acc) -> 
+    Acc ++ [insert_test_record(item,E)]
+  end,[],Items).
+
+%% @private
+
+test_items() ->
+  ItemTuples = [
+    {"Soup",1,0.75,20,"Brocolli",250,1.235}
+    ,{"Curry",2,2.95,20,"Hot",500,1.234}
+  ],
+  lists:foldl(fun({Name,CatId,Price,Quantity,Desc,Dim,Weight},Acc) -> 
+    Model = estore:new(pgsql,item),
+    Acc ++ [Model#'item'{'name'=Name,'category_id'=CatId
+      ,'price'=Price,'quantity'=Quantity,'description'=Desc
+      ,'dimensions'=Dim,'weight'=Weight}]
+  end,[],ItemTuples).
+
+%% @private
+
+insert_test_record(_Type,Rec) ->
   try
     estore_pgsql:transaction(),
-    case estore:find(pgsql,category,[{'id','=',1}]) of
-      [] ->
-        Model = estore:new(pgsql,category),
-        Record = Model#'category'{'name' = "Starters",'description'="Try our delicious starters"},
-        estore:save(pgsql,Record);
-      _ -> ok
-    end,
+    {ok,_Id} = estore:save(pgsql,Rec),
     estore_pgsql:commit()
   catch Error:Reason ->
     io:fwrite("Rolling back ~p ~p ~n",[Error,Reason]),
     eshop_logging:log_term(debug,[Error]),
     estore_pgsql:rollback()
   end.
-
 
 

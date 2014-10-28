@@ -3,8 +3,8 @@ var eshopControllers = angular.module('eshop.admin.items.Controllers', []);
 
 //------------------------- formShopController ------------------------
 
-eshopControllers.controller('ControllerItems', ['$scope','FactoryBullet',
-  'FactoryRequest',function($scope,FactoryBullet,FactoryRequest) {
+eshopControllers.controller('ControllerItems', ['$scope','FactoryItems',
+  'FactoryRequest',function($scope,FactoryItems,FactoryRequest) {
   $scope.itemsMessage = "Fetching items...";
   $scope.items = []; 
   $scope.newItem = { name: "", description: ""}; 
@@ -16,7 +16,12 @@ eshopControllers.controller('ControllerItems', ['$scope','FactoryBullet',
     }
   };
 
-  $scope.fetchItems = function() {
+
+  $scope.selectedCategory = function(category) {
+    $scope.$parent.selectedCategory = category;
+  };
+
+  $scope.fetchItems = function(startRange,endRange) {
   };
 
   $scope.removeItem = function(index) {
@@ -24,7 +29,6 @@ eshopControllers.controller('ControllerItems', ['$scope','FactoryBullet',
 
   $scope.updateItem = function(data, id) {
   };
-
 
   $scope.addItem = function() {
   };

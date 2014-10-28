@@ -3,15 +3,16 @@ var eshopApp = angular.module('EShop', [
   'ngRoute'
   ,'ngAnimate'
   ,'ui.bootstrap'
-  ,'eshop.Controllers'
-  ,'eshop.admin.Controllers'
+  ,'xeditable'
+  ,'cgBusy'
   ,'eshop.admin.categories.Controllers'
   ,'eshop.admin.categories.Factories'
   ,'eshop.admin.items.Controllers'
+  ,'eshop.admin.items.Factories'
+  ,'eshop.admin.Controllers'
   ,'eshop.Directives'
   ,'eshop.Factories'
-  ,'xeditable'
-  ,'cgBusy'
+  ,'eshop.Controllers'
 ]);
 
 eshopApp.config(function($interpolateProvider){

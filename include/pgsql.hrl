@@ -240,7 +240,7 @@
   ]
 }).
 
--record(product, {
+-record(item, {
   id = [ 
     {type,{'bigserial',[]}}
     ,{constraints,[{'pk',[]},{null,false}]}
@@ -258,16 +258,16 @@
   ,price = [
     {type,{'numeric',[{precision,10},{scale,2}]}}
   ]
-  ,qunatity = [
+  ,quantity = [
     {type,{'integer',[]}}
   ]
   ,description = [
     {type,{'varchar',[{length,1024}]}}
   ]
   ,dimensions = [
-    {type,{'varchar',[{length,128}]}}
+    {type,{'integer',[]}}
   ]
-  ,weigth = [
+  ,weight = [
     {type,{'numeric',[{precision,12},{scale,3}]}}
   ]
 }).
@@ -318,14 +318,14 @@
       ,{null,false}
     ]}
   ]
-  ,product_id = [
+  ,item_id = [
     {type,{'bigint',[]}}
     ,{constraints,[
-      {references,[{table,product}]}
+      {references,[{table,item}]}
       ,{null,false}
     ]}
   ]
-  ,product_price = [
+  ,item_price = [
     {type,{'numeric',[{precision,10},{scale,2}]}}
   ]
   ,qunatity = [

@@ -26,6 +26,7 @@
   <script src="/static/js/eshop-1.0.0/admin/categories/eshop.admin.categories.Controllers.js"></script>
   <script src="/static/js/eshop-1.0.0/admin/categories/eshop.admin.categories.Factories.js"></script>
   <script src="/static/js/eshop-1.0.0/admin/items/eshop.admin.items.Controllers.js"></script>
+  <script src="/static/js/eshop-1.0.0/admin/items/eshop.admin.items.Factories.js"></script>
   <script src="/static/js/eshop-1.0.0/admin/eshop.admin.Controllers.js"></script>
   <script src="/static/js/eshop-1.0.0/eshop.App.js"></script>
   <script src="/static/js/eshop-1.0.0/eshop.Directives.js"></script>

@@ -1,67 +1,78 @@
 'use strict';
 
-var eshopFactories = angular.module('eshop.admin.categories.Factories',[]);
+var eshopFactories = angular.module('eshop.admin.items.Factories',[]);
 
-eshopFactories.factory('FactoryCategories', ['FactoryRequest','FactoryBullet', 
+eshopFactories.factory('FactoryItems', ['FactoryRequest','FactoryBullet', 
   function(FactoryRequest,FactoryBullet) {  
   
   var Service = {
     state : 0
-    ,categories : []
+    ,items : []
+    ,count : 0
+    ,offset : 0
+    ,limit : 50
     ,message : ""
     ,promise : null
   };
 
-  Service.fetchCategories = function() {
+  Service.fetchItems = function(offset,limit,category_id) {
     Service.state = 1;
-    var fetchReq = { 'type': "category", 'action' : "fetch" };
-    var request = FactoryRequest.makeRequest("categories",fetchReq,true);
+    var fetchReq = { 
+      'type': "items"
+      , 'action' : "fetch"
+      , 'offset' : offset
+      , 'limit' : limit
+      , 'category_id' : category_id };
+    var request = FactoryRequest.makeRequest("items",fetchReq,true);
     var promise = FactoryBullet.send(request);
     Service.promise = promise;
     promise.then(function(response) {
       console.log('Response',response);
-      if (response.operation === "categories") {
+      if (response.operation === "items") {
 	if (response.data.result == "ok") {
+	  Service.offset = offset;
+	  Service.limit = limit;
+	  Service.count = response.data.count;
 	  Service.message = response.data.msg;
-	  Service.categories = response.data.data;
+	  Service.items = response.data.data;
           Service.state = 2;
 	} else if(response.data.result == "error") {
 	  Service.message = response.data.msg;
           console.log('service msg: ',Service.message);
-          Service.categories = [];
+          Service.items = [];
           Service.state = 4;
 	} else {
 	  Service.message = response.data.msg;
-	  Service.categories = [];
+	  Service.items = [];
           Service.state = 5;
         };
-        console.log('Category: ',response.data);
+        console.log('Items: ',response.data);
       } else {
         Service.message = "Invalid response";
-	Service.categories = [];
+	Service.items = [];
         console.log('Invalid response: ',response);
         Service.state = 6;
       }
     });
   };
 
-  Service.removeCategory = function(index) {
+  Service.removeItem = function(index) {
     Service.state = 11;
-    var removeCat = Service.categories[index].data; 
-    var deleteReq = { 'type': "category", 'action' : "delete", 'data' : removeCat };
-    var request = FactoryRequest.makeRequest("categories",deleteReq,true); 
+    var removeCat = Service.index[index].data; 
+    var deleteReq = { 'type': "item", 'action' : "delete", 'data' : removeCat };
+    var request = FactoryRequest.makeRequest("items",deleteReq,true); 
     var promise = FactoryBullet.send(request);
-    console.log("Deleting Category: ",removeCat);
+    console.log("Deleting Item: ",removeCat);
     Service.promise = promise;
     promise.then(function(response) {
-      if (response.operation === "categories") {
+      if (response.operation === "items") {
         if (response.data.result == "ok") {
-          Service.fetchCategories();
-          console.log('Category Modified ',response.data.msg);
+          Service.fetchItems(Service.offset,Service.limit);
+          console.log('Item Modified ',response.data.msg);
         } else {
           console.log('Could not delete',response);
           Service.message = response.data.msg;
-          Service.categories = [];
+          Service.items = [];
           Service.state = 12;
         }
       } else {
@@ -71,23 +82,23 @@ eshopFactories.factory('FactoryCategories', ['FactoryRequest','FactoryBullet',
     });
   };
 
-  Service.updateCategory = function(data,id) {
+  Service.updateItem = function(data,id) {
     Service.state = 21;
     angular.extend(data, {id: id});
-    var upsertReq = { 'type': "category", 'action' : "upsert", 'data' : data };
-    var request = FactoryRequest.makeRequest("categories",upsertReq,true); 
+    var upsertReq = { 'type': "item", 'action' : "upsert", 'data' : data };
+    var request = FactoryRequest.makeRequest("items",upsertReq,true); 
     var promise = FactoryBullet.send(request);
     // This is needed to display the loading dialog
     Service.promise = promise;
     promise.then(function(response) {
-      if (response.operation === "categories") {
+      if (response.operation === "items") {
         if (response.data.result == "ok") {
-          Service.fetchCategories();
-          console.log('Category Modified ',response.data);
+          Service.fetchItems(Service.offset,Service.limit);
+          console.log('Item Modified ',response.data);
         } else {
           console.log('Could not modify ',response.data);
           Service.message = response.data.msg;
-	  Service.categories = [];
+	  Service.items = [];
           Service.state = 22;
         }
       } else {
@@ -97,22 +108,22 @@ eshopFactories.factory('FactoryCategories', ['FactoryRequest','FactoryBullet',
     });
   };
 
-  Service.addCategory = function(newCat) {
+  Service.addItem = function(newItem) {
     Service.state = 31;
-    var addReq = { 'type': "category", 'action' : "add", 'data' : newCat };
-    var request = FactoryRequest.makeRequest("categories",addReq,true); 
+    var addReq = { 'type': "item", 'action' : "add", 'data' : newItem };
+    var request = FactoryRequest.makeRequest("items",addReq,true); 
     var promise = FactoryBullet.send(request);
-    console.log("Submitting new Category: ",addReq);
+    console.log("Submitting new Item: ",addReq);
     Service.promise = promise;
     promise.then(function(response) {
-      if (response.operation === "categories") {
+      if (response.operation === "items") {
         if (response.data.result == "ok") {
-          console.log('New Category added ',response.data);
-          Service.fetchCategories();
+          console.log('New Item added ',response.data);
+          Service.fetchItems(Service.offset,Service.limit);
         } else {
           console.log('Could not add new category ',response.data);
           Service.message = response.data.msg;
-	  Service.categories = [];
+	  Service.items = [];
           Service.state = 32;
         }
       } else {
