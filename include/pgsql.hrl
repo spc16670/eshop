@@ -251,7 +251,7 @@
   ,category_id = [
     {type,{'integer',[]}}
     ,{constraints,[
-      {references,[{table,category}]}
+      {references,[{table,category},{on_delete,cascade}]}
       ,{null,false}
     ]}
   ]

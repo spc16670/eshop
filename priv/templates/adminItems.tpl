@@ -3,7 +3,7 @@
     <div class="row eshop-top-margin">
       <div class="col-sm-12">
 
-	<div class="panel panel-default">
+	<div class="panel panel-default" cg-busy="itemsPromise">
 
 	  <div class="panel-heading">
 	    <h4 class="pull-left">Item</h4>
@@ -101,7 +101,7 @@
 	    <button type="button" ng-click="showAddItemPanel = ! showAddItemPanel" class="btn btn-primary pull-left">
 	      Add Item
 	    </button>
-	    <pagination class="pagination-panel pull-right" total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" boundary-links="true"></pagination>
+	    <pagination class="pagination-panel pull-right" total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" boundary-links="true" rotate="true" num-pages="numPages"></pagination>
 	    <div class="clearfix"></div>
 	  </div>
 

@@ -116,6 +116,8 @@ test_items() ->
   ItemTuples = [
     {"Soup",1,0.75,20,"Brocolli",250,1.235}
     ,{"Curry",2,2.95,20,"Hot",500,1.234}
+    ,{"Pasta",2,1.95,20,"Aldente",500,1.234}
+    ,{"Steak",2,4.95,20,"Medium",500,1.234}
   ],
   lists:foldl(fun({Name,CatId,Price,Quantity,Desc,Dim,Weight},Acc) -> 
     Model = estore:new(pgsql,item),

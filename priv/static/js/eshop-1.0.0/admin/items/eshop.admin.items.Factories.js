@@ -27,7 +27,6 @@ eshopFactories.factory('FactoryItems', ['FactoryRequest','FactoryBullet',
     var promise = FactoryBullet.send(request);
     Service.promise = promise;
     promise.then(function(response) {
-      console.log('Response',response);
       if (response.operation === "items") {
 	if (response.data.result == "ok") {
 	  Service.offset = offset;
@@ -46,7 +45,6 @@ eshopFactories.factory('FactoryItems', ['FactoryRequest','FactoryBullet',
 	  Service.items = [];
           Service.state = 5;
         };
-        console.log('Items: ',response.data);
       } else {
         Service.message = "Invalid response";
 	Service.items = [];

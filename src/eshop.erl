@@ -107,7 +107,7 @@ authenticate({Sid,CbId},Data) ->
 categories({Sid,CbId},<<"delete">>,Record,_TokenData) ->
   {Result,Msg} = case estore:delete(pgsql,Record) of
     {ok,_Count} -> {<<"ok">>,<<"Deleted">>};
-    {error,_Error} -> {<<"error">>,<<"Could not delete">>}
+    {error,Error} -> io:fwrite("Could not Delete: ~p~n",[Error]), {<<"error">>,<<"Could not delete">>}
   end,
   Json = json_reply(
     {CbId,<<"categories">>}
