@@ -2,6 +2,7 @@
 
 -export([
   new_registration/2
+  ,partials/2
   ,authenticate/2
   ,categories/4
   ,items/4
@@ -19,6 +20,15 @@
 %% ----------------------------------------------------------------------------
 %% ----------------------------------------------------------------------------
 %% ----------------------------------------------------------------------------
+
+partials({Sid,CbId},Data) ->
+ io:fwrite("PARTIALS: ~p~n",[Data]),
+  Json = json_reply(
+    {CbId,<<"partials">>}
+    ,{<<"fetch">>,<<"ok">>}
+    ,[{<<"partial">>,<<"template:)">>}]), 
+  reply(Sid,Json).
+
 
 new_registration({Sid,CbId},Data) ->
   DataTuples = lists:foldl(fun(JsonKV,Acc) ->

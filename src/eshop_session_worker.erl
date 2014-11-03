@@ -73,6 +73,9 @@ code_change(_OldVsn, State, _Extra) ->
 %% ----------------- JSON ROUTING AND AUTHORISATION CHECKING ------------------
 %% ----------------------------------------------------------------------------
 
+dispatch_request({<<"partials">>,Data,CbId},Sid) ->
+  eshop:partials({Sid,CbId},Data);
+
 dispatch_request({<<"register">>,Data,CbId},Sid) ->
   eshop:new_registration({Sid,CbId},Data);
 
