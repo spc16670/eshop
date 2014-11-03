@@ -30,8 +30,8 @@ start(_StartType, _StartArgs) ->
 
   Dispatch = cowboy_router:compile([
     {'_', [
-      {"/static/[...]", cowboy_static, {dir,PrivDir ++ "/static",[
-	{mimetypes, cow_mimetypes, all}]}}
+      {"/static/[...]", cowboy_static, {dir,PrivDir ++ "/static",[{mimetypes, cow_mimetypes, all}]}}
+      ,{"/app/[...]", cowboy_static, {dir,PrivDir ++ "/app",[{mimetypes, cow_mimetypes, all}]}}
       ,{"/", eshop_rest, []}
       ,{"/bullet/[...]",bullet_handler,[{handler,eshop_bullet_handler}]}
     ]}

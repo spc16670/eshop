@@ -4,7 +4,7 @@ var eshopControllers = angular.module('eshop.Controllers', []);
 //---------------------- ControllerLanding ------------------------
 
 eshopControllers.controller('ControllerLanding', ['$scope','FactoryUser',
-  function($scope, FactoryUser) { 
+  '$state',function($scope, FactoryUser, $state) { 
  
   $scope.currentUser = FactoryUser.authenticate({ 'operation': "initialize" });
 
@@ -87,11 +87,11 @@ eshopControllers.controller('ControllerShop', ['$scope',
     $scope.promiseCategories = FactoryCategories.promise; 
   };
 
-  $scope.categories = $scope.fetchCategories();
+  //$scope.categories = $scope.fetchCategories();
 
-  $scope.$watch('activeCategory',function(){
-    console.log($scope.activeCategory);    
-  },true);
+//  $scope.$watch('activeCategory',function(){
+//    console.log($scope.activeCategory);    
+//  },true);
 
   $scope.fetchItems = function() {
     

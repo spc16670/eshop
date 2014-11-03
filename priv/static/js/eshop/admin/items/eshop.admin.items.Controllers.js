@@ -12,10 +12,10 @@ eshopControllers.controller('ControllerItems', ['$scope','FactoryItems',
   $scope.totalItems = 0;
   $scope.currentPage = 1;
 
-  $scope.$watch('$parent.items',function() {
-    $scope.items = $scope.$parent.items;
-    $scope.totalItems = $scope.$parent.items.length;
-  },true),
+//  $scope.$watch('$parent.items',function() {
+//    $scope.items = $scope.$parent.items;
+//    $scope.totalItems = $scope.$parent.items.length;
+//  },true),
 
 
   $scope.setPage = function (pageNo) {

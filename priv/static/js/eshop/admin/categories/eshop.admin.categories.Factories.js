@@ -19,7 +19,6 @@ eshopFactories.factory('FactoryCategories', ['FactoryRequest','FactoryBullet',
     var promise = FactoryBullet.send(request);
     Service.promise = promise;
     promise.then(function(response) {
-      console.log('Response',response);
       if (response.operation === "categories") {
 	if (response.data.result == "ok") {
 	  Service.message = response.data.msg;
@@ -35,7 +34,6 @@ eshopFactories.factory('FactoryCategories', ['FactoryRequest','FactoryBullet',
 	  Service.categories = [];
           Service.state = 5;
         };
-        console.log('Category: ',response.data);
       } else {
         Service.message = "Invalid response";
 	Service.categories = [];

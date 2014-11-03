@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="EShop" ng-controller="ControllerLanding">
+<html lang="en" ng-app="EShop">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,30 +8,31 @@
   <meta name="author" content="eshop">
   <title>Lamazone</title>
   <link rel="shortcut icon" href="/static/images/favicon.ico">
-  <link rel="stylesheet" href="/static/css/bootstrap-3.1.1/bootstrap.min.css">
-  <link rel="stylesheet" href="/static/css/animate-3.1.1/animate.css">
-  <link rel="stylesheet" href="/static/css/eshop-1.0.0/eshop.css">
-  <link rel="stylesheet" href="/static/css/angular-busy-4.0.0/angular-busy.min.css">
-  <link rel="stylesheet" href="/static/css/angular-xeditable-0.1.8/xeditable.css">
-  <script src="/static/js/jquery-1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="/static/css/bootstrap/bootstrap-3.1.1.min.css">
+  <link rel="stylesheet" href="/static/css/animate/animate-3.1.1.css">
+  <link rel="stylesheet" href="/static/css/eshop/eshop.css">
+  <link rel="stylesheet" href="/static/css/angular-busy/angular-busy-4.0.0.min.css">
+  <link rel="stylesheet" href="/static/css/angular-xeditable/xeditable-0.1.8.css">
+  <script src="/static/js/jquery/jquery-1.11.1.min.js"></script>
   <!-- <script src="/static/js/bootstrap-3.1.1/bootstrap.min.js"></script> -->
-  <script src="/static/js/bullet-0.4.1/bullet.js"></script>
-  <script src="/static/js/angular-1.2.9/angular.min.js"></script>
-  <script src="/static/js/angular-1.2.9/angular-route.js"></script>
-  <script src="/static/js/angular-1.2.9/angular-animate.min.js"></script>
-  <script src="/static/js/angular-ui-0.11.0/ui-bootstrap-tpls-0.11.0.min.js"></script>
-  <script src="/static/js/angular-busy-4.0.0/angular-busy.min.js"></script>
-  <script src="/static/js/angular-xeditable-0.1.8/xeditable.min.js"></script>
+  <script src="/static/js/bullet/bullet-0.4.1.js"></script>
+  <script src="/static/js/angular/angular-1.2.9.min.js"></script>
+  <script src="/static/js/angular/angular-route-1.2.9.js"></script>
+  <script src="/static/js/angular/angular-animate-1.2.9.min.js"></script>
+  <script src="/static/js/angular-ui/ui-bootstrap-tpls-0.11.0.min.js"></script>
+  <script src="/static/js/angular-busy/angular-busy-4.0.0.min.js"></script>
+  <script src="/static/js/angular-xeditable/xeditable-0.1.8.min.js"></script>
+  <script src="/static/js/angular-ui-router/angular-ui-router-0.2.11.js"></script>
 
-  <script src="/static/js/eshop-1.0.0/admin/categories/eshop.admin.categories.Controllers.js"></script>
-  <script src="/static/js/eshop-1.0.0/admin/categories/eshop.admin.categories.Factories.js"></script>
-  <script src="/static/js/eshop-1.0.0/admin/items/eshop.admin.items.Controllers.js"></script>
-  <script src="/static/js/eshop-1.0.0/admin/items/eshop.admin.items.Factories.js"></script>
-  <script src="/static/js/eshop-1.0.0/admin/eshop.admin.Controllers.js"></script>
-  <script src="/static/js/eshop-1.0.0/eshop.App.js"></script>
-  <script src="/static/js/eshop-1.0.0/eshop.Directives.js"></script>
-  <script src="/static/js/eshop-1.0.0/eshop.Controllers.js"></script>
-  <script src="/static/js/eshop-1.0.0/eshop.Factories.js"></script>
+  <script src="/static/js/eshop/admin/categories/eshop.admin.categories.Controllers.js"></script>
+  <script src="/static/js/eshop/admin/categories/eshop.admin.categories.Factories.js"></script>
+  <script src="/static/js/eshop/admin/items/eshop.admin.items.Controllers.js"></script>
+  <script src="/static/js/eshop/admin/items/eshop.admin.items.Factories.js"></script>
+  <script src="/static/js/eshop/admin/eshop.admin.Controllers.js"></script>
+  <script src="/static/js/eshop/eshop.App.js"></script>
+  <script src="/static/js/eshop/eshop.Directives.js"></script>
+  <script src="/static/js/eshop/eshop.Controllers.js"></script>
+  <script src="/static/js/eshop/eshop.Factories.js"></script>
   <!-- <script src="/static/js/angular-ui-0.11.0/ui-bootstrap.min.js"></script> -->
 </head>
 <body>
@@ -43,34 +44,8 @@
 
     <!-- Main Container --> 
     <div class="container-fluid">
-      <div id="mainArea">
+      <div ui-view></div>
 
-	<!-- Shop View -->
-        <div id="shopView" ng-show="toggler.showShop" ng-controller="ControllerShop">
-	  {% include "shopView.tpl" %}
-        </div>
-
-	<!-- Customise View -->
-        <div id="adminView" ng-show="toggler.showAdmin" ng-controller="ControllerAdmin">
-	  {% include "adminView.tpl" %}
-        </div>
-
-        <!-- Login View -->
-        <div id="loginView" ng-show="toggler.showLogin" ng-controller="ControllerLogin">
-          {% include "loginView.tpl" %}
-        </div> 
-	
-	<!-- Registration View -->
-	<div id="registerView" ng-show="toggler.showRegister" ng-controller="ControllerRegister">
-          {% include "registerView.tpl" %}
-        </div>
-
-	<!-- Personal Information View -->
-        <div id="personalView" ng-show="toggler.showPersonal" ng-controller="ControllerLogin">
-          {% include "personalView.tpl" %}
-        </div>
-
-      </div><!-- /.mainArea -->
     </div><!-- ./.container -->
   
   <div style="color:sienna">{{ sid }}</div>

@@ -22,7 +22,8 @@
 	 <!-- The Admin Landing - always logged in -->
          <ul class="nav navbar-nav navbar-right" ng-switch-when="admin">
            <li ng-class="{ active: toggler.showAdmin }">
-               <a href="#" ng-click="visible('showAdmin')">Administration</a>
+               <!--<a href="#" ng-click="visible('showAdmin')">Administration</a>-->
+               <a href="#" ui-sref="admin.start">Administration</a>
            </li> 
            <li class="dropdown">
              <a href="#" class="dropdown-toggle" id="btn-account" data-toggle="dropdown">
