@@ -90,10 +90,11 @@ authenticate({Sid,CbId},Data) ->
         %% Retrieve shopper and user
         [ShopperRecord] = estore:find(pgsql,shopper,[{'user_id','=',UserId}]),
         UserRecordNoPass = UserRecord#'user'{'password' = ""}, 
+        AccessLevel = UserRecord#'user'.'access', 
         ShopperKV = estore_json:record_to_kv(ShopperRecord),
         UserKV = estore_json:record_to_kv(UserRecordNoPass),   
         %% Store user id in JWT token 
-        Payload = [{user_id,UserId}],
+        Payload = [{user_id,UserId},{'access',AccessLevel}],
         SecretKey = eshop_utls:get_env(basic_config,jwt_secret),
         Token = ejwt:encode(Payload,SecretKey),
         Json = json_reply(

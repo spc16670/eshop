@@ -85,11 +85,11 @@ eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope',
 
 // ------------------------- userService ------------------------------
 
-eshopFactories.factory('FactoryUser', ['FactoryBullet','FactoryStorage'
+eshopFactories.factory('FactoryAuth', ['FactoryBullet','FactoryStorage'
   ,'$rootScope',function(FactoryBullet,FactoryStorage,$rootScope) {
   var UserService = { };
 
-  UserService.user = { 'isLogged' : false, 'token': null };
+  UserService.user = { 'isLogged': false, 'access': 1, 'token': null };
     
   UserService.authenticate = function(loginReq) {
     if (loginReq.operation === "login") {
@@ -103,23 +103,23 @@ eshopFactories.factory('FactoryUser', ['FactoryBullet','FactoryStorage'
             var interatedObj = data.data[obj];
 	    if (interatedObj.type === "user") {
 	      UserService.user['email'] = interatedObj.data.email;
-	      UserService.user['role'] = interatedObj.data.role;
+	      UserService.user['access'] = interatedObj.data.role;
 	    } else if (interatedObj.type === "shopper") {
-	        UserService.user['shopper'] = interatedObj.data;
+	      UserService.user['shopper'] = interatedObj.data;
 	    }
  	  }
 	  UserService.user.token = data.token; 
 	  console.log("USER IS:",UserService.user),
-	  UserService.user.isLogged = true; 
-	  $rootScope.$broadcast("login:success","");
+	  //$rootScope.$broadcast("login:success","");
 	  // persist user
           FactoryStorage.persist("user",UserService.user);
+	  UserService.user.isLogged = true; 
         } else if (data.result === "timeout") { 
  	  UserService.logout();
-	  $rootScope.$broadcast("login:timeout",data.msg);
+	  //$rootScope.$broadcast("login:timeout",data.msg);
         } else if (data.result === "error") {
  	  UserService.logout();
-	  $rootScope.$broadcast("login:error",data.msg);
+	  //$rootScope.$broadcast("login:error",data.msg);
         }
       });    
     } else if (loginReq.operation === "initialize") {
@@ -132,7 +132,7 @@ eshopFactories.factory('FactoryUser', ['FactoryBullet','FactoryStorage'
   };
 
   UserService.logout = function() {
-    UserService.user = { isLogged : false, 'token' : null };
+    UserService.user = { 'isLogged' : false, 'access': 1, 'token' : null };
     FactoryStorage.remove("user");
   };
   

@@ -14,7 +14,6 @@ var eshopApp = angular.module('EShop', [
   ,'eshop.Directives'
   ,'eshop.Factories'
   ,'eshop.Controllers'
-  ,'servicePartials'
 ]);
 
 eshopApp.config(function($interpolateProvider){
@@ -29,22 +28,23 @@ eshopApp.run(function(editableOptions) {
 
 // configure our routes
 eshopApp.config(function($stateProvider,$urlRouterProvider) {
-  $urlRouterProvider.otherwise('/home/shop');
+  $urlRouterProvider.otherwise('/public/shop');
 
   $stateProvider
 
   .state('public', {
     abstract : true
-    ,role : "public"
+    ,access : 1
   })
   .state('public.login', {
-    url: '/login',
-    role: 'public'
+    url: '/login'
+    ,access: 1
   })
  
   .state('admin', {
-    url : '/admin',
-    views : { 
+    url : '/admin'
+    ,access: 1
+    ,views : { 
       "main" : {
 	templateProvider: function (ServicePartials,$timeout,$stateParams) {
           console.log('admin activated: ',$stateParams.id);
@@ -69,20 +69,28 @@ eshopApp.config(function($stateProvider,$urlRouterProvider) {
 
 eshopApp.run(['$rootScope', '$state', 'FactoryAuth', function ($rootScope, $state, FactoryAuth) {
   $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
-    if(!('data' in toState) || !('access' in toState.data)){
+    console.log('TO STATE',toState);
+    if(!('access' in toState)){
       $rootScope.error = "Access undefined for this state";
+      console.log('NO ACCESS',toState);
       event.preventDefault();
-    } else if (!FactoryAuth.authorize(toState.data.access)) {
+    } else if (toState.access <= FactoryAuth.user.access) {
+      console.log('ACCESS',toState.access);
       $rootScope.error = "Seems like you tried accessing a route you don't have access to...";
       event.preventDefault();
       if(fromState.url === '^') {
-        if(FactoryAuth.isLoggedIn()) {
-          $state.go('user.home');
+        if(FactoryAuth.isLogged) {
+          console.log('GOING TO SHOP');
+          $state.go('public.shop');
         } else {
           $rootScope.error = null;
-          $state.go('anon.login');
+          console.log('GOING TO LOGIN');
+          $state.go('public.login');
         }
       }
+    } else {
+      console.log('USER ACCESS',FactoryAuth.user.access);
+      console.log('STATE ACCESS',toState.access);
     }
   });
 }]);
@@ -94,6 +102,7 @@ eshopApp.run(
     });
     $rootScope.$on('$stateChangeError',function(event, toState, toParams, fromState, fromParams, error){
       console.log('$stateChangeError - fired when an error occurs during transition.');
+      console.log(error);
     });
     $rootScope.$on('$stateChangeSuccess',function(event, toState, toParams, fromState, fromParams){
       console.log('$stateChangeSuccess to '+toState.name+'- fired once the state transition is complete.');

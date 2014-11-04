@@ -15,8 +15,8 @@
     {type,{'varchar',[{length,50}]}}
     ,{constraints,[{null,false}]}
   ]
-  ,role = [
-    {type,{'varchar',[{length,50}]}}
+  ,access = [
+    {type,{'integer',[]}}
     ,{constraints,[{null,false}]}
   ]
   ,date_registered = [
