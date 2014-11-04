@@ -22,11 +22,15 @@
 %% ----------------------------------------------------------------------------
 
 partials({Sid,CbId},Data) ->
- io:fwrite("PARTIALS: ~p~n",[Data]),
+  Type = eshop_utls:get_value(<<"type">>,Data,undefined),
+  TemplateName = binary_to_list(Type) ++ ".tpl",
+  PrivDir = eshop_utls:priv_dir(),
+  {ok,Template} = file:read_file(PrivDir ++ "/app/partials/" ++ TemplateName),
+  io:fwrite("PARTIALS: ~p~n",[Data]),
   Json = json_reply(
     {CbId,<<"partials">>}
     ,{<<"fetch">>,<<"ok">>}
-    ,[{<<"partial">>,<<"template:)">>}]), 
+    ,[{<<"partial">>,Template}]), 
   reply(Sid,Json).
 
 

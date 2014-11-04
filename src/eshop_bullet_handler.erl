@@ -11,6 +11,20 @@
 
 
 %% ------------------------------------------------------------------
+%% 
+%% Bullet handlers should only contain transport related code, 
+%% logic should be done in your session process if any, 
+%% or other parts of your application. 
+%% 
+%% Bullet processes should be considered temporary as you never know 
+%% when a connection is going to close and therefore lose your State.
+%%
+%% This code is invoked by the client-side JavaScipt. The client code
+%% has already been provided with the SessionId which was generated 
+%% and embeded in the shell page served from the static REST handler.
+%% 
+%% SessionId is a COOKIE.
+%% ------------------------------------------------------------------
 %% @private API
 %%
 
