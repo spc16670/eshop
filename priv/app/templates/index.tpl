@@ -24,15 +24,17 @@
   <script src="/static/js/angular-xeditable/xeditable-0.1.8.min.js"></script>
   <script src="/static/js/angular-ui-router/angular-ui-router-0.2.11.js"></script>
 
-  <script src="/static/js/eshop/admin/categories/eshop.admin.categories.Controllers.js"></script>
+<!--  <script src="/static/js/eshop/admin/categories/eshop.admin.categories.Controllers.js"></script>
   <script src="/static/js/eshop/admin/categories/eshop.admin.categories.Factories.js"></script>
   <script src="/static/js/eshop/admin/items/eshop.admin.items.Controllers.js"></script>
   <script src="/static/js/eshop/admin/items/eshop.admin.items.Factories.js"></script>
   <script src="/static/js/eshop/admin/eshop.admin.Controllers.js"></script>
-  <script src="/app/eshop.App.js"></script>
-  <script src="/app/services/eshop.Factories.js"></script>
   <script src="/static/js/eshop/eshop.Directives.js"></script>
   <script src="/static/js/eshop/eshop.Controllers.js"></script>
+-->
+  <script src="/app/services/eshop.Factories.js"></script>
+  <script src="/app/services/eshop.Services.js"></script>
+  <script src="/app/eshop.App.js"></script>
   <!-- <script src="/static/js/angular-ui-0.11.0/ui-bootstrap.min.js"></script> -->
 </head>
 <body>

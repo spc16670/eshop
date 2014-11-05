@@ -29,10 +29,10 @@
   <script src="/static/js/eshop/admin/items/eshop.admin.items.Controllers.js"></script>
   <script src="/static/js/eshop/admin/items/eshop.admin.items.Factories.js"></script>
   <script src="/static/js/eshop/admin/eshop.admin.Controllers.js"></script>
-  <script src="/static/js/eshop/eshop.App.js"></script>
   <script src="/static/js/eshop/eshop.Directives.js"></script>
   <script src="/static/js/eshop/eshop.Controllers.js"></script>
   <script src="/static/js/eshop/eshop.Factories.js"></script>
+  <script src="/static/js/eshop/eshop.App.js"></script>
   <!-- <script src="/static/js/angular-ui-0.11.0/ui-bootstrap.min.js"></script> -->
 </head>
 <body>
@@ -44,7 +44,7 @@
 
     <!-- Main Container --> 
     <div class="container-fluid">
-      <div ui-view></div>
+      <div ui-view="main"></div>
 
     </div><!-- ./.container -->
   

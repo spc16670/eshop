@@ -185,58 +185,11 @@ eshopFactories.factory('FactoryStorage',['$window',function($window) {
   return StorageService;
 }]);
 
-// ------------------------- callService ------------------------------
-
-eshopFactories.factory('ServicePartials', ['FactoryRequest','FactoryBullet',
-  function(FactoryRequest,FactoryBullet) {
-
-  var Service = {
-    state : 0
-    ,partial : []
-    ,message : ""
-    ,promise : null
-  };
-
-  Service.fetch = function(name) {
-    Service.state = 1;
-    var fetchReq = { 'type': name, 'action' : "fetch" };
-    var request = FactoryRequest.makeRequest("partials",fetchReq,false);
-    var promise = FactoryBullet.send(request);
-    Service.promise = promise;
-    promise.then(function(response) {
-      if (response.operation === "partials") {
-        console.log('ServicePartials response:',response);
-        if (response.data.result == "ok") {
-          Service.message = response.data.msg;
-          Service.partial = response.data.partial;
-          Service.state = 2;
-        } else if(response.data.result == "error") {
-          Service.message = response.data.msg;
-          console.log('service msg: ',Service.message);
-          Service.partial = response.data.msg;
-          Service.state = 4;
-        } else {
-          Service.message = response.data.msg;
-          Service.partial = response.data.msg;
-          Service.state = 5;
-        };
-      } else {
-        Service.message = "Invalid response";
-        Service.partial = response.data.msg;
-        console.log('Invalid response: ',response);
-        Service.state = 6;
-      }
-    });
-  };
-
-  return Service;
-}]);
-
 
 // ------------------------- callService ------------------------------
 
-eshopFactories.factory('FactoryRequest', ['FactoryUser',
-  function(FactoryUser) {
+eshopFactories.factory('FactoryRequest', ['FactoryAuth',
+  function(FactoryAuth) {
   // {
   //   cbid : 8 -- Callback id is temporarily added by the FactoryBullet
   //
@@ -252,7 +205,7 @@ eshopFactories.factory('FactoryRequest', ['FactoryUser',
   return {
     makeRequest: function(operation,requestObj,authorised) {
       if (authorised == true) {
-        requestObj.token = FactoryUser.user.token;
+        requestObj.token = FactoryAuth.user.token;
       };
       return {
         'operation' : operation, 

@@ -1,19 +1,19 @@
 
 var eshopApp = angular.module('EShop', [
-  'ngRoute'
-  ,'ngAnimate'
+  'ngAnimate'
   ,'ui.bootstrap'
   ,'ui.router'
   ,'xeditable'
   ,'cgBusy'
-  ,'eshop.admin.categories.Controllers'
-  ,'eshop.admin.categories.Factories'
-  ,'eshop.admin.items.Controllers'
-  ,'eshop.admin.items.Factories'
-  ,'eshop.admin.Controllers'
-  ,'eshop.Directives'
+//  ,'eshop.admin.categories.Controllers'
+//  ,'eshop.admin.categories.Factories'
+//  ,'eshop.admin.items.Controllers'
+//  ,'eshop.admin.items.Factories'
+//  ,'eshop.admin.Controllers'
+//  ,'eshop.Directives'
   ,'eshop.Factories'
-  ,'eshop.Controllers'
+  ,'eshop.Services'
+//  ,'eshop.Controllers'
 ]);
 
 eshopApp.config(function($interpolateProvider){
@@ -38,6 +38,7 @@ eshopApp.config(function($stateProvider,$urlRouterProvider) {
   })
   .state('public.login', {
     url: '/login'
+    
     ,access: 1
   })
  
@@ -45,8 +46,8 @@ eshopApp.config(function($stateProvider,$urlRouterProvider) {
     url : '/admin'
     ,access: 1
     ,views : { 
-      "main" : {
-	templateProvider: function (ServicePartials,$timeout,$stateParams) {
+      "main" : {       
+	templateProvider: function (ServicePartials,$stateParams) {
           console.log('admin activated: ',$stateParams.id);
           ServicePartials.fetch('admin');
           return ServicePartials.promise.then(function(response) {
@@ -72,10 +73,10 @@ eshopApp.run(['$rootScope', '$state', 'FactoryAuth', function ($rootScope, $stat
     console.log('TO STATE',toState);
     if(!('access' in toState)){
       $rootScope.error = "Access undefined for this state";
-      console.log('NO ACCESS',toState);
+      console.log('ACCESS UNDEFINED FOR THIS STATE',toState);
       event.preventDefault();
-    } else if (toState.access <= FactoryAuth.user.access) {
-      console.log('ACCESS',toState.access);
+    } else if (toState.access > FactoryAuth.user.access) {
+      console.log('ACCESS DENIED',toState.access);
       $rootScope.error = "Seems like you tried accessing a route you don't have access to...";
       event.preventDefault();
       if(fromState.url === '^') {
