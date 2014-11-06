@@ -2,7 +2,7 @@
    <!-- Fixed navbar -->
    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
      <div class="container">
-       <div class="navbar-header" ng-click="visible('showShop')">
+       <div class="navbar-header" ui-sref="shell.shop">
          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
            <span class="sr-only">Toggle navigation</span>
            <span class="icon-bar"></span>
@@ -80,7 +80,7 @@
              <a id="btn-signup" href="#" ng-click="visible('showRegister')">Sign Up</a>
            </li>
            <li ng-class="{ active: toggler.showLogin }" ng-if="!currentUser.isLogged">
-             <a id="btn-signup" href="#" ng-click="visible('showLogin')">Log In</a>
+             <a id="btn-signup" ui-sref="shell.login">Log In</a>
            </li>
 
            <li class="dropdown" ng-if="currentUser.isLogged">
@@ -98,7 +98,7 @@
                </ul>
            </li>
            <li ng-class="{ active: toggler.showBasket }">
-             <a ui-sref="admin">Basket</a>
+             <a ui-sref="shell.basket">Basket</a>
            </li>
          </ul>
 

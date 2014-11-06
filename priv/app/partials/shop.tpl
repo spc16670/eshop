@@ -28,7 +28,7 @@
 
       <!-- Main Area -->
       <div class="col-md-10" id="main-area">
-
+        {[ user ]}
         {% include "items.tpl" %}
       </div> <!-- col-md-10 -->
     </div><!-- row -->

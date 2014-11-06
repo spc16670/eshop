@@ -10,7 +10,7 @@ eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope',
   var clientTimeout = document.getElementById('client_timeout').textContent;
   var clientTimeout = parseInt(clientTimeout);
   var url = 'wss://' + hostname.textContent  + ':8443/bullet/' + sid.textContent;
-  var options = {'disableWebSocket': true, 'disableEventSource': true};
+  var options = { 'disableEventSource': true, 'disableXHRPolling' : true};
   //var options = {};
   var bullet = $.bullet(url, options);
   var name = 'best';
@@ -18,7 +18,7 @@ eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope',
   var currentCallbackId = 0;
 
   bullet.onopen = function(){
-    console.log("Connection opened.");
+    console.log("CONNECTION OPENED: ",bullet);
   };
   bullet.onclose = bullet.ondisconnect = function(){
     console.log('CONNECTION CLOSED');
@@ -38,8 +38,10 @@ eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope',
     request.cbid = callbackId;
     var timeoutPromise = $timeout(function(data){
       var timeoutRequest = request;
+      timeoutRequest.cbid = callbackId;
       timeoutRequest.data.result = "timeout";
       timeoutRequest.data.msg = "A timeout occurred";
+      console.log('TIMEOUT',timeoutRequest);
       listener(timeoutRequest);
     },clientTimeout);
 
@@ -48,7 +50,9 @@ eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope',
       cb: defer,
       timeoutPromise: timeoutPromise
     };
-    
+   
+
+ 
     bullet.send(JSON.stringify(request));
     return defer.promise;
   }

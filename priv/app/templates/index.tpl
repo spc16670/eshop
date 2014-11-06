@@ -32,12 +32,14 @@
   <script src="/static/js/eshop/eshop.Directives.js"></script>
   <script src="/static/js/eshop/eshop.Controllers.js"></script>
 -->
-  <script src="/app/services/eshop.Factories.js"></script>
+  
   <script src="/app/services/eshop.Services.js"></script>
+  <script src="/app/partials/ControllerShell.js"></script>
+  <script src="/app/services/eshop.Factories.js"></script>
   <script src="/app/eshop.App.js"></script>
   <!-- <script src="/static/js/angular-ui-0.11.0/ui-bootstrap.min.js"></script> -->
 </head>
-<body>
+<body ng-controller="ControllerShell">
     
     <!-- Top Panel -->
     <div id="topPanel">
@@ -46,7 +48,7 @@
     
     <!-- Main Container --> 
     <div class="container-fluid">
-      <div ui-view="main"></div> 
+      <div ui-view></div> 
 
     </div><!-- ./.container -->
   

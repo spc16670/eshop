@@ -13,7 +13,7 @@ var eshopApp = angular.module('EShop', [
 //  ,'eshop.Directives'
   ,'eshop.Factories'
   ,'eshop.Services'
-//  ,'eshop.Controllers'
+  ,'eshop.Controllers'
 ]);
 
 eshopApp.config(function($interpolateProvider){
@@ -28,41 +28,71 @@ eshopApp.run(function(editableOptions) {
 
 // configure our routes
 eshopApp.config(function($stateProvider,$urlRouterProvider) {
-  $urlRouterProvider.otherwise('/public/shop');
+  $urlRouterProvider.otherwise('/shop');
 
   $stateProvider
 
-  .state('public', {
+  .state('shell', {
     abstract : true
-    ,access : 1
+    ,template: '<ui-view/>' 
+    ,data : { access: 1 }
+    ,resolve: {
+      authorize: ['FactoryAuth',
+        function(FactoryAuth) {
+          console.log('AUTHORISATION RUNS');
+          return FactoryAuth.authenticate({operation: 'initialize'});
+        }
+      ]
+    }
   })
-  .state('public.login', {
+
+  .state('shell.register', {
+    url: '/register'
+    ,templateProvider: function (ServicePartials,$stateParams) {
+      console.log('register activated: ',$stateParams.id);
+      ServicePartials.fetch('register');
+      return ServicePartials.promise.then(function(response) {
+        return response.data.partial;
+      }); 
+    }
+
+  })
+
+  .state('shell.login', {
     url: '/login'
-    
-    ,access: 1
+    ,templateProvider: function (ServicePartials,$stateParams) {
+      console.log('login activated: ',$stateParams.id);
+      ServicePartials.fetch('login');
+      return ServicePartials.promise.then(function(response) {
+        return response.data.partial;
+      }); 
+    }
   })
  
-  .state('admin', {
+  .state('shell.admin', {
     url : '/admin'
-    ,access: 1
-    ,views : { 
-      "main" : {       
-	templateProvider: function (ServicePartials,$stateParams) {
+    ,data : { access: 5 }
+//    ,views : { 
+//      "main" : {       
+	,templateProvider: function (ServicePartials,$stateParams) {
           console.log('admin activated: ',$stateParams.id);
           ServicePartials.fetch('admin');
           return ServicePartials.promise.then(function(response) {
             return response.data.partial;
           });    
-        }
-      }
+//        }
+//      }
     }
   })
 
-  .state('start', {
-    url : '/start',
-    templateUrl: function (){
-      console.log('admin.start activated ');
-      return '/app/templates/adminStart.tpl';
+  .state('shell.shop', {
+    url : '/shop'
+    ,templateProvider: function (ServicePartials,$stateParams) {
+      console.log('shop activated: ',$stateParams.id);
+      ServicePartials.fetch('shop');
+      return ServicePartials.promise.then(function(response) {
+        return response.data.partial;
+      }); 
     }
   })
  
@@ -71,11 +101,11 @@ eshopApp.config(function($stateProvider,$urlRouterProvider) {
 eshopApp.run(['$rootScope', '$state', 'FactoryAuth', function ($rootScope, $state, FactoryAuth) {
   $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
     console.log('TO STATE',toState);
-    if(!('access' in toState)){
+    if(!('data' in toState) || !('access' in toState.data)){
       $rootScope.error = "Access undefined for this state";
       console.log('ACCESS UNDEFINED FOR THIS STATE',toState);
       event.preventDefault();
-    } else if (toState.access > FactoryAuth.user.access) {
+    } else if (toState.data.access > FactoryAuth.user.access) {
       console.log('ACCESS DENIED',toState.access);
       $rootScope.error = "Seems like you tried accessing a route you don't have access to...";
       event.preventDefault();
@@ -90,8 +120,11 @@ eshopApp.run(['$rootScope', '$state', 'FactoryAuth', function ($rootScope, $stat
         }
       }
     } else {
+      if (fromState.abstract) {
+        console.log('SWITCHING FROM ABSTRACT STATE',fromState.name);
+      }
       console.log('USER ACCESS',FactoryAuth.user.access);
-      console.log('STATE ACCESS',toState.access);
+      console.log('STATE ACCESS',toState.data.access);
     }
   });
 }]);
