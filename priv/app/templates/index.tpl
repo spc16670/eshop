@@ -36,7 +36,7 @@
   <script src="/app/services/eshop.Services.js"></script>
   <script src="/app/partials/ControllerShell.js"></script>
   <script src="/app/services/eshop.Factories.js"></script>
-  <script src="/app/eshop.App.js"></script>
+  <script src="/app/app.js"></script>
   <!-- <script src="/static/js/angular-ui-0.11.0/ui-bootstrap.min.js"></script> -->
 </head>
 <body ng-controller="ControllerShell">
