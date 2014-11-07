@@ -33,16 +33,18 @@
   <script src="/static/js/eshop/eshop.Controllers.js"></script>
 -->
   
-  <script src="/app/services/eshop.Services.js"></script>
+  <script src="/app/services/Factory.js"></script>
+  <script src="/app/services/FactoryCategories.js"></script>
   <script src="/app/partials/ControllerShell.js"></script>
-  <script src="/app/services/eshop.Factories.js"></script>
+  <script src="/app/partials/ControllerShop.js"></script>
+  <script src="/app/partials/ControllerLogin.js"></script>
   <script src="/app/app.js"></script>
   <!-- <script src="/static/js/angular-ui-0.11.0/ui-bootstrap.min.js"></script> -->
 </head>
 <body ng-controller="ControllerShell">
     
     <!-- Top Panel -->
-    <div id="topPanel">
+    <div id="topPanel" cg-busy="promisePartials">
       {% include "topPanel.tpl" %}
     </div>
     
@@ -53,7 +55,7 @@
     </div><!-- ./.container -->
   
   <div style="color:sienna">{{ sid }}</div>
-  <div ng-model="sid" id="session_id" style="display:none">{{ sid }}</div>
+  <div id="session_id" style="display:none">{{ sid }}</div>
   <div id="hostname" style="display:none">{{ hostname }}</div>
   <div id="client_timeout" style="display:none">{{ client_timeout }}</div>
 </body>

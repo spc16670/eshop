@@ -12,8 +12,10 @@ var eshopApp = angular.module('EShop', [
 //  ,'eshop.admin.Controllers'
 //  ,'eshop.Directives'
   ,'eshop.Factories'
-  ,'eshop.Services'
-  ,'eshop.Controllers'
+  ,'eshop.Factories.Categories'
+  ,'eshop.Controllers.Shell'
+  ,'eshop.Controllers.Shop'
+  ,'eshop.Controllers.Login'
 ]);
 
 eshopApp.config(function($interpolateProvider){
@@ -48,10 +50,10 @@ eshopApp.config(function($stateProvider,$urlRouterProvider) {
 
   .state('shell.register', {
     url: '/register'
-    ,templateProvider: function (ServicePartials,$stateParams) {
+    ,templateProvider: function (FactoryPartials,$stateParams) {
       console.log('register activated: ',$stateParams.id);
-      ServicePartials.fetch('register');
-      return ServicePartials.promise.then(function(response) {
+      FactoryPartials.fetch('register');
+      return FactoryPartials.promise.then(function(response) {
         return response.data.partial;
       }); 
     }
@@ -60,10 +62,11 @@ eshopApp.config(function($stateProvider,$urlRouterProvider) {
 
   .state('shell.login', {
     url: '/login'
-    ,templateProvider: function (ServicePartials,$stateParams) {
+    ,controller: 'ControllerLogin'
+    ,templateProvider: function (FactoryPartials,$stateParams) {
       console.log('login activated: ',$stateParams.id);
-      ServicePartials.fetch('login');
-      return ServicePartials.promise.then(function(response) {
+      FactoryPartials.fetch('login');
+      return FactoryPartials.promise.then(function(response) {
         return response.data.partial;
       }); 
     }
@@ -74,10 +77,10 @@ eshopApp.config(function($stateProvider,$urlRouterProvider) {
     ,data : { access: 5 }
 //    ,views : { 
 //      "main" : {       
-	,templateProvider: function (ServicePartials,$stateParams) {
+	,templateProvider: function (FactoryPartials,$stateParams) {
           console.log('admin activated: ',$stateParams.id);
-          ServicePartials.fetch('admin');
-          return ServicePartials.promise.then(function(response) {
+          FactoryPartials.fetch('admin');
+          return FactoryPartials.promise.then(function(response) {
             return response.data.partial;
           });    
 //        }
@@ -87,10 +90,11 @@ eshopApp.config(function($stateProvider,$urlRouterProvider) {
 
   .state('shell.shop', {
     url : '/shop'
-    ,templateProvider: function (ServicePartials,$stateParams) {
+    ,controller: 'ControllerShop'
+    ,templateProvider: function (FactoryPartials,$stateParams) {
       console.log('shop activated: ',$stateParams.id);
-      ServicePartials.fetch('shop');
-      return ServicePartials.promise.then(function(response) {
+      FactoryPartials.fetch('shop');
+      return FactoryPartials.promise.then(function(response) {
         return response.data.partial;
       }); 
     }

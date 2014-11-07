@@ -17,22 +17,36 @@ eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope',
   var callbacks = {};
   var currentCallbackId = 0;
 
+  var isOpened = false;
+  var scheduledQueue = [];
+
   bullet.onopen = function(){
+    isOpened = true;
+    for (var i = 0; i < scheduledQueue.length; i++) {
+      console.log("DEQUEUING REQUESTS",scheduledQueue);
+      fireBullet(scheduledQueue[i]);
+      scheduledQueue.splice(i,1);
+    }
     console.log("CONNECTION OPENED: ",bullet);
   };
+
   bullet.onclose = bullet.ondisconnect = function(){
     console.log('CONNECTION CLOSED');
+    isOpened = false;
   };
+
   bullet.onmessage = function(e){
     if (e.data != 'pong'){
       listener($.parseJSON(e.data));
     }
   };
+
   bullet.onheartbeat = function(){
     console.log('HEARTBEAT');
   };
 
   function sendRequest(request) {
+    console.log('FIRING REQ',request);
     var defer = $q.defer();
     var callbackId = getCallbackId();
     request.cbid = callbackId;
@@ -50,11 +64,18 @@ eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope',
       cb: defer,
       timeoutPromise: timeoutPromise
     };
-   
-
- 
-    bullet.send(JSON.stringify(request));
+    // This will prevent the 'still in CONNECTING' state error 
+    if (isOpened) {
+      fireBullet(request);
+    } else {
+      scheduledQueue.push(request);
+    }
     return defer.promise;
+  }
+
+  function fireBullet(request) {
+    bullet.send(JSON.stringify(request));
+    console.log('FIRING',request);
   }
 
   function listener(data) {
@@ -91,10 +112,19 @@ eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope',
 
 eshopFactories.factory('FactoryAuth', ['FactoryBullet','FactoryStorage'
   ,'$rootScope',function(FactoryBullet,FactoryStorage,$rootScope) {
-  var UserService = { };
-
-  UserService.user = { 'isLogged': false, 'access': 1, 'token': null };
+  var storageKey = "user";
+  var UserService = {};
+  
+  var loggedOutState = { 
+    'isLogged': false
+    , 'access': 1
+    , 'token': null
+    , 'msg': "Logged out"
+    , 'attempt': "ok"
+  };
     
+  UserService.user = loggedOutState;
+ 
   UserService.authenticate = function(loginReq) {
     if (loginReq.operation === "login") {
       var promiseLogin = FactoryBullet.send(loginReq);
@@ -106,24 +136,26 @@ eshopFactories.factory('FactoryAuth', ['FactoryBullet','FactoryStorage'
 	  for (var obj in data.data) {
             var interatedObj = data.data[obj];
 	    if (interatedObj.type === "user") {
-	      UserService.user['email'] = interatedObj.data.email;
-	      UserService.user['access'] = interatedObj.data.role;
+	      UserService.user.email = interatedObj.data.email;
+	      UserService.user.access = interatedObj.data.access;
 	    } else if (interatedObj.type === "shopper") {
-	      UserService.user['shopper'] = interatedObj.data;
+	      UserService.user.shopper = interatedObj.data;
 	    }
  	  }
 	  UserService.user.token = data.token; 
-	  console.log("USER IS:",UserService.user),
-	  //$rootScope.$broadcast("login:success","");
-	  // persist user
-          FactoryStorage.persist("user",UserService.user);
+	  UserService.user.msg = "Logged In"; 
 	  UserService.user.isLogged = true; 
+	  // persist user
+          FactoryStorage.persist(storageKey,UserService.user);
+	  console.log("USER IS:",UserService.user);
         } else if (data.result === "timeout") { 
  	  UserService.logout();
-	  //$rootScope.$broadcast("login:timeout",data.msg);
+          UserService.user.msg = "Request timed out"
+          UserService.user.attempt = "timeout"
         } else if (data.result === "error") {
  	  UserService.logout();
-	  //$rootScope.$broadcast("login:error",data.msg);
+          UserService.user.attempt = "error"
+          UserService.user.msg = "There was an error"
         }
       });    
     } else if (loginReq.operation === "initialize") {
@@ -136,13 +168,61 @@ eshopFactories.factory('FactoryAuth', ['FactoryBullet','FactoryStorage'
   };
 
   UserService.logout = function() {
-    UserService.user = { 'isLogged' : false, 'access': 1, 'token' : null };
-    FactoryStorage.remove("user");
+    console.log('LOGGING OUT');
+    UserService.user = loggedOutState;
+    FactoryStorage.remove(storageKey);
   };
   
   return UserService;
 }]);
 
+// ------------------------- FactoryStorage ------------------------------
+
+eshopFactories.factory('FactoryPartials', ['FactoryRequest','FactoryBullet',
+  function(FactoryRequest,FactoryBullet) {
+
+  var Service = {
+    state : 0
+    ,partial : []
+    ,message : ""
+    ,promise : null
+  };
+
+  Service.fetch = function(name) {
+    console.log('FactoryPartials',name);
+    Service.state = 1;
+    var fetchReq = { 'type': name, 'action' : "fetch" };
+    var request = FactoryRequest.makeRequest("partials",fetchReq,false);
+    var promise = FactoryBullet.send(request);
+    Service.promise = promise;
+    promise.then(function(response) {
+      if (response.operation === "partials") {
+        console.log('FactoryPartials response:',response);
+        if (response.data.result == "ok") {
+          Service.message = response.data.msg;
+          Service.partial = response.data.partial;
+          Service.state = 2;
+        } else if(response.data.result == "error") {
+          Service.message = response.data.msg;
+          console.log('service msg: ',Service.message);
+          Service.partial = response.data.msg;
+          Service.state = 4;
+        } else {
+          Service.message = response.data.msg;
+          Service.partial = response.data.msg;
+          Service.state = 5;
+        };
+      } else {
+        Service.message = "Invalid response";
+        Service.partial = response.data.msg;
+        console.log('Invalid response: ',response);
+        Service.state = 6;
+      }
+    });
+  };
+
+  return Service;
+}]);
 
 // ------------------------- FactoryStorage ------------------------------
 

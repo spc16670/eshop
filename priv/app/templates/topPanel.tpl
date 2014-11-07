@@ -76,23 +76,23 @@
 
 	 <!-- The Default Landing -->
          <ul class="nav navbar-nav navbar-right" ng-switch-default>
-           <li ng-class="{ active: toggler.showRegister }" ng-if="!currentUser.isLogged">
-             <a id="btn-signup" href="#" ng-click="visible('showRegister')">Sign Up</a>
+           <li ng-class="{ active: toggler.showRegister }" ng-if="!user.isLogged">
+             <a id="btn-signup" href="#" ui-sref="shell.register">Sign Up</a>
            </li>
-           <li ng-class="{ active: toggler.showLogin }" ng-if="!currentUser.isLogged">
+           <li ng-class="{ active: toggler.showLogin }" ng-if="!user.isLogged">
              <a id="btn-signup" ui-sref="shell.login">Log In</a>
            </li>
 
-           <li class="dropdown" ng-if="currentUser.isLogged">
-             <a ng-if="currentUser.isLogged" href="#" class="dropdown-toggle" id="btn-account" data-toggle="dropdown">
-	      {[ currentUser.shopper.fname ]}<b class="caret"></b>
+           <li class="dropdown" ng-if="user.isLogged">
+             <a ng-if="user.isLogged" href="#" class="dropdown-toggle" id="btn-account" data-toggle="dropdown">
+	      {[ user.shopper.fname ]}<b class="caret"></b>
 	     </a>
                <ul class="dropdown-menu">
-		 <li ng-if="currentUser.isLogged">
+		 <li ng-if="user.isLogged">
 		   <a id="btn-personal" href="#" ng-click="visible('showPersonal')">Personal Information</a>
 		 </li>
 		 <li class="divider"></li>
-		 <li ng-if="currentUser.isLogged">
+		 <li ng-if="user.isLogged">
 		   <a href="#" ng-click="logout()">Log Out</a>
 		 </li>
                </ul>
