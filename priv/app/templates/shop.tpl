@@ -1,5 +1,5 @@
 
-  <div class="navbar navbar-default" role="navigation">
+  <div class="navbar navbar-default" role="navigation" ng-controller="ControllerShop">
     <!-- Search 
     <div class="row">
       <div class="col-md-2 navbar-header">
@@ -21,11 +21,10 @@
         </button>
       </div>
     </div> -->
-
-    <div class="row">
+    <div class="row" ng-show="$state.includes('shell.shop')" >
 
       <!-- Menu -->
-      <div class="col-md-2 sidebar" cg-busy="promiseCategories">
+      <div class="col-md-2 sidebar">
 
 	<ul class="nav nav-sidebar">
 	  <li class="active">
@@ -63,7 +62,6 @@
       <!-- Main Area -->
       <div class="col-md-10" id="main-area">
         {[ $parent.user ]}
-        {% include "items.tpl" %}
       </div> <!-- col-md-10 -->
     </div><!-- row -->
   </div><!-- navabar -->

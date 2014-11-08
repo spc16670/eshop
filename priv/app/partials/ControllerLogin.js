@@ -4,8 +4,8 @@ var eshopControllers = angular.module('eshop.Controllers.Login', []);
 //---------------------- ControllerLanding ------------------------
 
 eshopControllers.controller('ControllerLogin', ['$scope',
-  'FactoryAuth','FactoryAlert','FactoryRequest',
-  function($scope,FactoryAuth,FactoryAlert,FactoryRequest) {
+  'FactoryAuth','FactoryAlert','FactoryRequest','$state',
+  function($scope,FactoryAuth,FactoryAlert,FactoryRequest,$state) {
 
   $scope.login = {};
   $scope.alerts = [];
@@ -17,9 +17,13 @@ eshopControllers.controller('ControllerLogin', ['$scope',
   $scope.$watch(function() {return FactoryAuth},function() {
     $scope.user = FactoryAuth.user;
     if ($scope.user.attempt !== "ok") {
-      handleError(scope.user.msg);
+      handleError($scope.user.msg);
+    } else {
+      if ($scope.user.isLogged) {
+        $state.go('shell.shop');
+      }
     }
-  });
+  },true);
  
   function handleError(msg) {
      while($scope.alerts.length > 0) {

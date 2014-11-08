@@ -36,7 +36,7 @@
   <script src="/app/services/Factory.js"></script>
   <script src="/app/services/FactoryCategories.js"></script>
   <script src="/app/partials/ControllerShell.js"></script>
-  <script src="/app/partials/ControllerShop.js"></script>
+  <script src="/app/templates/ControllerShop.js"></script>
   <script src="/app/partials/ControllerLogin.js"></script>
   <script src="/app/app.js"></script>
   <!-- <script src="/static/js/angular-ui-0.11.0/ui-bootstrap.min.js"></script> -->
@@ -44,7 +44,7 @@
 <body ng-controller="ControllerShell">
     
     <!-- Top Panel -->
-    <div id="topPanel" cg-busy="promisePartials">
+    <div id="topPanel" cg-busy="busyMain">
       {% include "topPanel.tpl" %}
     </div>
     
@@ -52,6 +52,7 @@
     <div class="container-fluid">
       <div ui-view></div> 
 
+      {% include "shop.tpl" %}
     </div><!-- ./.container -->
   
   <div style="color:sienna">{{ sid }}</div>

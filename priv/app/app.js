@@ -30,7 +30,7 @@ eshopApp.run(function(editableOptions) {
 
 // configure our routes
 eshopApp.config(function($stateProvider,$urlRouterProvider) {
-  $urlRouterProvider.otherwise('/shop');
+  $urlRouterProvider.otherwise('/');
 
   $stateProvider
 
@@ -89,17 +89,22 @@ eshopApp.config(function($stateProvider,$urlRouterProvider) {
   })
 
   .state('shell.shop', {
-    url : '/shop'
-    ,controller: 'ControllerShop'
-    ,templateProvider: function (FactoryPartials,$stateParams) {
-      console.log('shop activated: ',$stateParams.id);
-      FactoryPartials.fetch('shop');
-      return FactoryPartials.promise.then(function(response) {
-        return response.data.partial;
-      }); 
-    }
+    url : '/'
+//    ,controller: 'ControllerShop'
+//    ,templateProvider: function (FactoryPartials,$stateParams) {
+//      console.log('shop activated: ',$stateParams.id);
+//      FactoryPartials.fetch('shop');
+//      return FactoryPartials.promise.then(function(response) {
+//        return response.data.partial;
+//      }); 
+//    }
   })
- 
+
+
+  .state('shell.shop.offers', { 
+    url : '/offers'
+  })
+
 });
 
 eshopApp.run(['$rootScope', '$state', 'FactoryAuth', function ($rootScope, $state, FactoryAuth) {
@@ -132,6 +137,13 @@ eshopApp.run(['$rootScope', '$state', 'FactoryAuth', function ($rootScope, $stat
     }
   });
 }]);
+
+/*
+ * This is needed to ensure conditional ng-show works
+ */
+eshopApp.run(function ($state,$rootScope) {
+    $rootScope.$state = $state;
+});
 
 eshopApp.run(
   function($rootScope) {

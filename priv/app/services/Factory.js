@@ -4,7 +4,7 @@ var eshopFactories = angular.module('eshop.Factories',[]);
 
 eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope', 
   function($q,$timeout,$rootScope) {  
-  var Service = {};
+  var Service = { promise: null, cid : 0 };
   var sid = document.getElementById('session_id');
   var hostname = document.getElementById('hostname');
   var clientTimeout = document.getElementById('client_timeout').textContent;
@@ -13,7 +13,6 @@ eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope',
   var options = { 'disableEventSource': true, 'disableXHRPolling' : true};
   //var options = {};
   var bullet = $.bullet(url, options);
-  var name = 'best';
   var callbacks = {};
   var currentCallbackId = 0;
 
@@ -46,9 +45,9 @@ eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope',
   };
 
   function sendRequest(request) {
-    console.log('FIRING REQ',request);
     var defer = $q.defer();
     var callbackId = getCallbackId();
+    Service.cid = callbackId; 
     request.cbid = callbackId;
     var timeoutPromise = $timeout(function(data){
       var timeoutRequest = request;
@@ -75,7 +74,6 @@ eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope',
 
   function fireBullet(request) {
     bullet.send(JSON.stringify(request));
-    console.log('FIRING',request);
   }
 
   function listener(data) {
@@ -102,7 +100,8 @@ eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope',
   Service.send = function(msg) {
     msg.cbid = null;
     // Storing in a variable for clarity on what sendRequest returns
-    var promise = sendRequest(msg); 
+    var promise = sendRequest(msg);
+    Service.promise = promise; 
     return promise;
   }
   return Service; 
@@ -124,11 +123,12 @@ eshopFactories.factory('FactoryAuth', ['FactoryBullet','FactoryStorage'
   };
     
   UserService.user = loggedOutState;
+  UserService.promise = null;
  
   UserService.authenticate = function(loginReq) {
     if (loginReq.operation === "login") {
       var promiseLogin = FactoryBullet.send(loginReq);
-      UserService.loginPromise = promiseLogin;
+      UserService.promise = promiseLogin;
       promiseLogin.then(function(response){
         var data = response.data;
         if (data.result === "ok") { 
@@ -144,6 +144,7 @@ eshopFactories.factory('FactoryAuth', ['FactoryBullet','FactoryStorage'
  	  }
 	  UserService.user.token = data.token; 
 	  UserService.user.msg = "Logged In"; 
+          UserService.user.attempt = "ok"
 	  UserService.user.isLogged = true; 
 	  // persist user
           FactoryStorage.persist(storageKey,UserService.user);
@@ -169,7 +170,15 @@ eshopFactories.factory('FactoryAuth', ['FactoryBullet','FactoryStorage'
 
   UserService.logout = function() {
     console.log('LOGGING OUT');
-    UserService.user = loggedOutState;
+    UserService.user = {
+      'isLogged': false
+      , 'access': 1
+      , 'token': null
+      , 'msg': "Logged out"
+      , 'attempt': "ok"
+    };
+    // watch does not intercept the change below
+    //UserService.user = loggedOutState;
     FactoryStorage.remove(storageKey);
   };
   
