@@ -29,20 +29,20 @@
 	    </a>
             <ul class="dropdown-menu">
 	      <li>
-		<a id="btn-personal" href="#" ng-click="visible('registerUser')">Register User</a>
+		<a id="btn-personal" href="#" ng-click="visible('adminManageUsers')">Manage Users</a>
 	      </li>
 	      <li class="divider"></li>
 	      <li>
-		<a href="#" ng-click="visible('addInformation')">Add Information</a>
+		<a href="#" ng-click="visible('adminAddInformation')">Add Information</a>
 	      </li>
 	    </ul>
 	  </li>
 
-	  <!-- Sign Up
-           <li ng-class="{ active: toggler.showRegister }" ng-if="!user.isLogged">
+	  <!-- Sign Up -->
+           <li ng-class="{ active: toggler.showSignUp }" ng-if="!user.isLogged">
              <a id="btn-signup" href="#" ui-sref="shell.register">Sign Up</a>
            </li>
-	  -->
+	  
 
 	  <!-- Log in -->
            <li ng-class="{ active: toggler.showLogin }" ng-if="!user.isLogged">

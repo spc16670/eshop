@@ -17,7 +17,7 @@
   <!-- <script src="/static/js/bootstrap-3.1.1/bootstrap.min.js"></script> -->
   <script src="/static/js/bullet/bullet-0.4.1.js"></script>
   <script src="/static/js/angular/angular-1.2.9.min.js"></script>
-  <script src="/static/js/angular/angular-route-1.2.9.js"></script>
+  <!--<script src="/static/js/angular/angular-route-1.2.9.js"></script>-->
   <script src="/static/js/angular/angular-animate-1.2.9.min.js"></script>
   <script src="/static/js/angular-ui/ui-bootstrap-tpls-0.11.0.min.js"></script>
   <script src="/static/js/angular-busy/angular-busy-4.0.0.min.js"></script>
@@ -36,6 +36,7 @@
   <script src="/app/factories/Factory.js"></script>
   <script src="/app/factories/FactoryCategories.js"></script>
   <script src="/app/partials/ControllerShell.js"></script>
+  <script src="/app/partials/ControllerSignUp.js"></script>
   <script src="/app/partials/ControllerMain.js"></script>
   <script src="/app/partials/ControllerLogin.js"></script>
   <script src="/app/app.js"></script>
@@ -51,7 +52,6 @@
     <!-- Main Container --> 
     <div class="container-fluid">
       <div ui-view></div> 
-
       {% include "main.tpl" %}
     </div><!-- ./.container -->
   

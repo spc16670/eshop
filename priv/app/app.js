@@ -16,6 +16,7 @@ var eshopApp = angular.module('EShop', [
   ,'eshop.Controller.Shell'
   ,'eshop.Controller.Main'
   ,'eshop.Controller.Login'
+  ,'eshop.Controller.SignUp'
 ]);
 
 eshopApp.config(function($interpolateProvider){
