@@ -33,10 +33,10 @@
   <script src="/static/js/eshop/eshop.Controllers.js"></script>
 -->
   
-  <script src="/app/services/Factory.js"></script>
-  <script src="/app/services/FactoryCategories.js"></script>
+  <script src="/app/factories/Factory.js"></script>
+  <script src="/app/factories/FactoryCategories.js"></script>
   <script src="/app/partials/ControllerShell.js"></script>
-  <script src="/app/templates/ControllerShop.js"></script>
+  <script src="/app/partials/ControllerMain.js"></script>
   <script src="/app/partials/ControllerLogin.js"></script>
   <script src="/app/app.js"></script>
   <!-- <script src="/static/js/angular-ui-0.11.0/ui-bootstrap.min.js"></script> -->
@@ -45,14 +45,14 @@
     
     <!-- Top Panel -->
     <div id="topPanel" cg-busy="busyMain">
-      {% include "topPanel.tpl" %}
+      {% include "top.tpl" %}
     </div>
     
     <!-- Main Container --> 
     <div class="container-fluid">
       <div ui-view></div> 
 
-      {% include "shop.tpl" %}
+      {% include "main.tpl" %}
     </div><!-- ./.container -->
   
   <div style="color:sienna">{{ sid }}</div>

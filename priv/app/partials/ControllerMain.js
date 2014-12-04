@@ -1,9 +1,9 @@
 
-var eshopControllers = angular.module('eshop.Controllers.Shop', []);
+var eshopControllers = angular.module('eshop.Controller.Main', []);
 
 //---------------------- ControllerLanding ------------------------
 
-eshopControllers.controller('ControllerShop', ['$scope',
+eshopControllers.controller('ControllerMain', ['$scope',
   'FactoryCategories','$state',function($scope,
   FactoryCategories,$state) { 
 

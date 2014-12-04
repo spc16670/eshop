@@ -1,5 +1,5 @@
 
-  <div class="navbar navbar-default" role="navigation" ng-controller="ControllerShop">
+  <div class="navbar navbar-default" role="navigation" ng-controller="ControllerMain">
     <!-- Search 
     <div class="row">
       <div class="col-md-2 navbar-header">

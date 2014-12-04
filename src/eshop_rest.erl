@@ -13,7 +13,7 @@ init(_Transport, _Req, _Opts) ->
 
 rest_init(Req,[]) ->
   {Sid,_Path,Req2} = eshop_session:on_request(Req),
-  TemplatePath = eshop_utls:priv_dir() ++ "/app/templates",
+  TemplatePath = eshop_utls:priv_dir() ++ "/app/partials",
   {ok,Req2,#'state'{templates_path=TemplatePath,sid=Sid}}.
 
 content_types_provided(Req, State) ->

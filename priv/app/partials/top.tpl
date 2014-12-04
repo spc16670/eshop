@@ -20,18 +20,36 @@
          </ul>
 
 	 <!-- The Default Landing -->
-         <ul class="nav navbar-nav navbar-right">
-           <li ng-class="{ active: toggler.showAdmin }" ng-if="user.access > 3">
-               <!--<a href="#" ng-click="visible('showAdmin')">Administration</a>-->
-               <a href="#" ui-sref="admin.start">Administration</a>
-           </li> 
+	<ul class="nav navbar-nav navbar-right">
+
+	  <!-- Administration -->
+          <li class="dropdown" ng-if="user.access > 3">
+            <a ng-if="user.isLogged" href="#" class="dropdown-toggle" id="btn-account" data-toggle="dropdown">
+	     Administration<b class="caret"></b>
+	    </a>
+            <ul class="dropdown-menu">
+	      <li>
+		<a id="btn-personal" href="#" ng-click="visible('registerUser')">Register User</a>
+	      </li>
+	      <li class="divider"></li>
+	      <li>
+		<a href="#" ng-click="visible('addInformation')">Add Information</a>
+	      </li>
+	    </ul>
+	  </li>
+
+	  <!-- Sign Up
            <li ng-class="{ active: toggler.showRegister }" ng-if="!user.isLogged">
              <a id="btn-signup" href="#" ui-sref="shell.register">Sign Up</a>
            </li>
+	  -->
+
+	  <!-- Log in -->
            <li ng-class="{ active: toggler.showLogin }" ng-if="!user.isLogged">
              <a id="btn-signup" ui-sref="shell.login">Log In</a>
            </li>
 
+	  
            <li class="dropdown" ng-if="user.isLogged">
              <a ng-if="user.isLogged" href="#" class="dropdown-toggle" id="btn-account" data-toggle="dropdown">
 	      {[ user.shopper.fname ]}<b class="caret"></b>

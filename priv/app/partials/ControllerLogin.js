@@ -1,5 +1,5 @@
 
-var eshopControllers = angular.module('eshop.Controllers.Login', []);
+var eshopControllers = angular.module('eshop.Controller.Login', []);
 
 //---------------------- ControllerLanding ------------------------
 

@@ -1,6 +1,6 @@
 'use strict';
 
-var eshopFactories = angular.module('eshop.Factories',[]);
+var eshopFactories = angular.module('eshop.Factory',[]);
 
 eshopFactories.factory('FactoryBullet', ['$q','$timeout','$rootScope', 
   function($q,$timeout,$rootScope) {  

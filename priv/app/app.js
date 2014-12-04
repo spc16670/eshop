@@ -11,11 +11,11 @@ var eshopApp = angular.module('EShop', [
 //  ,'eshop.admin.items.Factories'
 //  ,'eshop.admin.Controllers'
 //  ,'eshop.Directives'
-  ,'eshop.Factories'
-  ,'eshop.Factories.Categories'
-  ,'eshop.Controllers.Shell'
-  ,'eshop.Controllers.Shop'
-  ,'eshop.Controllers.Login'
+  ,'eshop.Factory'
+  ,'eshop.Factory.Categories'
+  ,'eshop.Controller.Shell'
+  ,'eshop.Controller.Main'
+  ,'eshop.Controller.Login'
 ]);
 
 eshopApp.config(function($interpolateProvider){

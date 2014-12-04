@@ -1,6 +1,6 @@
 'use strict';
 
-var eshopFactories = angular.module('eshop.Factories.Categories',[]);
+var eshopFactories = angular.module('eshop.Factory.Categories',[]);
 
 eshopFactories.factory('FactoryCategories', ['FactoryRequest','FactoryBullet', 
   function(FactoryRequest,FactoryBullet) {  
