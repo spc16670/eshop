@@ -1,0 +1,22 @@
+2014-12-11 15:38:23.404 [info] <0.7.0> Application lager started on node nonode@nohost
+2014-12-11 15:38:23.416 [info] <0.7.0> Application crypto started on node nonode@nohost
+2014-12-11 15:38:23.419 [info] <0.7.0> Application cowlib started on node nonode@nohost
+2014-12-11 15:38:23.424 [info] <0.7.0> Application ranch started on node nonode@nohost
+2014-12-11 15:38:23.436 [info] <0.7.0> Application cowboy started on node nonode@nohost
+2014-12-11 15:38:23.438 [info] <0.7.0> Application erlsha2 started on node nonode@nohost
+2014-12-11 15:38:23.441 [info] <0.7.0> Application jsx started on node nonode@nohost
+2014-12-11 15:38:23.444 [info] <0.7.0> Application ejwt started on node nonode@nohost
+2014-12-11 15:38:23.466 [info] <0.7.0> Application gproc started on node nonode@nohost
+2014-12-11 15:38:23.547 [info] <0.7.0> Application estore started on node nonode@nohost
+2014-12-11 15:38:24.113 [warning] <0.6.0> lager_error_logger_h dropped 174 messages in the last second that exceeded the limit of 50 messages/sec
+2014-12-11 15:38:24.113 [info] <0.7.0> Application eshop started on node nonode@nohost
+2014-12-11 15:38:28.872 [error] <0.374.0> CRASH REPORT Process <0.374.0> with 0 neighbours exited with reason: bad argument in call to gproc:reg({n,l,<<"worker-0509efcdc58958575d409f96a94f8eb0">>}, ignore) line 945 in eshop_session_worker:init/1 line 31 in gen_server:init_it/6 line 330
+2014-12-11 15:44:44.106 [error] <0.456.0> gen_server <0.456.0> terminated with reason: no match of right hand value {error,enoent} in eshop:partials/2 line 28
+2014-12-11 15:44:44.106 [error] <0.456.0> CRASH REPORT Process <0.456.0> with 0 neighbours exited with reason: no match of right hand value {error,enoent} in eshop:partials/2 line 28 in gen_server:terminate/6 line 746
+2014-12-11 15:44:44.107 [error] <0.341.0> Supervisor eshop_session_sup had child eshop_session_worker started with eshop_session_worker:start_link(<<"0509efcdc58958575d409f96a94f8eb0">>) at <0.456.0> exit with reason no match of right hand value {error,enoent} in eshop:partials/2 line 28 in context child_terminated
+2014-12-11 15:52:16.186 [error] <0.632.0> gen_server <0.632.0> terminated with reason: {'module could not be loaded',[{eshop_logging,log_term,[debug,[error,{ok,rolledback}]],[]},{eshop,new_registration,2,[{file,"src/eshop.erl"},{line,64}]},{eshop_session_worker,handle_info,2,[{file,"src/eshop_session_worker.erl"},{line,62}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,599}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+2014-12-11 15:52:16.186 [error] <0.632.0> CRASH REPORT Process <0.632.0> with 0 neighbours exited with reason: call to undefined function eshop_logging:log_term(debug, [error,{ok,rolledback}]) in gen_server:terminate/6 line 746
+2014-12-11 15:52:16.187 [error] <0.341.0> Supervisor eshop_session_sup had child eshop_session_worker started with eshop_session_worker:start_link(<<"0509efcdc58958575d409f96a94f8eb0">>) at <0.632.0> exit with reason call to undefined function eshop_logging:log_term(debug, [error,{ok,rolledback}]) in context child_terminated
+2014-12-11 16:14:06.010 [error] <0.842.0> gen_server <0.842.0> terminated with reason: {'module could not be loaded',[{eshop_logging,log_term,[debug,[error,{ok,rolledback}]],[]},{eshop,new_registration,2,[{file,"src/eshop.erl"},{line,64}]},{eshop_session_worker,handle_info,2,[{file,"src/eshop_session_worker.erl"},{line,62}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,599}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+2014-12-11 16:14:06.011 [error] <0.842.0> CRASH REPORT Process <0.842.0> with 0 neighbours exited with reason: call to undefined function eshop_logging:log_term(debug, [error,{ok,rolledback}]) in gen_server:terminate/6 line 746
+2014-12-11 16:14:06.011 [error] <0.341.0> Supervisor eshop_session_sup had child eshop_session_worker started with eshop_session_worker:start_link(<<"0509efcdc58958575d409f96a94f8eb0">>) at <0.842.0> exit with reason call to undefined function eshop_logging:log_term(debug, [error,{ok,rolledback}]) in context child_terminated

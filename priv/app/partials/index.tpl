@@ -33,6 +33,7 @@
   <script src="/static/js/eshop/eshop.Controllers.js"></script>
 -->
   
+  <script src="/app/directives/DirectiveValidate.js"></script>
   <script src="/app/factories/Factory.js"></script>
   <script src="/app/factories/FactoryCategories.js"></script>
   <script src="/app/partials/ControllerShell.js"></script>

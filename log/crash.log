@@ -1,0 +1,100 @@
+2014-12-11 15:38:28 =CRASH REPORT====
+  crasher:
+    initial call: eshop_session_worker:init/1
+    pid: <0.374.0>
+    registered_name: []
+    exception exit: {{badarg,[{gproc,reg,[{n,l,<<"worker-0509efcdc58958575d409f96a94f8eb0">>},ignore],[{file,"src/gproc.erl"},{line,945}]},{eshop_session_worker,init,1,[{file,"src/eshop_session_worker.erl"},{line,31}]},{gen_server,init_it,6,[{file,"gen_server.erl"},{line,306}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]},[{gen_server,init_it,6,[{file,"gen_server.erl"},{line,330}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+    ancestors: [eshop_session_sup,eshop_sup,<0.36.0>]
+    messages: []
+    links: [<0.341.0>]
+    dictionary: []
+    trap_exit: false
+    status: running
+    heap_size: 610
+    stack_size: 27
+    reductions: 131
+  neighbours:
+2014-12-11 15:44:44 =ERROR REPORT====
+** Generic server <0.456.0> terminating 
+** Last message in was <<"{\"operation\":\"partials\",\"data\":{\"type\":\"register\",\"action\":\"fetch\"},\"cbid\":1}">>
+** When Server state == {state,<<"0509efcdc58958575d409f96a94f8eb0">>}
+** Reason for termination == 
+** {{badmatch,{error,enoent}},[{eshop,partials,2,[{file,"src/eshop.erl"},{line,28}]},{eshop_session_worker,handle_info,2,[{file,"src/eshop_session_worker.erl"},{line,62}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,599}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+2014-12-11 15:44:44 =CRASH REPORT====
+  crasher:
+    initial call: eshop_session_worker:init/1
+    pid: <0.456.0>
+    registered_name: []
+    exception exit: {{{badmatch,{error,enoent}},[{eshop,partials,2,[{file,"src/eshop.erl"},{line,28}]},{eshop_session_worker,handle_info,2,[{file,"src/eshop_session_worker.erl"},{line,62}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,599}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]},[{gen_server,terminate,6,[{file,"gen_server.erl"},{line,746}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+    ancestors: [eshop_session_sup,eshop_sup,<0.36.0>]
+    messages: []
+    links: [<0.341.0>]
+    dictionary: [{random_seed,{497,18406,5658}}]
+    trap_exit: false
+    status: running
+    heap_size: 987
+    stack_size: 27
+    reductions: 587
+  neighbours:
+2014-12-11 15:44:44 =SUPERVISOR REPORT====
+     Supervisor: {local,eshop_session_sup}
+     Context:    child_terminated
+     Reason:     {{badmatch,{error,enoent}},[{eshop,partials,2,[{file,"src/eshop.erl"},{line,28}]},{eshop_session_worker,handle_info,2,[{file,"src/eshop_session_worker.erl"},{line,62}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,599}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+     Offender:   [{pid,<0.456.0>},{name,eshop_session_worker},{mfargs,{eshop_session_worker,start_link,[<<"0509efcdc58958575d409f96a94f8eb0">>]}},{restart_type,transient},{shutdown,5000},{child_type,worker}]
+
+2014-12-11 15:52:16 =ERROR REPORT====
+** Generic server <0.632.0> terminating 
+** Last message in was <<"{\"operation\":\"register\",\"data\":[{\"type\":\"user\",\"data\":{\"email\":\"asdf@asdf.asdf\",\"password\":\"asdfqwer\",\"password_verify\":\"asdfqwer\"}},{\"type\":\"shopper_address\",\"data\":{\"addressline1\":\"asdf\",\"addressline2\":\"asdf\",\"postcode\":\"asdf\",\"city\":\"asdf\"}},{\"type\":\"shopper\",\"data\":{\"gender\":\"f\",\"fname\":\"asdf\",\"lname\":\"asdf\"}}],\"cbid\":3}">>
+** When Server state == {state,<<"0509efcdc58958575d409f96a94f8eb0">>}
+** Reason for termination == 
+** {'module could not be loaded',[{eshop_logging,log_term,[debug,[error,{ok,rolledback}]],[]},{eshop,new_registration,2,[{file,"src/eshop.erl"},{line,64}]},{eshop_session_worker,handle_info,2,[{file,"src/eshop_session_worker.erl"},{line,62}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,599}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+2014-12-11 15:52:16 =CRASH REPORT====
+  crasher:
+    initial call: eshop_session_worker:init/1
+    pid: <0.632.0>
+    registered_name: []
+    exception exit: {{undef,[{eshop_logging,log_term,[debug,[error,{ok,rolledback}]],[]},{eshop,new_registration,2,[{file,"src/eshop.erl"},{line,64}]},{eshop_session_worker,handle_info,2,[{file,"src/eshop_session_worker.erl"},{line,62}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,599}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]},[{gen_server,terminate,6,[{file,"gen_server.erl"},{line,746}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+    ancestors: [eshop_session_sup,eshop_sup,<0.36.0>]
+    messages: []
+    links: [<0.341.0>]
+    dictionary: [{random_seed,{497,5229,23736}}]
+    trap_exit: false
+    status: running
+    heap_size: 2586
+    stack_size: 27
+    reductions: 1805
+  neighbours:
+2014-12-11 15:52:16 =SUPERVISOR REPORT====
+     Supervisor: {local,eshop_session_sup}
+     Context:    child_terminated
+     Reason:     {undef,[{eshop_logging,log_term,[debug,[error,{ok,rolledback}]],[]},{eshop,new_registration,2,[{file,"src/eshop.erl"},{line,64}]},{eshop_session_worker,handle_info,2,[{file,"src/eshop_session_worker.erl"},{line,62}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,599}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+     Offender:   [{pid,<0.632.0>},{name,eshop_session_worker},{mfargs,{eshop_session_worker,start_link,[<<"0509efcdc58958575d409f96a94f8eb0">>]}},{restart_type,transient},{shutdown,5000},{child_type,worker}]
+
+2014-12-11 16:14:06 =ERROR REPORT====
+** Generic server <0.842.0> terminating 
+** Last message in was <<"{\"operation\":\"register\",\"data\":[{\"type\":\"user\",\"data\":{\"password\":\"asdfqwer\",\"password_verify\":\"asdfqwerdf\",\"email\":\"asdf@Asdf.asdf\"}},{\"type\":\"shopper_address\",\"data\":{\"addressline1\":\"asdf\",\"addressline2\":\"asdf\",\"postcode\":\"asdf\",\"city\":\"asdf\"}},{\"type\":\"shopper\",\"data\":{\"gender\":\"f\",\"fname\":\"asdf\",\"lname\":\"ssad\"}}],\"cbid\":2}">>
+** When Server state == {state,<<"0509efcdc58958575d409f96a94f8eb0">>}
+** Reason for termination == 
+** {'module could not be loaded',[{eshop_logging,log_term,[debug,[error,{ok,rolledback}]],[]},{eshop,new_registration,2,[{file,"src/eshop.erl"},{line,64}]},{eshop_session_worker,handle_info,2,[{file,"src/eshop_session_worker.erl"},{line,62}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,599}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+2014-12-11 16:14:06 =CRASH REPORT====
+  crasher:
+    initial call: eshop_session_worker:init/1
+    pid: <0.842.0>
+    registered_name: []
+    exception exit: {{undef,[{eshop_logging,log_term,[debug,[error,{ok,rolledback}]],[]},{eshop,new_registration,2,[{file,"src/eshop.erl"},{line,64}]},{eshop_session_worker,handle_info,2,[{file,"src/eshop_session_worker.erl"},{line,62}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,599}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]},[{gen_server,terminate,6,[{file,"gen_server.erl"},{line,746}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+    ancestors: [eshop_session_sup,eshop_sup,<0.36.0>]
+    messages: []
+    links: [<0.341.0>]
+    dictionary: [{random_seed,{497,18400,1428}}]
+    trap_exit: false
+    status: running
+    heap_size: 1598
+    stack_size: 27
+    reductions: 1807
+  neighbours:
+2014-12-11 16:14:06 =SUPERVISOR REPORT====
+     Supervisor: {local,eshop_session_sup}
+     Context:    child_terminated
+     Reason:     {undef,[{eshop_logging,log_term,[debug,[error,{ok,rolledback}]],[]},{eshop,new_registration,2,[{file,"src/eshop.erl"},{line,64}]},{eshop_session_worker,handle_info,2,[{file,"src/eshop_session_worker.erl"},{line,62}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,599}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+     Offender:   [{pid,<0.842.0>},{name,eshop_session_worker},{mfargs,{eshop_session_worker,start_link,[<<"0509efcdc58958575d409f96a94f8eb0">>]}},{restart_type,transient},{shutdown,5000},{child_type,worker}]
+

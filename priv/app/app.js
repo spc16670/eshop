@@ -11,6 +11,7 @@ var eshopApp = angular.module('EShop', [
 //  ,'eshop.admin.items.Factories'
 //  ,'eshop.admin.Controllers'
 //  ,'eshop.Directives'
+  ,'eshop.Directive'
   ,'eshop.Factory'
   ,'eshop.Factory.Categories'
   ,'eshop.Controller.Shell'

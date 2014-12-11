@@ -1,0 +1,66 @@
+2014-12-11 15:38:23.024 [debug] <0.63.0> Lager installed handler error_logger_lager_h into error_logger
+2014-12-11 15:38:23.024 [debug] <0.59.0> Lager installed handler {lager_file_backend,"./log/info.log"} into lager_event
+2014-12-11 15:38:23.024 [debug] <0.61.0> Lager installed handler {lager_file_backend,"./log/error.log"} into lager_event
+2014-12-11 15:38:23.042 [debug] <0.46.0> Supervisor gr_param_sup started gr_param:start_link(gr_lager_default_tracer_params) at pid <0.65.0>
+2014-12-11 15:38:23.042 [debug] <0.45.0> Supervisor gr_counter_sup started gr_counter:start_link(gr_lager_default_tracer_counters) at pid <0.66.0>
+2014-12-11 15:38:23.043 [debug] <0.47.0> Supervisor gr_manager_sup started gr_manager:start_link(gr_lager_default_tracer_params_mgr, gr_lager_default_tracer_params, []) at pid <0.67.0>
+2014-12-11 15:38:23.043 [debug] <0.47.0> Supervisor gr_manager_sup started gr_manager:start_link(gr_lager_default_tracer_counters_mgr, gr_lager_default_tracer_counters, [{input,0},{filter,0},{output,0}]) at pid <0.68.0>
+2014-12-11 15:38:23.404 [info] <0.7.0> Application lager started on node nonode@nohost
+2014-12-11 15:38:23.416 [info] <0.7.0> Application crypto started on node nonode@nohost
+2014-12-11 15:38:23.419 [info] <0.7.0> Application cowlib started on node nonode@nohost
+2014-12-11 15:38:23.423 [debug] <0.75.0> Supervisor ranch_sup started ranch_server:start_link() at pid <0.76.0>
+2014-12-11 15:38:23.424 [info] <0.7.0> Application ranch started on node nonode@nohost
+2014-12-11 15:38:23.436 [debug] <0.28.0> Supervisor kernel_safe_sup started timer:start_link() at pid <0.82.0>
+2014-12-11 15:38:23.436 [debug] <0.80.0> Supervisor cowboy_sup started cowboy_clock:start_link() at pid <0.81.0>
+2014-12-11 15:38:23.436 [info] <0.7.0> Application cowboy started on node nonode@nohost
+2014-12-11 15:38:23.438 [info] <0.7.0> Application erlsha2 started on node nonode@nohost
+2014-12-11 15:38:23.441 [info] <0.7.0> Application jsx started on node nonode@nohost
+2014-12-11 15:38:23.444 [info] <0.7.0> Application ejwt started on node nonode@nohost
+2014-12-11 15:38:23.459 [debug] <0.89.0> Supervisor gproc_sup started gproc:start_link() at pid <0.90.0>
+2014-12-11 15:38:23.461 [debug] <0.89.0> Supervisor gproc_sup started gproc_monitor:start_link() at pid <0.91.0>
+2014-12-11 15:38:23.463 [debug] <0.89.0> Supervisor gproc_sup started gproc_bcast:start_link() at pid <0.92.0>
+2014-12-11 15:38:23.466 [debug] <0.89.0> Supervisor gproc_sup started gproc_pool:start_link() at pid <0.93.0>
+2014-12-11 15:38:23.466 [info] <0.7.0> Application gproc started on node nonode@nohost
+2014-12-11 15:38:23.501 [debug] <0.102.0> Supervisor inet_gethost_native_sup started undefined at pid <0.103.0>
+2014-12-11 15:38:23.502 [debug] <0.28.0> Supervisor kernel_safe_sup started inet_gethost_native:start_link() at pid <0.102.0>
+2014-12-11 15:38:23.514 [debug] <0.55.0> Lager installed handler lager_backend_throttle into lager_event
+2014-12-11 15:38:23.547 [debug] <0.97.0> Supervisor estore_sup started poolboy:start_link([{name,{local,pgsql_pool}},{worker_module,estore_pgsql_worker},{size,10},{max_overflow,20}], [{hostname,"127.0.0.1"},{database,"lamazone"},{username,"lamazone"},{password,"lamazone"}]) at pid <0.98.0>
+2014-12-11 15:38:23.547 [info] <0.7.0> Application estore started on node nonode@nohost
+2014-12-11 15:38:23.560 [debug] <0.122.0> Supervisor {<0.122.0>,ranch_listener_sup} started ranch_conns_sup:start_link(http_listener, worker, ranch_tcp, cowboy_protocol) at pid <0.123.0>
+2014-12-11 15:38:23.562 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.125.0>
+2014-12-11 15:38:23.563 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.126.0>
+2014-12-11 15:38:23.563 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.127.0>
+2014-12-11 15:38:23.563 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.128.0>
+2014-12-11 15:38:23.563 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.129.0>
+2014-12-11 15:38:23.564 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.130.0>
+2014-12-11 15:38:23.564 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.131.0>
+2014-12-11 15:38:23.564 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.132.0>
+2014-12-11 15:38:23.564 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.133.0>
+2014-12-11 15:38:23.565 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.134.0>
+2014-12-11 15:38:23.565 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.135.0>
+2014-12-11 15:38:23.565 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.136.0>
+2014-12-11 15:38:23.565 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.137.0>
+2014-12-11 15:38:23.566 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.138.0>
+2014-12-11 15:38:23.566 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.139.0>
+2014-12-11 15:38:23.566 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.140.0>
+2014-12-11 15:38:23.567 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.141.0>
+2014-12-11 15:38:23.567 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.142.0>
+2014-12-11 15:38:23.567 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.143.0>
+2014-12-11 15:38:23.567 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.144.0>
+2014-12-11 15:38:23.568 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.145.0>
+2014-12-11 15:38:23.568 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.146.0>
+2014-12-11 15:38:23.568 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.147.0>
+2014-12-11 15:38:23.568 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.148.0>
+2014-12-11 15:38:23.568 [debug] <0.124.0> Supervisor {<0.124.0>,ranch_acceptors_sup} started ranch_acceptor:start_link(#Port<0.7448>, ranch_tcp, <0.123.0>) at pid <0.149.0>
+2014-12-11 15:38:24.113 [warning] <0.6.0> lager_error_logger_h dropped 174 messages in the last second that exceeded the limit of 50 messages/sec
+2014-12-11 15:38:24.113 [info] <0.7.0> Application eshop started on node nonode@nohost
+2014-12-11 15:38:28.872 [error] <0.374.0> CRASH REPORT Process <0.374.0> with 0 neighbours exited with reason: bad argument in call to gproc:reg({n,l,<<"worker-0509efcdc58958575d409f96a94f8eb0">>}, ignore) line 945 in eshop_session_worker:init/1 line 31 in gen_server:init_it/6 line 330
+2014-12-11 15:44:44.106 [error] <0.456.0> gen_server <0.456.0> terminated with reason: no match of right hand value {error,enoent} in eshop:partials/2 line 28
+2014-12-11 15:44:44.106 [error] <0.456.0> CRASH REPORT Process <0.456.0> with 0 neighbours exited with reason: no match of right hand value {error,enoent} in eshop:partials/2 line 28 in gen_server:terminate/6 line 746
+2014-12-11 15:44:44.107 [error] <0.341.0> Supervisor eshop_session_sup had child eshop_session_worker started with eshop_session_worker:start_link(<<"0509efcdc58958575d409f96a94f8eb0">>) at <0.456.0> exit with reason no match of right hand value {error,enoent} in eshop:partials/2 line 28 in context child_terminated
+2014-12-11 15:52:16.186 [error] <0.632.0> gen_server <0.632.0> terminated with reason: {'module could not be loaded',[{eshop_logging,log_term,[debug,[error,{ok,rolledback}]],[]},{eshop,new_registration,2,[{file,"src/eshop.erl"},{line,64}]},{eshop_session_worker,handle_info,2,[{file,"src/eshop_session_worker.erl"},{line,62}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,599}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+2014-12-11 15:52:16.186 [error] <0.632.0> CRASH REPORT Process <0.632.0> with 0 neighbours exited with reason: call to undefined function eshop_logging:log_term(debug, [error,{ok,rolledback}]) in gen_server:terminate/6 line 746
+2014-12-11 15:52:16.187 [error] <0.341.0> Supervisor eshop_session_sup had child eshop_session_worker started with eshop_session_worker:start_link(<<"0509efcdc58958575d409f96a94f8eb0">>) at <0.632.0> exit with reason call to undefined function eshop_logging:log_term(debug, [error,{ok,rolledback}]) in context child_terminated
+2014-12-11 16:14:06.010 [error] <0.842.0> gen_server <0.842.0> terminated with reason: {'module could not be loaded',[{eshop_logging,log_term,[debug,[error,{ok,rolledback}]],[]},{eshop,new_registration,2,[{file,"src/eshop.erl"},{line,64}]},{eshop_session_worker,handle_info,2,[{file,"src/eshop_session_worker.erl"},{line,62}]},{gen_server,handle_msg,5,[{file,"gen_server.erl"},{line,599}]},{proc_lib,init_p_do_apply,3,[{file,"proc_lib.erl"},{line,239}]}]}
+2014-12-11 16:14:06.011 [error] <0.842.0> CRASH REPORT Process <0.842.0> with 0 neighbours exited with reason: call to undefined function eshop_logging:log_term(debug, [error,{ok,rolledback}]) in gen_server:terminate/6 line 746
+2014-12-11 16:14:06.011 [error] <0.341.0> Supervisor eshop_session_sup had child eshop_session_worker started with eshop_session_worker:start_link(<<"0509efcdc58958575d409f96a94f8eb0">>) at <0.842.0> exit with reason call to undefined function eshop_logging:log_term(debug, [error,{ok,rolledback}]) in context child_terminated
